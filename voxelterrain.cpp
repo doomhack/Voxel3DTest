@@ -21,6 +21,52 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
     cullDistance = 2048;
 
     projectionMatrix.perspective(80, 2.4, 1.0, 2048.0);
+
+
+
+
+
+
+
+
+
+    //Load a pyramid thing into scene.
+
+
+    Triangle3d t[4];
+    t[0].verts[0].pos = QVector3D(0, 0, 0);
+    t[0].verts[1].pos = QVector3D(100, 0, 0);
+    t[0].verts[2].pos = QVector3D(50, 100, 50);
+
+    t[1].verts[0].pos = QVector3D(100, 0, 0);
+    t[1].verts[1].pos = QVector3D(100, 0, 100);
+    t[1].verts[2].pos = QVector3D(50, 100, 50);
+
+    t[2].verts[0].pos = QVector3D(100, 0, 100);
+    t[2].verts[1].pos = QVector3D(0, 0, 100);
+    t[2].verts[2].pos = QVector3D(50, 100, 50);
+
+    t[3].verts[0].pos = QVector3D(0, 0, 100);
+    t[3].verts[1].pos = QVector3D(0, 0, 0);
+    t[3].verts[2].pos = QVector3D(50, 100, 50);
+
+
+    int pointHeight = qGray(heightMap.pixel(1500, 1500)) - 127;
+
+
+    Mesh3d mesh;
+    mesh.color = Qt::red;
+    mesh.tris.append(t[0]);
+    mesh.tris.append(t[1]);
+    mesh.tris.append(t[2]);
+    mesh.tris.append(t[3]);
+
+    Object3d* obj = new Object3d();
+
+    obj->mesh.append(mesh);
+    obj->pos = QVector3D(1500, pointHeight, 1500);
+
+    objects.append(obj);
 }
 
 void VoxelTerrain::BeginFrame()
@@ -117,99 +163,118 @@ void VoxelTerrain::Render()
 
 void VoxelTerrain::Draw3d()
 {
-    Triangle3d t[4];
-    t[0].verts[0].pos = QVector3D(0, 0, 0);
-    t[0].verts[1].pos = QVector3D(100, 0, 0);
-    t[0].verts[2].pos = QVector3D(50, 100, 50);
+    for(int i = 0; i < objects.length(); i++)
+    {
+        const Object3d* obj = objects.at(i);
 
-    t[1].verts[0].pos = QVector3D(100, 0, 0);
-    t[1].verts[1].pos = QVector3D(100, 0, 100);
-    t[1].verts[2].pos = QVector3D(50, 100, 50);
+        this->DrawObject(obj);
+    }
+}
 
-    t[2].verts[0].pos = QVector3D(100, 0, 100);
-    t[2].verts[1].pos = QVector3D(0, 0, 100);
-    t[2].verts[2].pos = QVector3D(50, 100, 50);
+void VoxelTerrain::DrawObject(const Object3d* obj)
+{
+    modelMatrix.setToIdentity();
 
-    t[3].verts[0].pos = QVector3D(0, 0, 100);
-    t[3].verts[1].pos = QVector3D(0, 0, 0);
-    t[3].verts[2].pos = QVector3D(50, 100, 50);
-
-
-    int pointHeight = qGray(heightMap.pixel(1500, 1500)) - 127;
-
-
-    Mesh3d mesh;
-    mesh.color = Qt::red;
-    mesh.tris.append(t[0]);
-    mesh.tris.append(t[1]);
-    mesh.tris.append(t[2]);
-    mesh.tris.append(t[3]);
-
-    Object3d obj;
-
-    obj.mesh.append(mesh);
-    obj.pos = QVector3D(1500, pointHeight, 1500);
-
-    QMatrix4x4 modelMatrix;
-    QMatrix4x4 transformMatrix;
-
-
-    modelMatrix.translate(obj.pos);
-
-
-
-
+    modelMatrix.translate(obj->pos);
 
     transformMatrix = projectionMatrix * viewMatrix * modelMatrix;
 
-    QPointF p[3];
-
-
-    for(int x = 0; x < mesh.tris.count(); x++)
+    for(int i = 0; i < obj->mesh.length(); i++)
     {
-        bool skip = false;
+        const Mesh3d* mesh = &obj->mesh.at(i);
 
-        for(int i = 0; i < 3; i++)
+        this->DrawMesh(mesh);
+    }
+}
+
+void VoxelTerrain::DrawMesh(const Mesh3d* mesh)
+{
+    Qt::GlobalColor colors[4] = {Qt::red, Qt::blue, Qt::yellow, Qt::green};
+
+    for(int i = 0; i < mesh->tris.count(); i++)
+    {
+        const Triangle3d* tri = &mesh->tris.at(i);
+
+        QColor c = QColor(colors[i & 3]);
+
+        this->DrawTriangle(tri, mesh->texture, c.rgb());
+    }
+}
+
+void VoxelTerrain::DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb color)
+{
+    QVector3D transformedPoints[3];
+
+
+    for(int i = 0; i < 3; i++)
+    {
+        const Vertex3d* v = &tri->verts[i];
+
+        transformedPoints[i] = this->TransformVertex(v);
+    }
+
+    //TODO: Backface cull here.
+
+
+    bool skip = false;
+
+    QPoint p[3];
+
+    for(int i = 0; i < 3; i++)
+    {
+        float z = transformedPoints[i].z();
+
+        if(z > 1)
         {
-            QVector3D p3 = transformMatrix * t[x].verts[i].pos;
+            skip = true;
+            break;
+        }
 
-            p[i].setX((p3.x() + 0.5) * screenWidth);
-            p[i].setY(((0.0-p3.y() + 0.5)) * screenHeight);
+        int x = qRound(transformedPoints[i].x());
+        int y = qRound(transformedPoints[i].y());
 
-            float z = p3.z();
+        if(x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
+        {
+            float z2 = 1.0-zBuffer[(y * screenWidth) + x];
 
-            if(z > 1)
-                skip = true;
-            else
+            if(z > (z2+0.001))
             {
-                int vx = p[i].x();
-                int vy = p[i].y();
-
-                if(vx >= 0 && vx < screenWidth && vy >= 0 && vy < screenHeight)
-                {
-                    float z2 = 1.0-zBuffer[(vy * screenWidth) + vx];
-
-                    if(z > (z2+0.001))
-                        skip = true;
-                }
+                skip = true;
+                break;
             }
         }
 
-        Qt::GlobalColor colors[4] = {Qt::red, Qt::blue, Qt::yellow, Qt::green};
-
-        if(!skip)
-        {
-            QPainter ptr(&frameBuffer);
-
-            QPen pen;
-            pen.setWidth(5);
-            pen.setColor(colors[x]);
-
-            ptr.setPen(pen);
-            ptr.drawConvexPolygon(p, 3);
-        }
+        p[i].setX(x);
+        p[i].setY(y);
     }
 
+    if(!skip)
+    {
+        DrawTransformedTriangle(p, texture, color);
+    }
+}
 
+void VoxelTerrain::DrawTransformedTriangle(QPoint points[3], QImage* texture, QRgb color)
+{
+    QPainter ptr(&frameBuffer);
 
+    QPen pen;
+    pen.setWidth(5);
+    pen.setColor(color);
+
+    ptr.setPen(pen);
+    ptr.drawConvexPolygon(points, 3);
+}
+
+QVector3D VoxelTerrain::TransformVertex(const Vertex3d* vertex)
+{
+    QVector3D p = transformMatrix * vertex->pos;
+
+    QVector3D screenspace(
+                    (p.x() + 0.5) * screenWidth,
+                    ((0.0-p.y() + 0.5)) * screenHeight,
+                    p.z()
+                );
+
+    return screenspace;
 }

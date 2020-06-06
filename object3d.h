@@ -22,7 +22,7 @@ class Mesh3d
 {
 public:
     QRgb color;
-    QImage texture;
+    QImage* texture;
 
     QList<Triangle3d> tris;
 };

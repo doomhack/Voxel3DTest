@@ -17,6 +17,12 @@ public:
 
     void BeginFrame();
 
+    void DrawObject(const Object3d* object);
+    void DrawMesh(const Mesh3d* mesh);
+    void DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb color);
+    void DrawTransformedTriangle(QPoint points[3], QImage* texture, QRgb color);
+    QVector3D TransformVertex(const Vertex3d* vertex);
+
     QImage frameBuffer;
 
     QImage heightMap;
@@ -44,6 +50,8 @@ public:
 
     QMatrix4x4 viewMatrix;
     QMatrix4x4 projectionMatrix;
+    QMatrix4x4 modelMatrix;
+    QMatrix4x4 transformMatrix;
 
 private:
 
