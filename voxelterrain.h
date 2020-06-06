@@ -22,6 +22,7 @@ public:
     void DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb color);
     void DrawTransformedTriangle(QPoint points[3], QImage* texture, QRgb color);
     QVector3D TransformVertex(const Vertex3d* vertex);
+    bool IsTriangleFrontface(QVector3D screenSpacePoints[3]);
 
     QImage frameBuffer;
 

@@ -213,7 +213,10 @@ void VoxelTerrain::DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb col
         transformedPoints[i] = this->TransformVertex(v);
     }
 
-    //TODO: Backface cull here.
+    //Backface cull here.
+    if(!IsTriangleFrontface(transformedPoints))
+        return;
+
 
 
     bool skip = false;
@@ -252,6 +255,16 @@ void VoxelTerrain::DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb col
     {
         DrawTransformedTriangle(p, texture, color);
     }
+}
+
+bool VoxelTerrain::IsTriangleFrontface(QVector3D screenSpacePoints[3])
+{
+    QVector3D edge1 = screenSpacePoints[0] - screenSpacePoints[1];
+    QVector3D edge2 = screenSpacePoints[1] - screenSpacePoints[2];
+
+    QVector3D normal = QVector3D::crossProduct(edge1, edge2);
+
+    return normal.z() > 0;
 }
 
 void VoxelTerrain::DrawTransformedTriangle(QPoint points[3], QImage* texture, QRgb color)
