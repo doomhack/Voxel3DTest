@@ -271,11 +271,13 @@ void VoxelTerrain::DrawTransformedTriangle(QPoint points[3], QImage* texture, QR
 {
     QPainter ptr(&frameBuffer);
 
-    QPen pen;
-    pen.setWidth(5);
-    pen.setColor(color);
+    QBrush b;
+    b.setColor(color);
+    b.setStyle(Qt::SolidPattern);
 
-    ptr.setPen(pen);
+    ptr.setPen(color);
+    ptr.setBrush(b);
+
     ptr.drawConvexPolygon(points, 3);
 }
 
