@@ -33,6 +33,8 @@ class Object3d
 public:
     QVector3D pos;
     QList<Mesh3d> mesh;
+
+    bool LoadFromFile(QString filename);
 };
 
 #endif // OBJECT3D_H

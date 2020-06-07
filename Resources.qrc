@@ -3,4 +3,7 @@
         <file>C1W.png</file>
         <file>D1.png</file>
     </qresource>
+    <qresource prefix="/models">
+        <file>VRML/airport.obj</file>
+    </qresource>
 </RCC>

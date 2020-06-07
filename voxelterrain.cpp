@@ -23,48 +23,9 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
 
 
 
-
-
-
-
-
-    //Load a pyramid thing into scene.
-
-
-    Triangle3d t[4];
-    t[0].verts[0].pos = QVector3D(0, 0, 0);
-    t[0].verts[1].pos = QVector3D(100, 0, 0);
-    t[0].verts[2].pos = QVector3D(50, 100, 50);
-
-    t[1].verts[0].pos = QVector3D(100, 0, 0);
-    t[1].verts[1].pos = QVector3D(100, 0, 100);
-    t[1].verts[2].pos = QVector3D(50, 100, 50);
-
-    t[2].verts[0].pos = QVector3D(100, 0, 100);
-    t[2].verts[1].pos = QVector3D(0, 0, 100);
-    t[2].verts[2].pos = QVector3D(50, 100, 50);
-
-    t[3].verts[0].pos = QVector3D(0, 0, 100);
-    t[3].verts[1].pos = QVector3D(0, 0, 0);
-    t[3].verts[2].pos = QVector3D(50, 100, 50);
-
-
-    int pointHeight = qGray(heightMap.pixel(1500, 1500)) - 127;
-
-
-    Mesh3d mesh;
-    mesh.color = Qt::red;
-    mesh.tris.append(t[0]);
-    mesh.tris.append(t[1]);
-    mesh.tris.append(t[2]);
-    mesh.tris.append(t[3]);
-
-    Object3d* obj = new Object3d();
-
-    obj->mesh.append(mesh);
-    obj->pos = QVector3D(1500, pointHeight, 1500);
-
-    objects.append(obj);
+    Object3d* airport = new Object3d();
+    airport->LoadFromFile(":/models/VRML/airport.obj");
+    objects.append(airport);
 }
 
 void VoxelTerrain::BeginFrame()
