@@ -356,7 +356,7 @@ void VoxelTerrain::DrawTriangleTop(Vertex3d points[3], QImage* texture, QRgb col
                 if(texture)
                 {
                     int tx = qRound(currU * texture->width());
-                    int ty = qRound(currV * texture->height());
+                    int ty = qRound((1.0-currV) * texture->height());
 
                     tx = tx & (texture->width() - 1);
                     ty = ty & (texture->height() - 1);
@@ -468,7 +468,7 @@ void VoxelTerrain::DrawTriangleBottom(Vertex3d points[], QImage* texture, QRgb c
                 if(texture)
                 {
                     int tx = qRound(currU * texture->width());
-                    int ty = qRound(currV * texture->height());
+                    int ty = qRound((1.0 - currV) * texture->height());
 
                     tx = tx & (texture->width() - 1);
                     ty = ty & (texture->height() - 1);
