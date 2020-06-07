@@ -40,8 +40,8 @@ public:
     QVector<unsigned int> yBuffer;
     QVector<float> zBuffer;
 
-    const int screenWidth = 1366;
-    const int screenHeight = 720;
+    const int screenWidth = 1360;
+    const int screenHeight = 700;
 
     const float zNear = 1.0;
     const float zFar = 2048.0;
