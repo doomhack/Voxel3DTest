@@ -22,7 +22,6 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
 
 
 
-
     Object3d* airport = new Object3d();
     airport->LoadFromFile(":/models/VRML/airport.obj");
     objects.append(airport);
@@ -167,7 +166,6 @@ void VoxelTerrain::DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb col
 {
     QVector3D transformedPoints[3];
 
-
     for(int i = 0; i < 3; i++)
     {
         const Vertex3d* v = &tri->verts[i];
@@ -175,49 +173,15 @@ void VoxelTerrain::DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb col
         transformedPoints[i] = this->TransformVertex(v);
     }
 
+    //Reject offscreen polys
+    if(!IsTriangleOnScreen(transformedPoints))
+        return;
+
     //Backface cull here.
     if(!IsTriangleFrontface(transformedPoints))
         return;
 
-
-
-    bool skip = false;
-
-    QPoint p[3];
-
-    for(int i = 0; i < 3; i++)
-    {
-        float z = transformedPoints[i].z();
-
-        if(z > 1)
-        {
-            skip = true;
-            break;
-        }
-
-        int x = qRound(transformedPoints[i].x());
-        int y = qRound(transformedPoints[i].y());
-
-        if(x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
-        {
-            //float z2 = 1.0-zBuffer[(y * screenWidth) + x];
-            float z2 = zBuffer[(y * screenWidth) + x];
-
-            if(z > z2)
-            {
-                skip = true;
-                break;
-            }
-        }
-
-        p[i].setX(x);
-        p[i].setY(y);
-    }
-
-    if(!skip)
-    {
-        DrawTransformedTriangle(p, texture, color);
-    }
+    DrawTransformedTriangle(transformedPoints, texture, color);
 }
 
 bool VoxelTerrain::IsTriangleFrontface(QVector3D screenSpacePoints[3])
@@ -230,18 +194,217 @@ bool VoxelTerrain::IsTriangleFrontface(QVector3D screenSpacePoints[3])
     return normal.z() > 0;
 }
 
-void VoxelTerrain::DrawTransformedTriangle(QPoint points[3], QImage* texture, QRgb color)
+bool VoxelTerrain::IsTriangleOnScreen(QVector3D screenSpacePoints[3])
 {
-    QPainter ptr(&frameBuffer);
+    if  (
+            ((screenSpacePoints[0].z() >= 1) || (screenSpacePoints[0].z() < 0)) ||
+            ((screenSpacePoints[1].z() >= 1) || (screenSpacePoints[1].z() < 0)) ||
+            ((screenSpacePoints[2].z() >= 1) || (screenSpacePoints[2].z() < 0))
+         )
+        return false;
 
-    QBrush b;
-    b.setColor(color);
-    b.setStyle(Qt::SolidPattern);
 
-    ptr.setPen(color);
-    ptr.setBrush(b);
+    if  (
+            (screenSpacePoints[0].x() < 0) &&
+            (screenSpacePoints[1].x() < 0) &&
+            (screenSpacePoints[1].x() < 0)
+        )
+        return false;
 
-    ptr.drawConvexPolygon(points, 3);
+    if  (
+            (screenSpacePoints[0].x() > screenWidth) &&
+            (screenSpacePoints[1].x() > screenWidth) &&
+            (screenSpacePoints[1].x() > screenWidth)
+        )
+        return false;
+
+    if  (
+            (screenSpacePoints[0].y() < 0) &&
+            (screenSpacePoints[1].y() < 0) &&
+            (screenSpacePoints[1].y() < 0)
+        )
+        return false;
+
+    if  (
+            (screenSpacePoints[0].y() > screenHeight) &&
+            (screenSpacePoints[1].y() > screenHeight) &&
+            (screenSpacePoints[1].y() > screenHeight)
+        )
+        return false;
+
+    return true;
+}
+
+void VoxelTerrain::DrawTransformedTriangle(QVector3D points[3], QImage* texture, QRgb color)
+{
+    SortPointsByY(points);
+
+    if(points[1].y() == points[2].y())
+    {
+        DrawTriangleTop(points, texture, color);
+    }
+    else if(points[0].y() == points[1].y())
+    {
+        DrawTriangleBottom(points, texture, color);
+    }
+    else
+    {
+        QVector3D px[3];
+
+        int v4x =(int)(points[0].x() + ((float)(points[1].y() - points[0].y()) / (float)(points[2].y() - points[0].y())) * (points[2].x() - points[0].x()));
+
+        QVector3D p4 = QVector3D(v4x, points[1].y(), points[1].z());
+
+        px[0] = points[0];
+        px[1] = points[1];
+        px[2] = p4;
+
+        DrawTriangleTop(px, texture, color);
+
+        px[0] = points[1];
+        px[1] = p4;
+        px[2] = points[2];
+
+        DrawTriangleBottom(px, texture, color);
+    }
+}
+
+void VoxelTerrain::SortPointsByY(QVector3D points[3])
+{
+    if(points[0].y() > points[1].y())
+        qSwap(points[0], points[1]);
+
+    if(points[0].y() > points[2].y())
+        qSwap(points[0], points[2]);
+
+    if(points[1].y() > points[2].y())
+        qSwap(points[1], points[2]);
+}
+
+void VoxelTerrain::DrawTriangleTop(QVector3D points[3], QImage* texture, QRgb color)
+{
+    float invslope1 = (float)(points[1].x() - points[0].x()) / (float)(points[1].y() - points[0].y());
+    float invslope2 = (float)(points[2].x() - points[0].x()) / (float)(points[2].y() - points[0].y());
+
+    float zStepLeft = (float)(points[1].z() - points[0].z()) / (float)(points[1].y() - points[0].y());
+    float zStepRight = (float)(points[2].z() - points[0].z()) / (float)(points[2].y() - points[0].y());
+
+    if(invslope1 > invslope2)
+    {
+        qSwap(invslope1, invslope2);
+        qSwap(zStepLeft, zStepRight);
+    }
+
+    float curx1 = points[0].x();
+    float curx2 = points[0].x();
+
+    float curZLeft = points[0].z();
+    float curZRight = points[0].z();
+
+
+    int yStart = qRound(points[0].y());
+    int yEnd = qRound(points[1].y());
+
+    for (int scanlineY = yStart; scanlineY <= yEnd; scanlineY++)
+    {
+        if(scanlineY < 0)
+            continue;
+
+        if(scanlineY >= screenHeight)
+            break;
+
+        float zStep = (curZLeft - curZRight) / (curx1 - curx2);
+
+        float currZ = curZLeft;
+
+        for(int x = curx1; x <= curx2; x++)
+        {
+            if(x < 0)
+                continue;
+
+            if(x >= screenWidth)
+                break;
+
+            float oldZ = zBuffer[ (scanlineY*screenWidth) + x];
+
+            if(currZ <= oldZ)
+            {
+                frameBuffer.setPixel(x, scanlineY, color);
+                zBuffer[ (scanlineY*screenWidth) + x] = currZ;
+            }
+
+            currZ += zStep;
+        }
+
+        curx1 += invslope1;
+        curx2 += invslope2;
+
+        curZLeft+=zStepLeft;
+        curZRight+=zStepRight;
+    }
+}
+
+void VoxelTerrain::DrawTriangleBottom(QVector3D points[], QImage* texture, QRgb color)
+{
+    float invslope1 = (float)(points[2].x() - points[0].x()) / (float)(points[2].y() - points[0].y());
+    float invslope2 = (float)(points[2].x() - points[1].x()) / (float)(points[2].y() - points[1].y());
+
+    float zStepLeft = (float)(points[2].z() - points[0].z()) / (float)(points[2].y() - points[0].y());
+    float zStepRight = (float)(points[2].z() - points[1].z()) / (float)(points[2].y() - points[1].y());
+
+
+    if(invslope1 < invslope2)
+    {
+        qSwap(invslope1, invslope2);
+        qSwap(zStepLeft, zStepRight);
+    }
+
+    float curx1 = points[2].x();
+    float curx2 = points[2].x();
+
+    float curZLeft = points[2].z();
+    float curZRight = points[2].z();
+
+    int yStart = qRound(points[2].y());
+    int yEnd = qRound(points[0].y());
+
+    for (int scanlineY = yStart; scanlineY > yEnd; scanlineY--)
+    {
+        if(scanlineY < 0)
+            continue;
+
+        if(scanlineY >= screenHeight)
+            break;
+
+        float zStep = (curZLeft - curZRight) / (curx1 - curx2);
+
+        float currZ = curZLeft;
+
+        for(int x = curx1; x <= curx2; x++)
+        {
+            if(x < 0)
+                continue;
+
+            if(x >= screenWidth)
+                break;
+
+            float oldZ = zBuffer[ (scanlineY*screenWidth) + x];
+
+            if(currZ <= oldZ)
+            {
+                frameBuffer.setPixel(x, scanlineY, color);
+                zBuffer[ (scanlineY*screenWidth) + x] = currZ;
+            }
+
+            currZ += zStep;
+        }
+
+        curx1 -= invslope1;
+        curx2 -= invslope2;
+
+        curZLeft-=zStepLeft;
+        curZRight-=zStepRight;
+    }
 }
 
 QVector3D VoxelTerrain::TransformVertex(const Vertex3d* vertex)
@@ -249,8 +412,8 @@ QVector3D VoxelTerrain::TransformVertex(const Vertex3d* vertex)
     QVector3D p = transformMatrix * vertex->pos;
 
     QVector3D screenspace(
-                    (p.x() + 0.5) * screenWidth,
-                    ((0.0-p.y() + 0.5)) * screenHeight,
+                    qRound((p.x() + 0.5) * screenWidth),
+                    qRound(((0.0-p.y() + 0.5)) * screenHeight),
                     p.z()
                 );
 

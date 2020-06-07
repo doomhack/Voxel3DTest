@@ -20,9 +20,16 @@ public:
     void DrawObject(const Object3d* object);
     void DrawMesh(const Mesh3d* mesh);
     void DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb color);
-    void DrawTransformedTriangle(QPoint points[3], QImage* texture, QRgb color);
+    void DrawTransformedTriangle(QVector3D points[], QImage* texture, QRgb color);
+    void DrawTriangleTop(QVector3D points[3], QImage* texture, QRgb color);
+    void DrawTriangleBottom(QVector3D points[3], QImage* texture, QRgb color);
+
+    void SortPointsByY(QVector3D points[3]);
+
     QVector3D TransformVertex(const Vertex3d* vertex);
     bool IsTriangleFrontface(QVector3D screenSpacePoints[3]);
+    bool IsTriangleOnScreen(QVector3D screenSpacePoints[3]);
+
 
     QImage frameBuffer;
 
