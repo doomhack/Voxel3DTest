@@ -5,5 +5,8 @@
     </qresource>
     <qresource prefix="/models">
         <file>VRML/airport.obj</file>
+        <file>VRML/2B68BF8F_c.bmp</file>
+        <file>VRML/4F37A43F_c.bmp</file>
+        <file>VRML/airport.mtl</file>
     </qresource>
 </RCC>

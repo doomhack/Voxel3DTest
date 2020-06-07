@@ -20,15 +20,15 @@ public:
     void DrawObject(const Object3d* object);
     void DrawMesh(const Mesh3d* mesh);
     void DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb color);
-    void DrawTransformedTriangle(QVector3D points[], QImage* texture, QRgb color);
-    void DrawTriangleTop(QVector3D points[3], QImage* texture, QRgb color);
-    void DrawTriangleBottom(QVector3D points[3], QImage* texture, QRgb color);
+    void DrawTransformedTriangle(Vertex3d points[], QImage* texture, QRgb color);
+    void DrawTriangleTop(Vertex3d points[3], QImage* texture, QRgb color);
+    void DrawTriangleBottom(Vertex3d points[3], QImage* texture, QRgb color);
 
-    void SortPointsByY(QVector3D points[3]);
+    void SortPointsByY(Vertex3d points[3]);
 
-    QVector3D TransformVertex(const Vertex3d* vertex);
-    bool IsTriangleFrontface(QVector3D screenSpacePoints[3]);
-    bool IsTriangleOnScreen(QVector3D screenSpacePoints[3]);
+    Vertex3d TransformVertex(const Vertex3d* vertex);
+    bool IsTriangleFrontface(Vertex3d screenSpacePoints[3]);
+    bool IsTriangleOnScreen(Vertex3d screenSpacePoints[3]);
 
 
     QImage frameBuffer;
@@ -41,7 +41,7 @@ public:
     QVector<float> zBuffer;
 
     const int screenWidth = 1360;
-    const int screenHeight = 700;
+    const int screenHeight = 720;
 
     const float zNear = 1.0;
     const float zFar = 2048.0;
