@@ -62,14 +62,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         if(vt.zAngle > -40)
             vt.zAngle-=5;
     }
-    else if(event->key() == Qt::Key_A)
-    {
-        vt.cullDistance++;
-    }
-    else if(event->key() == Qt::Key_S)
-    {
-        vt.cullDistance--;
-    }
     else if(event->key() == Qt::Key_Q)
     {
         vt.cameraHeight++;

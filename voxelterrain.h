@@ -31,11 +31,13 @@ public:
 
 
     QVector<unsigned int> yBuffer;
-    unsigned int cullDistance;
     QVector<float> zBuffer;
 
     const int screenWidth = 1366;
     const int screenHeight = 720;
+
+    const float zNear = 1.0;
+    const float zFar = 2048.0;
 
     const unsigned int heightScale = (1.25 * ((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
 

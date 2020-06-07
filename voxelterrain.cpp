@@ -18,9 +18,7 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
 
     zBuffer.resize(screenWidth * screenHeight);
 
-    cullDistance = 2048;
-
-    projectionMatrix.perspective(80, 2.4, 1.0, 2048.0);
+    projectionMatrix.perspective(80, 2.4, zNear, zFar);
 
 
 
@@ -82,7 +80,7 @@ void VoxelTerrain::BeginFrame()
 
     yBuffer.fill(screenHeight, screenWidth);
 
-    zBuffer.fill(0.0, screenWidth * screenHeight);
+    zBuffer.fill(1.0, screenWidth * screenHeight);
 
 
     viewMatrix.setToIdentity();
@@ -106,9 +104,10 @@ void VoxelTerrain::Render()
     float cosphi = qCos(cameraAngle);
 
     float dz = 0.01;
-    float z = 1.0;
+    float z = zNear;
 
-    while(z < cullDistance)
+
+    while(z < zFar)
     {
         QPointF pleft = QPoint((-cosphi*z - sinphi*z) + cameraPos.x(), ( sinphi*z - cosphi*z) + cameraPos.y());
         QPointF pright = QPoint(( cosphi*z - sinphi*z) + cameraPos.x(), (-sinphi*z - cosphi*z) + cameraPos.y());
@@ -118,6 +117,8 @@ void VoxelTerrain::Render()
 
         float invz = (1.0 / z);
         float invh = invz * heightScale;
+
+        float zDepth = (((invz) - (1.0 / zNear) ) / ( (1.0 / zFar) - (1.0 / zNear)));
 
         for(unsigned int i = 0; i < screenWidth; i++)
         {
@@ -145,7 +146,7 @@ void VoxelTerrain::Render()
             for(unsigned int y = lineHeight; y < yBuffer[i]; y++)
             {
                 frameBuffer.setPixel(i, y, lineColor);
-                zBuffer[(y * screenWidth) + i] = invz;
+                zBuffer[(y * screenWidth) + i] = zDepth;
             }
 
             if (lineHeight < yBuffer[i])
@@ -238,9 +239,10 @@ void VoxelTerrain::DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb col
 
         if(x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
         {
-            float z2 = 1.0-zBuffer[(y * screenWidth) + x];
+            //float z2 = 1.0-zBuffer[(y * screenWidth) + x];
+            float z2 = zBuffer[(y * screenWidth) + x];
 
-            if(z > (z2+0.001))
+            if(z > z2)
             {
                 skip = true;
                 break;
