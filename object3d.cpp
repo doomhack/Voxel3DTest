@@ -5,7 +5,6 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
 {
     this->pos.setX(1024);
     this->pos.setZ(1024);
-    this->pos.setY(-136);
 
     QFile f(objFile);
 

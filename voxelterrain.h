@@ -6,6 +6,21 @@
 
 #include "object3d.h"
 
+typedef struct TriEdgeTrace
+{
+    float x_left, x_right;
+    float z_left, z_right;
+    float u_left, u_right;
+    float v_left, v_right;
+} TriDrawState;
+
+typedef struct TriDrawPos
+{
+    float z;
+    float u;
+    float v;
+} TriDrawPos;
+
 class VoxelTerrain : public QObject
 {
     Q_OBJECT
@@ -29,7 +44,7 @@ public:
     Vertex3d TransformVertex(const Vertex3d* vertex);
     bool IsTriangleFrontface(Vertex3d screenSpacePoints[3]);
     bool IsTriangleOnScreen(Vertex3d screenSpacePoints[3]);
-
+    void DrawTriangleScanline(int y, TriEdgeTrace& pos, QImage* texture, QRgb color);
 
     QImage frameBuffer;
 
@@ -37,7 +52,7 @@ public:
     QImage colorMap;
 
 
-    QVector<unsigned int> yBuffer;
+    QVector<int> yBuffer;
     QVector<float> zBuffer;
 
     const int screenWidth = 1360;
@@ -46,7 +61,7 @@ public:
     const float zNear = 1.0;
     const float zFar = 2048.0;
 
-    const unsigned int heightScale = (1.25 * ((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
+    unsigned int heightScale = (0.75*((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
 
     float zAngle = 0;
 
@@ -61,8 +76,7 @@ public:
     QMatrix4x4 viewMatrix;
     QMatrix4x4 projectionMatrix;
     QMatrix4x4 modelMatrix;
-    QMatrix4x4 transformMatrix;
-
+    QMatrix4x4 transformMatrix;    
 private:
 
 

@@ -2,6 +2,22 @@
 #include "voxelterrain.h"
 #include "object3d.h"
 
+float XFovtoYFov(float xfov, float aspect)
+{
+    xfov = qDegreesToRadians(xfov);
+    float yfov = 2.0 * qAtan(qTan(xfov * 0.5f) / aspect);
+
+    return qRadiansToDegrees(yfov);
+}
+
+float YFovtoXFov(float yfov, float aspect)
+{
+    yfov = qDegreesToRadians(yfov);
+    float xfov = 2.0 * qAtan(qTan(yfov * 0.5f) * aspect);
+
+    return qRadiansToDegrees(xfov);
+}
+
 VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
 {
     cameraPos = QPointF(1024,1024);
@@ -18,12 +34,15 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
 
     zBuffer.resize(screenWidth * screenHeight);
 
-    projectionMatrix.perspective(80, 2.4, zNear, zFar);
+    //projectionMatrix.perspective(80, 2.4, zNear, zFar);
+    float aspect = (float)screenWidth/(float)screenHeight;
+    float vfov = XFovtoYFov(90.0, aspect);
 
-
+    projectionMatrix.perspective(vfov, aspect, zNear, zFar);
 
     Object3d* airport = new Object3d();
     airport->LoadFromFile(":/models/VRML/airport.obj", ":/models/VRML/airport.mtl");
+    airport->pos.setY(-128);
     objects.append(airport);
 }
 
@@ -44,10 +63,9 @@ void VoxelTerrain::BeginFrame()
 
 
     viewMatrix.setToIdentity();
-    viewMatrix.rotate(-zAngle * 0.55, QVector3D(1,0,0));
+    viewMatrix.rotate(-zAngle, QVector3D(1,0,0));
     viewMatrix.rotate(qRadiansToDegrees(-cameraAngle), QVector3D(0,1,0));
     viewMatrix.translate(-cameraPos.x(), -viewHeight, -cameraPos.y());
-
 }
 
 void VoxelTerrain::Render()
@@ -58,7 +76,6 @@ void VoxelTerrain::Render()
     float maxPos = 2048 * qTan(qDegreesToRadians(40.0));
 
     horizonPos = (screenHeight / 2) + ((horizonPos / maxPos) * (screenHeight / 2));
-
 
     float sinphi = qSin(cameraAngle);
     float cosphi = qCos(cameraAngle);
@@ -80,7 +97,7 @@ void VoxelTerrain::Render()
 
         float zDepth = 1.0-invz;
 
-        for(unsigned int i = 0; i < screenWidth; i++)
+        for(int i = 0; i < screenWidth; i++)
         {
             float pointHeight = -128;
             QRgb lineColor = qRgb(0,0,128);
@@ -101,9 +118,9 @@ void VoxelTerrain::Render()
             if(lineHeight < 0)
                 lineHeight = 0;
             else if(lineHeight >= screenHeight)
-                lineHeight = screenHeight-1;
+                lineHeight = screenHeight;
 
-            for(unsigned int y = lineHeight; y < yBuffer[i]; y++)
+            for(int y = lineHeight; y < yBuffer[i]; y++)
             {
                 frameBuffer.setPixel(i, y, lineColor);
                 zBuffer[(y * screenWidth) + i] = zDepth;
@@ -157,6 +174,32 @@ void VoxelTerrain::DrawMesh(const Mesh3d* mesh)
         this->DrawTriangle(tri, mesh->texture, mesh->color);
     }
 }
+
+Vertex3d VoxelTerrain::TransformVertex(const Vertex3d* vertex)
+{
+    QVector3D p = transformMatrix * vertex->pos;
+
+    Vertex3d screenspace;
+
+    float z = p.z();
+
+    if(z < 0.0)
+        z = 0;
+    else if(z > 1.0)
+        z = 1.0;
+
+    screenspace.pos = QVector3D
+    (
+        qRound((p.x() + 0.5) * screenWidth),
+        qRound(((0.0-p.y() + 0.5)) * screenHeight),
+        z
+    );
+
+    screenspace.uv = vertex->uv;
+
+    return screenspace;
+}
+
 
 void VoxelTerrain::DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb color)
 {
@@ -245,29 +288,41 @@ void VoxelTerrain::DrawTransformedTriangle(Vertex3d points[3], QImage* texture, 
     }
     else
     {
-        Vertex3d px[3];
+        //Now we split the polygon into two triangles.
+        //A flat top and flat bottom triangle.
 
-        int v4x =(int)(points[0].pos.x() + ((float)(points[1].pos.y() - points[0].pos.y()) / (float)(points[2].pos.y() - points[0].pos.y())) * (points[2].pos.x() - points[0].pos.x()));
-        float v4z = (points[0].pos.z() + ((float)(points[1].pos.y() - points[0].pos.y()) / (float)(points[2].pos.y() - points[0].pos.y())) * (points[2].pos.z() - points[0].pos.z()));
+        //How far down between vx0 -> vx2 are we spliting?
+        float splitFrac = (points[1].pos.y() - points[0].pos.y()) / (points[2].pos.y() - points[0].pos.y());
 
-        float v4u = (points[0].uv.x() + ((float)(points[1].pos.y() - points[0].pos.y()) / (float)(points[2].pos.y() - points[0].pos.y())) * (points[2].uv.x() - points[0].uv.x()));
-        float v4v = (points[0].uv.y() + ((float)(points[1].pos.y() - points[0].pos.y()) / (float)(points[2].pos.y() - points[0].pos.y())) * (points[2].uv.y() - points[0].uv.y()));
+        //Interpolate new values for new vertex.
+
+        //x pos
+        int v4x = qRound(points[0].pos.x() + (splitFrac * (points[2].pos.x() - points[0].pos.x())));
+
+        //z-depth
+        float v4z = points[0].pos.z() + (splitFrac * (points[2].pos.z() - points[0].pos.z()));
+
+        //uv coords.
+        float v4u = points[0].uv.x() + (splitFrac * (points[2].uv.x() - points[0].uv.x()));
+        float v4v = points[0].uv.y() + (splitFrac * (points[2].uv.y() - points[0].uv.y()));
+
+        Vertex3d triangle[3];
 
         Vertex3d p4;
         p4.pos = QVector3D(v4x, points[1].pos.y(), v4z);
         p4.uv = QVector2D(v4u, v4v);
 
-        px[0] = points[0];
-        px[1] = points[1];
-        px[2] = p4;
+        triangle[0] = points[0];
+        triangle[1] = points[1];
+        triangle[2] = p4;
 
-        DrawTriangleTop(px, texture, color);
+        DrawTriangleTop(triangle, texture, color);
 
-        px[0] = points[1];
-        px[1] = p4;
-        px[2] = points[2];
+        triangle[0] = points[1];
+        triangle[1] = p4;
+        triangle[2] = points[2];
 
-        DrawTriangleBottom(px, texture, color);
+        DrawTriangleBottom(triangle, texture, color);
     }
 }
 
@@ -283,240 +338,175 @@ void VoxelTerrain::SortPointsByY(Vertex3d points[3])
         qSwap(points[1], points[2]);
 }
 
+
+
 void VoxelTerrain::DrawTriangleTop(Vertex3d points[3], QImage* texture, QRgb color)
 {
-    float invslope1 = (float)(points[1].pos.x() - points[0].pos.x()) / (float)(points[1].pos.y() - points[0].pos.y());
-    float invslope2 = (float)(points[2].pos.x() - points[0].pos.x()) / (float)(points[2].pos.y() - points[0].pos.y());
+    float inv_height = (1.0/(points[1].pos.y() - points[0].pos.y()));
 
-    float zStepLeft = (float)(points[1].pos.z() - points[0].pos.z()) / (float)(points[1].pos.y() - points[0].pos.y());
-    float zStepRight = (float)(points[2].pos.z() - points[0].pos.z()) / (float)(points[2].pos.y() - points[0].pos.y());
+    TriEdgeTrace step;
+    TriEdgeTrace pos;
 
-    float uStepLeft = (float)(points[1].uv.x() - points[0].uv.x()) / (float)(points[1].pos.y() - points[0].pos.y());
-    float uStepRight = (float)(points[2].uv.x() - points[0].uv.x()) / (float)(points[2].pos.y() - points[0].pos.y());
+    step.x_left     = (points[2].pos.x() - points[0].pos.x()) * inv_height;
+    step.x_right    = (points[1].pos.x() - points[0].pos.x()) * inv_height;
 
-    float vStepLeft = (float)(points[1].uv.y() - points[0].uv.y()) / (float)(points[1].pos.y() - points[0].pos.y());
-    float vStepRight = (float)(points[2].uv.y() - points[0].uv.y()) / (float)(points[2].pos.y() - points[0].pos.y());
+    step.z_left     = (points[2].pos.z() - points[0].pos.z()) * inv_height;
+    step.z_right    = (points[1].pos.z() - points[0].pos.z()) * inv_height;
 
-    if(invslope1 > invslope2)
+    step.u_left     = (points[2].uv.x() - points[0].uv.x()) * inv_height;
+    step.u_right    = (points[1].uv.x() - points[0].uv.x()) * inv_height;
+
+    step.v_left     = (points[2].uv.y() - points[0].uv.y()) * inv_height;
+    step.v_right    = (points[1].uv.y() - points[0].uv.y()) * inv_height;
+
+    if(step.x_left > step.x_right)
     {
-        qSwap(invslope1, invslope2);
-        qSwap(zStepLeft, zStepRight);
-        qSwap(uStepLeft, uStepRight);
-        qSwap(vStepLeft, vStepRight);
+        qSwap(step.x_left, step.x_right);
+        qSwap(step.z_left, step.z_right);
+        qSwap(step.u_left, step.u_right);
+        qSwap(step.v_left, step.v_right);
     }
 
-    float curx1 = points[0].pos.x();
-    float curx2 = points[0].pos.x();
-
-    float curZLeft = points[0].pos.z();
-    float curZRight = points[0].pos.z();
-
-    float currULeft = points[0].uv.x();
-    float currURight = points[0].uv.x();
-
-    float currVLeft = points[0].uv.y();
-    float currVRight = points[0].uv.y();
+    pos.x_left = pos.x_right = points[0].pos.x();
+    pos.z_left = pos.z_right = points[0].pos.z();
+    pos.u_left = pos.u_right = points[0].uv.x();
+    pos.v_left = pos.v_right = points[0].uv.y();
 
     int yStart = qRound(points[0].pos.y());
     int yEnd = qRound(points[1].pos.y());
 
-    for (int scanlineY = yStart; scanlineY <= yEnd; scanlineY++)
+    for (int y = yStart; y <= yEnd; y++)
     {
-        if(scanlineY < 0)
-            continue;
-
-        if(scanlineY >= screenHeight)
+        if(y >= screenHeight)
             break;
 
-        float zStep = (curZLeft - curZRight) / (curx1 - curx2);
-
-        float uStep = (currULeft - currURight) / (curx1 - curx2);
-        float vStep = (currVLeft - currVRight) / (curx1 - curx2);
-
-        float currZ = curZLeft;
-
-        float currU = currULeft;
-        float currV = currVLeft;
-
-        for(int x = curx1; x <= curx2; x++)
+        if(y > 0)
         {
-            if(x < 0)
-                continue;
-
-            if(x >= screenWidth)
-                break;
-
-            if(currZ < 0 || currZ > 1.0)
-                continue;
-
-            float oldZ = zBuffer[ (scanlineY*screenWidth) + x];
-
-            if(currZ < oldZ)
-            {
-                if(texture)
-                {
-                    int tx = qRound(currU * texture->width());
-                    int ty = qRound((1.0-currV) * texture->height());
-
-                    tx = tx & (texture->width() - 1);
-                    ty = ty & (texture->height() - 1);
-
-                    frameBuffer.setPixel(x, scanlineY, texture->pixel(tx, ty));
-                }
-                else
-                {
-                    frameBuffer.setPixel(x, scanlineY, color);
-                }
-
-                zBuffer[ (scanlineY*screenWidth) + x] = currZ;
-            }
-
-            currZ += zStep;
-
-            currU += uStep;
-            currV += vStep;
+            DrawTriangleScanline(y, pos, texture, color);
         }
 
-        curx1 += invslope1;
-        curx2 += invslope2;
+        pos.x_left  += step.x_left;
+        pos.x_right += step.x_right;
 
-        curZLeft+=zStepLeft;
-        curZRight+=zStepRight;
+        pos.z_left  += step.z_left;
+        pos.z_right += step.z_right;
 
-        currULeft += uStepLeft;
-        currURight += uStepRight;
+        pos.u_left  += step.u_left;
+        pos.u_right += step.u_right;
 
-        currVLeft += vStepLeft;
-        currVRight += vStepRight;
+        pos.v_left  += step.v_left;
+        pos.v_right += step.v_right;
     }
 }
 
 void VoxelTerrain::DrawTriangleBottom(Vertex3d points[], QImage* texture, QRgb color)
 {
-    float invslope1 = (float)(points[2].pos.x() - points[0].pos.x()) / (float)(points[2].pos.y() - points[0].pos.y());
-    float invslope2 = (float)(points[2].pos.x() - points[1].pos.x()) / (float)(points[2].pos.y() - points[1].pos.y());
+    float inv_height = (1.0/(points[2].pos.y() - points[0].pos.y()));
 
-    float zStepLeft = (float)(points[2].pos.z() - points[0].pos.z()) / (float)(points[2].pos.y() - points[0].pos.y());
-    float zStepRight = (float)(points[2].pos.z() - points[1].pos.z()) / (float)(points[2].pos.y() - points[1].pos.y());
+    TriEdgeTrace step;
+    TriEdgeTrace pos;
 
-    float uStepLeft = (float)(points[2].uv.x() - points[0].uv.x()) / (float)(points[2].pos.y() - points[0].pos.y());
-    float uStepRight = (float)(points[2].uv.x() - points[1].uv.x()) / (float)(points[2].pos.y() - points[1].pos.y());
+    step.x_left     = (points[2].pos.x() - points[0].pos.x()) * inv_height;
+    step.x_right    = (points[2].pos.x() - points[1].pos.x()) * inv_height;
 
-    float vStepLeft = (float)(points[2].uv.y() - points[0].uv.y()) / (float)(points[2].pos.y() - points[0].pos.y());
-    float vStepRight = (float)(points[2].uv.y() - points[1].uv.y()) / (float)(points[2].pos.y() - points[1].pos.y());
+    step.z_left     = (points[2].pos.z() - points[0].pos.z()) * inv_height;
+    step.z_right    = (points[2].pos.z() - points[1].pos.z()) * inv_height;
 
+    step.u_left     = (points[2].uv.x() - points[0].uv.x()) * inv_height;
+    step.u_right    = (points[2].uv.x() - points[1].uv.x()) * inv_height;
 
-    if(invslope1 < invslope2)
+    step.v_left     = (points[2].uv.y() - points[0].uv.y()) * inv_height;
+    step.v_right    = (points[2].uv.y() - points[1].uv.y()) * inv_height;
+
+    if(step.x_left < step.x_right)
     {
-        qSwap(invslope1, invslope2);
-        qSwap(zStepLeft, zStepRight);
-
-        qSwap(uStepLeft, uStepRight);
-        qSwap(vStepLeft, vStepRight);
+        qSwap(step.x_left, step.x_right);
+        qSwap(step.z_left, step.z_right);
+        qSwap(step.u_left, step.u_right);
+        qSwap(step.v_left, step.v_right);
     }
 
-    float curx1 = points[2].pos.x();
-    float curx2 = points[2].pos.x();
-
-    float curZLeft = points[2].pos.z();
-    float curZRight = points[2].pos.z();
-
-    float currULeft = points[2].uv.x();
-    float currURight = points[2].uv.x();
-
-    float currVLeft = points[2].uv.y();
-    float currVRight = points[2].uv.y();
-
+    pos.x_left = pos.x_right = points[2].pos.x();
+    pos.z_left = pos.z_right = points[2].pos.z();
+    pos.u_left = pos.u_right = points[2].uv.x();
+    pos.v_left = pos.v_right = points[2].uv.y();
 
     int yStart = qRound(points[2].pos.y());
     int yEnd = qRound(points[0].pos.y());
 
-    for (int scanlineY = yStart; scanlineY > yEnd; scanlineY--)
+
+    for (int y = yStart; y > yEnd; y--)
     {
-        if(scanlineY < 0)
+        if(y < 0)
             break;
 
-        if(scanlineY >= screenHeight)
-            continue;
-
-        float zStep = (curZLeft - curZRight) / (curx1 - curx2);
-
-        float uStep = (currULeft - currURight) / (curx1 - curx2);
-        float vStep = (currVLeft - currVRight) / (curx1 - curx2);
-
-
-        float currZ = curZLeft;
-
-        float currU = currULeft;
-        float currV = currVLeft;
-
-        for(int x = curx1; x <= curx2; x++)
+        if(y < screenHeight)
         {
-            if(x < 0)
-                continue;
+            DrawTriangleScanline(y, pos, texture, color);
+        }
 
-            if(x >= screenWidth)
-                break;
+        pos.x_left  -= step.x_left;
+        pos.x_right -= step.x_right;
 
-            if(currZ < 0 || currZ > 1.0)
-                continue;
+        pos.z_left  -= step.z_left;
+        pos.z_right -= step.z_right;
 
-            float oldZ = zBuffer[ (scanlineY*screenWidth) + x];
+        pos.u_left  -= step.u_left;
+        pos.u_right -= step.u_right;
 
-            if(currZ < oldZ)
+        pos.v_left  -= step.v_left;
+        pos.v_right -= step.v_right;
+
+    }
+}
+
+void VoxelTerrain::DrawTriangleScanline(int y, TriEdgeTrace& pos, QImage* texture, QRgb color)
+{
+    TriDrawPos sl_step;
+    TriDrawPos sl_pos;
+
+    float inv_width = 1.0/(pos.x_right - pos.x_left);
+
+    sl_step.z = (pos.z_right - pos.z_left) * inv_width;
+    sl_step.u = (pos.u_right - pos.u_left) * inv_width;
+    sl_step.v = (pos.v_right - pos.v_left) * inv_width;
+
+    sl_pos.z = pos.z_left;
+    sl_pos.u = pos.u_left;
+    sl_pos.v = pos.v_left;
+
+    for(int x = pos.x_left; x <= pos.x_right; x++)
+    {
+        if(x >= screenWidth)
+            return;
+
+        if(x >= 0)
+        {
+            float prevz = zBuffer[ (y*screenWidth) + x];
+
+            if(sl_pos.z < prevz)
             {
                 if(texture)
                 {
-                    int tx = qRound(currU * texture->width());
-                    int ty = qRound((1.0 - currV) * texture->height());
+                    int tx = qRound(sl_pos.u * texture->width());
+                    int ty = qRound((1.0-sl_pos.v) * texture->height());
 
                     tx = tx & (texture->width() - 1);
                     ty = ty & (texture->height() - 1);
 
-                    frameBuffer.setPixel(x, scanlineY, texture->pixel(tx, ty));
+                    frameBuffer.setPixel(x, y, texture->pixel(tx, ty));
                 }
                 else
                 {
-                    frameBuffer.setPixel(x, scanlineY, color);
+                    frameBuffer.setPixel(x, y, color);
                 }
 
-                zBuffer[ (scanlineY*screenWidth) + x] = currZ;
+                zBuffer[ (y*screenWidth) + x] = sl_pos.z;
             }
-
-            currZ += zStep;
-
-            currU += uStep;
-            currV += vStep;
         }
 
-        curx1 -= invslope1;
-        curx2 -= invslope2;
-
-        curZLeft-=zStepLeft;
-        curZRight-=zStepRight;
-
-        currULeft -= uStepLeft;
-        currURight -= uStepRight;
-
-        currVLeft -= vStepLeft;
-        currVRight -= vStepRight;
+        sl_pos.z += sl_step.z;
+        sl_pos.u += sl_step.u;
+        sl_pos.v += sl_step.v;
     }
-}
-
-Vertex3d VoxelTerrain::TransformVertex(const Vertex3d* vertex)
-{
-    QVector3D p = transformMatrix * vertex->pos;
-
-    Vertex3d screenspace;
-
-    screenspace.pos = QVector3D
-    (
-        qRound((p.x() + 0.5) * screenWidth),
-        qRound(((0.0-p.y() + 0.5)) * screenHeight),
-        p.z()
-    );
-
-    screenspace.uv = vertex->uv;
-
-    return screenspace;
 }

@@ -55,12 +55,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     else if(event->key() == Qt::Key_Z)
     {
         if(vt.zAngle < 40)
-            vt.zAngle+=5;
+            vt.zAngle+=1;
     }
     else if(event->key() == Qt::Key_X)
     {
         if(vt.zAngle > -40)
-            vt.zAngle-=5;
+            vt.zAngle-=1;
     }
     else if(event->key() == Qt::Key_Q)
     {
@@ -69,6 +69,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     else if(event->key() == Qt::Key_W)
     {
         vt.cameraHeight--;
+    }
+
+    else if(event->key() == Qt::Key_Comma)
+    {
+        vt.heightScale-=10;
+    }
+    else if(event->key() == Qt::Key_Period)
+    {
+        vt.heightScale+=10;
     }
 }
 
