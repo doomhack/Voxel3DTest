@@ -27,7 +27,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
     QPainter p(this);
 
-    p.drawImage(this->rect(), vt.frameBuffer);
+    p.drawImage(this->rect(), vt.frameBufferImage);
 
     this->update();
 }

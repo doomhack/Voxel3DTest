@@ -2,37 +2,18 @@
 #include "voxelterrain.h"
 #include "object3d.h"
 
-float XFovtoYFov(float xfov, float aspect)
-{
-    xfov = qDegreesToRadians(xfov);
-    float yfov = 2.0 * qAtan(qTan(xfov * 0.5f) / aspect);
-
-    return qRadiansToDegrees(yfov);
-}
-
-float YFovtoXFov(float yfov, float aspect)
-{
-    yfov = qDegreesToRadians(yfov);
-    float xfov = 2.0 * qAtan(qTan(yfov * 0.5f) * aspect);
-
-    return qRadiansToDegrees(xfov);
-}
-
 int VoxelTerrain::fracToY(float frac)
 {
-    float y1 = frac;
-    y1 = y1 + 1.0;
+    float y = 1.0-((frac + 1.0) / 2.0);
 
-    y1 = y1 / 2;
-
-    y1 = 1.0-y1;
-
-    return qRound(y1 * screenHeight);
+    return qRound(y * screenHeight);
 }
 
 int VoxelTerrain::fracToX(float frac)
 {
-    return qRound(((frac + 1.0)/2.0) * screenWidth);
+    float x = (frac + 1.0) / 2.0;
+
+    return qRound(x * screenWidth);
 }
 
 VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
@@ -41,18 +22,22 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
     cameraAngle = 0;
     cameraHeight = 50;
 
-    frameBuffer = QImage(screenWidth, screenHeight, QImage::Format::Format_RGB888);
+    frameBufferImage = QImage(screenWidth, screenHeight, QImage::Format::Format_RGB32);
+    frameBuffer = (QRgb*)frameBufferImage.bits();
 
     heightMap.load(":/images/D1.png");
+    heightMap = heightMap.convertToFormat(QImage::Format::Format_Grayscale8);
+
 
     colorMap.load(":/images/C1W.png");
+    colorMap = colorMap.convertToFormat(QImage::Format::Format_ARGB32);
 
-    yBuffer.reserve(screenWidth);
+    zBuffer = new float[screenWidth * screenHeight];
 
-    zBuffer.resize(screenWidth * screenHeight);
+    zToY = new ZYMap[2048];
 
-    float aspect = (float)screenWidth/(float)screenHeight;
-    float vfov = XFovtoYFov(90.0, aspect);
+    //float aspect = (float)screenWidth/(float)screenHeight;
+    //float vfov = XFovtoYFov(90.0, aspect);
 
     //projectionMatrix.perspective(vfov, aspect, zNear, zFar);
 
@@ -88,13 +73,6 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
     rock->LoadFromFile(":/models/VRML/rock.obj", ":/models/VRML/rock.mtl");
     rock->pos.setY(-(128));
     objects.append(rock);
-
-    /*
-    Object3d* plane = new Object3d();
-    plane->LoadFromFile(":/models/VRML/plane.obj", ":/models/VRML/plane.mtl");
-    plane->pos.setY(-128);
-    objects.append(plane);
-    */
 }
 
 void VoxelTerrain::BeginFrame()
@@ -106,11 +84,10 @@ void VoxelTerrain::BeginFrame()
         viewHeight = qGray(heightMap.pixel(cameraPos.x(), cameraPos.y())) + cameraHeight - 128;
     }
 
-    frameBuffer.fill(Qt::cyan);
+    frameBufferImage.fill(Qt::cyan);
 
-    yBuffer.fill(screenHeight, screenWidth);
-
-    zBuffer.fill(1.0, screenWidth * screenHeight);
+    std::fill_n(zBuffer, screenWidth*screenHeight, 1.0);
+    std::fill_n(yBuffer, screenWidth, screenHeight);
 
 
     viewMatrix.setToIdentity();
@@ -125,8 +102,6 @@ void VoxelTerrain::BeginFrame()
 
 void VoxelTerrain::RecalculateZToY()
 {
-    zToY.clear();
-
     QMatrix4x4 zMatrix;
     zMatrix.rotate(-zAngle, QVector3D(1,0,0));
     zMatrix.translate(0.0, -viewHeight, 0.0);
@@ -135,7 +110,9 @@ void VoxelTerrain::RecalculateZToY()
 
     float zs = zStep;
 
-    for(int i = zNear; i <= zFar; i+= zs)
+    int j = 0;
+
+    for(float i = zNear; i <= zFar; i += zs)
     {
         QVector3D pt(0, -128, -i);
 
@@ -147,34 +124,35 @@ void VoxelTerrain::RecalculateZToY()
             int y = fracToY(pt.y());
 
             if(y >= 0)
-                zToY[i] = y;
+            {
+                zToY[j++] = {i,y};
+            }
         }
 
         zs += zStepD;
     }
+
+    zToY[j] = {0.0,0};
 }
 
 void VoxelTerrain::Render()
 {
     BeginFrame();
 
-    if(render3d)
-    {
-        Draw3d();
-        //return;
-    }
-
     float sinphi = qSin(cameraAngle);
     float cosphi = qCos(cameraAngle);
 
-    float z = zNear;
+    const QRgb* colorData = (const QRgb*)colorMap.constBits();
+    const quint8* heightData = (const quint8*)heightMap.constBits();
 
-    QList<float> zSteps = zToY.keys();
 
-    for(int w = 0; w < zSteps.length(); w++)
+    for(int w = 0; ; w++)
     {
-        z = zSteps[w];
-        int yPos = zToY[z];
+        float z = zToY[w].z;
+        int yPos = zToY[w].y;
+
+        if(z <= 0.0)
+            break;
 
         QPointF pleft = QPoint((-cosphi*z - sinphi*z) + cameraPos.x(), ( sinphi*z - cosphi*z) + cameraPos.y());
         QPointF pright = QPoint(( cosphi*z - sinphi*z) + cameraPos.x(), (-sinphi*z - cosphi*z) + cameraPos.y());
@@ -194,32 +172,33 @@ void VoxelTerrain::Render()
 
             if((pleft.x() < heightMap.width() && pleft.x() >= 0) && (pleft.y() < heightMap.height() && pleft.y() >= 0))
             {
+                const int pixelOffs = (int)pleft.y()*2048 + (int)pleft.x();
 
-                if(qAlpha(colorMap.pixel(pleft.x(),pleft.y())) == 255)
+                QRgb color = colorData[pixelOffs];
+
+                if(qAlpha(color) == 255)
                 {
-                    pointHeight = qGray(heightMap.pixel(pleft.x(), pleft.y()));
+                    pointHeight = heightData[pixelOffs];
 
-                    lineColor = colorMap.pixel(pleft.x(),pleft.y());
+                    lineColor = color;
                 }
             }
 
             int hDiff = qRound((pointHeight * invh));
 
-            int lineHeight = yPos - hDiff;
+            int lineTop = yPos - hDiff;
 
-            if(lineHeight < 0)
-                lineHeight = 0;
-            else if(lineHeight >= screenHeight)
-                lineHeight = screenHeight;
+            if(lineTop < 0)
+                lineTop = 0;
 
-            for(int y = lineHeight; y < yBuffer[i]; y++)
+            for(int y = lineTop; y < yBuffer[i]; y++)
             {
-                frameBuffer.setPixel(i, y, lineColor);
+                frameBuffer[y*screenWidth + i] = lineColor;
                 zBuffer[(y * screenWidth) + i] = zDepth;
             }
 
-            if (lineHeight < yBuffer[i])
-                yBuffer[i] = lineHeight;
+            if (lineTop < yBuffer[i])
+                yBuffer[i] = lineTop;
 
             pleft += QPointF(dx, dy);
         }
@@ -227,8 +206,7 @@ void VoxelTerrain::Render()
         z += zStep;
     }
 
-    if(render3d)
-        Draw3d();
+    Draw3d();
 }
 
 void VoxelTerrain::Draw3d()
@@ -272,19 +250,11 @@ Vertex3d VoxelTerrain::TransformVertex(const Vertex3d* vertex)
 
     Vertex3d screenspace;
 
-    float z = p.z();
-
-    if(z < 0.0)
-        z = 0;
-    else if(z > 1.0)
-        z = 1.0;
-
-
     screenspace.pos = QVector3D
     (
         fracToX(p.x()),
         fracToY(p.y()),
-        z
+        p.z()
     );
 
     screenspace.uv = vertex->uv;
@@ -586,11 +556,11 @@ void VoxelTerrain::DrawTriangleScanline(int y, TriEdgeTrace& pos, QImage* textur
                     tx = tx & (texture->width() - 1);
                     ty = ty & (texture->height() - 1);
 
-                    frameBuffer.setPixel(x, y, texture->pixel(tx, ty));
+                    frameBuffer[y*screenWidth + x] = texture->pixel(tx, ty);
                 }
                 else
                 {
-                    frameBuffer.setPixel(x, y, color);
+                    frameBuffer[y*screenWidth + x] = color;
                 }
 
                 zBuffer[ (y*screenWidth) + x] = sl_pos.z;

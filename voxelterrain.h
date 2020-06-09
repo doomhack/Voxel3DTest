@@ -21,6 +21,12 @@ typedef struct TriDrawPos
     float v;
 } TriDrawPos;
 
+typedef struct ZYMap
+{
+    float z;
+    int y;
+} ZYMap;
+
 class VoxelTerrain : public QObject
 {
     Q_OBJECT
@@ -50,23 +56,26 @@ public:
     int fracToY(float frac);
     int fracToX(float frac);
 
-    QImage frameBuffer;
+    QRgb* frameBuffer;
+
+    QImage frameBufferImage;
 
     QImage heightMap;
     QImage colorMap;
 
-
-    QVector<int> yBuffer;
-    QVector<float> zBuffer;
-    QMap<float, int> zToY;
-
-    const int screenWidth = 1360;
-    const int screenHeight = 720;
+    static const int screenWidth = 1360;
+    static const int screenHeight = 720;
 
     const float zNear = 1.0;
     const float zFar = 2048.0;
     const float zStep = 1.0;
     const float zStepD = 0.01;
+
+    ZYMap* zToY;
+    float* zBuffer;
+    int yBuffer[screenWidth];
+
+
 
     unsigned int heightScale = (0.75*((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
 
