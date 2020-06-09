@@ -18,6 +18,23 @@ float YFovtoXFov(float yfov, float aspect)
     return qRadiansToDegrees(xfov);
 }
 
+int VoxelTerrain::fracToY(float frac)
+{
+    float y1 = frac;
+    y1 = y1 + 1.0;
+
+    y1 = y1 / 2;
+
+    y1 = 1.0-y1;
+
+    return qRound(y1 * screenHeight);
+}
+
+int VoxelTerrain::fracToX(float frac)
+{
+    return qRound(((frac + 1.0)/2.0) * screenWidth);
+}
+
 VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
 {
     cameraPos = QPointF(1024,1024);
@@ -34,16 +51,50 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
 
     zBuffer.resize(screenWidth * screenHeight);
 
-    //projectionMatrix.perspective(80, 2.4, zNear, zFar);
     float aspect = (float)screenWidth/(float)screenHeight;
     float vfov = XFovtoYFov(90.0, aspect);
 
-    projectionMatrix.perspective(vfov, aspect, zNear, zFar);
+    //projectionMatrix.perspective(vfov, aspect, zNear, zFar);
+
+    projectionMatrix.perspective(56, 1.9, zNear, zFar);
+
 
     Object3d* airport = new Object3d();
     airport->LoadFromFile(":/models/VRML/airport.obj", ":/models/VRML/airport.mtl");
-    airport->pos.setY(-128);
+    airport->pos.setY(-(128));
     objects.append(airport);
+
+    Object3d* church = new Object3d();
+    church->LoadFromFile(":/models/VRML/church.obj", ":/models/VRML/church.mtl");
+    church->pos.setY(-(128));
+    objects.append(church);
+
+    Object3d* hotel = new Object3d();
+    hotel->LoadFromFile(":/models/VRML/hotel.obj", ":/models/VRML/hotel.mtl");
+    hotel->pos.setY(-(128));
+    objects.append(hotel);
+
+    Object3d* vilage = new Object3d();
+    vilage->LoadFromFile(":/models/VRML/vilage.obj", ":/models/VRML/vilage.mtl");
+    vilage->pos.setY(-(128));
+    objects.append(vilage);
+
+    Object3d* funfair = new Object3d();
+    funfair->LoadFromFile(":/models/VRML/funfair.obj", ":/models/VRML/funfair.mtl");
+    funfair->pos.setY(-(128));
+    objects.append(funfair);
+
+    Object3d* rock = new Object3d();
+    rock->LoadFromFile(":/models/VRML/rock.obj", ":/models/VRML/rock.mtl");
+    rock->pos.setY(-(128));
+    objects.append(rock);
+
+    /*
+    Object3d* plane = new Object3d();
+    plane->LoadFromFile(":/models/VRML/plane.obj", ":/models/VRML/plane.mtl");
+    plane->pos.setY(-128);
+    objects.append(plane);
+    */
 }
 
 void VoxelTerrain::BeginFrame()
@@ -66,31 +117,70 @@ void VoxelTerrain::BeginFrame()
     viewMatrix.rotate(-zAngle, QVector3D(1,0,0));
     viewMatrix.rotate(qRadiansToDegrees(-cameraAngle), QVector3D(0,1,0));
     viewMatrix.translate(-cameraPos.x(), -viewHeight, -cameraPos.y());
+
+    viewProjectionMatrix = projectionMatrix * viewMatrix;
+
+    RecalculateZToY();
+}
+
+void VoxelTerrain::RecalculateZToY()
+{
+    zToY.clear();
+
+    QMatrix4x4 zMatrix;
+    zMatrix.rotate(-zAngle, QVector3D(1,0,0));
+    zMatrix.translate(0.0, -viewHeight, 0.0);
+
+    zMatrix = projectionMatrix * zMatrix;
+
+    float zs = zStep;
+
+    for(int i = zNear; i <= zFar; i+= zs)
+    {
+        QVector3D pt(0, -128, -i);
+
+        pt = zMatrix * pt;
+
+
+        if(pt.z() > 0.0 && pt.z() < 1.0)
+        {
+            int y = fracToY(pt.y());
+
+            if(y >= 0)
+                zToY[i] = y;
+        }
+
+        zs += zStepD;
+    }
 }
 
 void VoxelTerrain::Render()
 {
     BeginFrame();
 
-    float horizonPos = 2048 * qTan(qDegreesToRadians(zAngle));
-    float maxPos = 2048 * qTan(qDegreesToRadians(40.0));
-
-    horizonPos = (screenHeight / 2) + ((horizonPos / maxPos) * (screenHeight / 2));
+    if(render3d)
+    {
+        Draw3d();
+        //return;
+    }
 
     float sinphi = qSin(cameraAngle);
     float cosphi = qCos(cameraAngle);
 
-    float dz = 0.01;
     float z = zNear;
 
+    QList<float> zSteps = zToY.keys();
 
-    while(z < zFar)
+    for(int w = 0; w < zSteps.length(); w++)
     {
+        z = zSteps[w];
+        int yPos = zToY[z];
+
         QPointF pleft = QPoint((-cosphi*z - sinphi*z) + cameraPos.x(), ( sinphi*z - cosphi*z) + cameraPos.y());
         QPointF pright = QPoint(( cosphi*z - sinphi*z) + cameraPos.x(), (-sinphi*z - cosphi*z) + cameraPos.y());
 
-        float dx = (pright.x() - pleft.x()) / screenWidth;
-        float dy = (pright.y() - pleft.y()) / screenWidth;
+        float dx = (pright.x() - pleft.x()) / (float)screenWidth;
+        float dy = (pright.y() - pleft.y()) / (float)screenWidth;
 
         float invz = (1.0 / z);
         float invh = invz * heightScale;
@@ -99,7 +189,7 @@ void VoxelTerrain::Render()
 
         for(int i = 0; i < screenWidth; i++)
         {
-            float pointHeight = -128;
+            float pointHeight = 0;
             QRgb lineColor = qRgb(0,0,128);
 
             if((pleft.x() < heightMap.width() && pleft.x() >= 0) && (pleft.y() < heightMap.height() && pleft.y() >= 0))
@@ -107,13 +197,15 @@ void VoxelTerrain::Render()
 
                 if(qAlpha(colorMap.pixel(pleft.x(),pleft.y())) == 255)
                 {
-                    pointHeight = qGray(heightMap.pixel(pleft.x(), pleft.y())) - 128;
+                    pointHeight = qGray(heightMap.pixel(pleft.x(), pleft.y()));
 
                     lineColor = colorMap.pixel(pleft.x(),pleft.y());
                 }
             }
 
-            int lineHeight = (((viewHeight - pointHeight) * invh) + (int)horizonPos);
+            int hDiff = qRound((pointHeight * invh));
+
+            int lineHeight = yPos - hDiff;
 
             if(lineHeight < 0)
                 lineHeight = 0;
@@ -132,11 +224,11 @@ void VoxelTerrain::Render()
             pleft += QPointF(dx, dy);
         }
 
-        z += dz;
-        dz += 0.01;
+        z += zStep;
     }
 
-    Draw3d();
+    if(render3d)
+        Draw3d();
 }
 
 void VoxelTerrain::Draw3d()
@@ -152,10 +244,9 @@ void VoxelTerrain::Draw3d()
 void VoxelTerrain::DrawObject(const Object3d* obj)
 {
     modelMatrix.setToIdentity();
-
     modelMatrix.translate(obj->pos);
 
-    transformMatrix = projectionMatrix * viewMatrix * modelMatrix;
+    transformMatrix = viewProjectionMatrix * modelMatrix;
 
     for(int i = 0; i < obj->mesh.length(); i++)
     {
@@ -188,10 +279,11 @@ Vertex3d VoxelTerrain::TransformVertex(const Vertex3d* vertex)
     else if(z > 1.0)
         z = 1.0;
 
+
     screenspace.pos = QVector3D
     (
-        qRound((p.x() + 0.5) * screenWidth),
-        qRound(((0.0-p.y() + 0.5)) * screenHeight),
+        fracToX(p.x()),
+        fracToY(p.y()),
         z
     );
 
@@ -237,9 +329,9 @@ bool VoxelTerrain::IsTriangleOnScreen(Vertex3d screenSpacePoints[3])
 {
 
     if  (
-            ((screenSpacePoints[0].pos.z() >= 1) || (screenSpacePoints[0].pos.z() < 0)) ||
-            ((screenSpacePoints[1].pos.z() >= 1) || (screenSpacePoints[1].pos.z() < 0)) ||
-            ((screenSpacePoints[2].pos.z() >= 1) || (screenSpacePoints[2].pos.z() < 0))
+            ((screenSpacePoints[0].pos.z() >= 1) || (screenSpacePoints[0].pos.z() <= 0)) ||
+            ((screenSpacePoints[1].pos.z() >= 1) || (screenSpacePoints[1].pos.z() <= 0)) ||
+            ((screenSpacePoints[2].pos.z() >= 1) || (screenSpacePoints[2].pos.z() <= 0))
          )
         return false;
 

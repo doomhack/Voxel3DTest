@@ -1,7 +1,7 @@
 # Blender MTL File: 'untitled.blend'
 # Material Count: 6
 
-newmtl Material.016_7A84DFFD_c.bmp.005
+newmtl Material.016_7A84DFFD_c.bmp.004
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.681250 0.681250 0.681250
@@ -12,7 +12,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\7A84DFFD_c.bmp
 
-newmtl Material.028_3A2F9995_c.bmp.005
+newmtl Material.028_3A2F9995_c.bmp.004
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.534375 0.640625 0.715625
@@ -23,7 +23,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\3A2F9995_c.bmp
 
-newmtl Material.029_7EAC18DF_c.bmp.005
+newmtl Material.029_7EAC18DF_c.bmp.004
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.537500 0.537500 0.537500
@@ -34,7 +34,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\7EAC18DF_c.bmp
 
-newmtl Material.030_31495C83_c.bmp.005
+newmtl Material.030_31495C83_c.bmp.004
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -45,7 +45,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\31495C83_c.bmp
 
-newmtl Material.031_7A84DFFD_c.bmp.005
+newmtl Material.031_7A84DFFD_c.bmp.004
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.584375 0.559375 0.531250
@@ -56,7 +56,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\7A84DFFD_c.bmp
 
-newmtl Material.032_25D16425_c.bmp.005
+newmtl Material.032_25D16425_c.bmp.004
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.584375 0.559375 0.531250

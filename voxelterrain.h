@@ -31,6 +31,7 @@ public:
     void Draw3d();
 
     void BeginFrame();
+    void RecalculateZToY();
 
     void DrawObject(const Object3d* object);
     void DrawMesh(const Mesh3d* mesh);
@@ -46,6 +47,9 @@ public:
     bool IsTriangleOnScreen(Vertex3d screenSpacePoints[3]);
     void DrawTriangleScanline(int y, TriEdgeTrace& pos, QImage* texture, QRgb color);
 
+    int fracToY(float frac);
+    int fracToX(float frac);
+
     QImage frameBuffer;
 
     QImage heightMap;
@@ -54,12 +58,15 @@ public:
 
     QVector<int> yBuffer;
     QVector<float> zBuffer;
+    QMap<float, int> zToY;
 
     const int screenWidth = 1360;
     const int screenHeight = 720;
 
     const float zNear = 1.0;
     const float zFar = 2048.0;
+    const float zStep = 1.0;
+    const float zStepD = 0.01;
 
     unsigned int heightScale = (0.75*((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
 
@@ -76,7 +83,13 @@ public:
     QMatrix4x4 viewMatrix;
     QMatrix4x4 projectionMatrix;
     QMatrix4x4 modelMatrix;
-    QMatrix4x4 transformMatrix;    
+
+    QMatrix4x4 viewProjectionMatrix; //P*V
+
+    QMatrix4x4 transformMatrix; //P*V*M
+
+    bool render3d;
+
 private:
 
 

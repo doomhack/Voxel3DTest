@@ -47,8 +47,8 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
         if(elements[0] == "Kd")
         {
             float r = qRound(elements[1].toFloat() * 255);
-            float g = qRound(elements[1].toFloat() * 255);
-            float b = qRound(elements[1].toFloat() * 255);
+            float g = qRound(elements[2].toFloat() * 255);
+            float b = qRound(elements[3].toFloat() * 255);
 
             if(currMtlName.length())
             {

@@ -6,6 +6,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+
+    this->resize(1360, 720);
     this->update();
 }
 
@@ -79,6 +81,11 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     {
         vt.heightScale+=10;
     }
+    else if(event->key() == Qt::Key_V)
+    {
+        vt.render3d = !vt.render3d;
+    }
+
 }
 
 
