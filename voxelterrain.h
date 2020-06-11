@@ -98,7 +98,7 @@ public:
 
     float zAngle = 0;
 
-    F3D::V2F cameraPos;
+    F3D::V2FP cameraPos;
     float cameraAngle;
     float cameraHeight;
 

@@ -45,13 +45,13 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     }
     else if(event->key() == Qt::Key_Up)
     {
-        F3D::V2F d(-(qSin(vt.cameraAngle) *10), -(qCos(vt.cameraAngle) *10));
+        F3D::V2FP d((float)-(qSin(vt.cameraAngle) *10), (float)-(qCos(vt.cameraAngle) *10));
 
         vt.cameraPos += d;
     }
     else if(event->key() == Qt::Key_Down)
     {
-        F3D::V2F d(-(qSin(vt.cameraAngle) *10), -(qCos(vt.cameraAngle) *10));
+        F3D::V2FP d((float)-(qSin(vt.cameraAngle) *10), (float)-(qCos(vt.cameraAngle) *10));
 
         vt.cameraPos -= d;
     }

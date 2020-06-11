@@ -11,7 +11,7 @@ class Vertex3d
 {
 public:
     F3D::V3F pos;
-    F3D::V2F uv;
+    F3D::V2FP uv;
 };
 
 class Triangle3d

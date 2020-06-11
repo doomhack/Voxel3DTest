@@ -20,7 +20,7 @@ int VoxelTerrain::fracToX(float frac)
 
 VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
 {
-    cameraPos = F3D::V2F(mapSize/2,mapSize/2);
+    cameraPos = F3D::V2FP(mapSize/2,mapSize/2);
     cameraAngle = 0;
     cameraHeight = 50;
 
@@ -67,6 +67,23 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
     Object3d* rock = new Object3d();
     rock->LoadFromFile(":/models/VRML/rock.obj", ":/models/VRML/rock.mtl");
     objects.append(rock);
+
+    F3D::FP c = 10;
+    F3D::FP d = 20;
+    F3D::FP e = d - c;
+
+    qDebug() << e.i();
+
+    e += c;
+    qDebug() << e.i();
+
+    e -= 10;
+    qDebug() << e.i();
+
+    c = e - d;
+    int f = c;
+
+    qDebug() << f;
 }
 
 void VoxelTerrain::BeginFrame()
@@ -90,7 +107,7 @@ void VoxelTerrain::BeginFrame()
     viewMatrix.setToIdentity();
     viewMatrix.rotate(-zAngle, 1,0,0);
     viewMatrix.rotate(qRadiansToDegrees(-cameraAngle), 0,1,0);
-    viewMatrix.translate(F3D::V3F(-cameraPos.x, -viewHeight, -cameraPos.y));
+    viewMatrix.translate(F3D::V3F(-cameraPos.x.f(), -viewHeight, -cameraPos.y.f()));
 
     viewProjectionMatrix = projectionMatrix * viewMatrix;
 }
@@ -106,8 +123,8 @@ void VoxelTerrain::Render()
 
     for(float z = zNear; z < zFar; z += cZstep, cZstep += zStepD)
     {
-        F3D::V2F pleft = F3D::V2F((-cosphi*z - sinphi*z) + cameraPos.x, ( sinphi*z - cosphi*z) + cameraPos.y);
-        F3D::V2F pright = F3D::V2F(( cosphi*z - sinphi*z) + cameraPos.x, (-sinphi*z - cosphi*z) + cameraPos.y);
+        F3D::V2FP pleft = F3D::V2FP((-cosphi*z - sinphi*z) + cameraPos.x.f(), ( sinphi*z - cosphi*z) + cameraPos.y.f());
+        F3D::V2FP pright = F3D::V2FP(( cosphi*z - sinphi*z) + cameraPos.x.f(), (-sinphi*z - cosphi*z) + cameraPos.y.f());
 
         float dx = (pright.x - pleft.x) / (float)screenWidth;
         float dy = (pright.y - pleft.y) / (float)screenWidth;
@@ -156,7 +173,7 @@ void VoxelTerrain::Render()
             if (lineTop < yBuffer[i])
                 yBuffer[i] = lineTop;
 
-            pleft += F3D::V2F(dx, dy);
+            pleft += F3D::V2FP(dx, dy);
         }
     }
 
@@ -322,14 +339,14 @@ void VoxelTerrain::DrawTransformedTriangle(Vertex3d points[3], Texture* texture)
         float v4z = points[0].pos.z + (splitFrac * (points[2].pos.z - points[0].pos.z));
 
         //uv coords.
-        float v4u = points[0].uv.x + (splitFrac * (points[2].uv.x - points[0].uv.x));
-        float v4v = points[0].uv.y + (splitFrac * (points[2].uv.y - points[0].uv.y));
+        float v4u = points[0].uv.x + (splitFrac * (points[2].uv.x.f() - points[0].uv.x.f()));
+        float v4v = points[0].uv.y + (splitFrac * (points[2].uv.y.f() - points[0].uv.y.f()));
 
         Vertex3d triangle[4];
 
         Vertex3d p4;
         p4.pos = F3D::V3F(v4x, points[1].pos.y, v4z);
-        p4.uv = F3D::V2F(v4u, v4v);
+        p4.uv = F3D::V2FP(v4u, v4v);
 
         triangle[0] = points[0];
         triangle[1] = points[1];

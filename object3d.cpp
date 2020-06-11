@@ -92,7 +92,7 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
     QStringList lines = objFileText.split("\n");
 
     QList<F3D::V3F> vertexes;
-    QList<F3D::V2F> uvs;
+    QList<F3D::V2FP> uvs;
 
 
     Mesh3d* currentMesh = new Mesh3d();
@@ -124,7 +124,7 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
             float u = elements[1].toFloat();
             float v = elements[2].toFloat();
 
-            uvs.append(F3D::V2F(u, v));
+            uvs.append(F3D::V2FP(u, v));
         }
 
         //Face
