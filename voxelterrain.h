@@ -37,21 +37,29 @@ public:
     void Draw3d();
 
     void BeginFrame();
-    void RecalculateZToY();
 
     void DrawObject(const Object3d* object);
     void DrawMesh(const Mesh3d* mesh);
-    void DrawTriangle(const Triangle3d* tri, QImage* texture, QRgb color);
-    void DrawTransformedTriangle(Vertex3d points[], QImage* texture, QRgb color);
-    void DrawTriangleTop(Vertex3d points[3], QImage* texture, QRgb color);
-    void DrawTriangleBottom(Vertex3d points[3], QImage* texture, QRgb color);
+    void DrawTriangle(const Triangle3d* tri, Texture *texture, QRgb color);
+
+    void DrawTransformedTriangle(Vertex3d points[], Texture* texture);
+    void DrawTriangleTop(Vertex3d points[3], Texture* texture);
+    void DrawTriangleBottom(Vertex3d points[3], Texture* texture);
+
+    void DrawTransformedTriangle(Vertex3d points[], QRgb color);
+    void DrawTriangleTop(Vertex3d points[3], QRgb color);
+    void DrawTriangleBottom(Vertex3d points[3], QRgb color);
+
+    void DrawTriangleScanline(int y, TriEdgeTrace& pos, Texture* texture);
+    void DrawTriangleScanline(int y, TriEdgeTrace& pos, QRgb color);
+
 
     void SortPointsByY(Vertex3d points[3]);
 
     Vertex3d TransformVertex(const Vertex3d* vertex);
     bool IsTriangleFrontface(Vertex3d screenSpacePoints[3]);
     bool IsTriangleOnScreen(Vertex3d screenSpacePoints[3]);
-    void DrawTriangleScanline(int y, TriEdgeTrace& pos, QImage* texture, QRgb color);
+    void DrawTriangleScanline(int y, TriEdgeTrace& pos, Texture* texture, QRgb color);
 
     int fracToY(float frac);
     int fracToX(float frac);
@@ -60,24 +68,31 @@ public:
 
     QImage frameBufferImage;
 
-    QImage heightMap;
-    QImage colorMap;
+    QImage heightMapImage;
+    QImage colorMapImage;
+
+    const QRgb* colorMap;
+    const quint8* heightMap;
 
     static const int screenWidth = 1360;
     static const int screenHeight = 720;
+
+    const int mapSize = 2048;
 
     const float zNear = 1.0;
     const float zFar = 2048.0;
     const float zStep = 1.0;
     const float zStepD = 0.01;
 
-    ZYMap* zToY;
     float* zBuffer;
     int yBuffer[screenWidth];
 
 
 
-    unsigned int heightScale = (0.75*((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
+    const float heightScale = (0.82*((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
+    const float yScale = ((float)screenWidth * ((float)screenHeight/(float)screenWidth));
+
+
 
     float zAngle = 0;
 
@@ -96,8 +111,6 @@ public:
     QMatrix4x4 viewProjectionMatrix; //P*V
 
     QMatrix4x4 transformMatrix; //P*V*M
-
-    bool render3d;
 
 private:
 

@@ -73,19 +73,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         vt.cameraHeight--;
     }
 
-    else if(event->key() == Qt::Key_Comma)
-    {
-        vt.heightScale-=10;
-    }
-    else if(event->key() == Qt::Key_Period)
-    {
-        vt.heightScale+=10;
-    }
-    else if(event->key() == Qt::Key_V)
-    {
-        vt.render3d = !vt.render3d;
-    }
-
 }
 
 

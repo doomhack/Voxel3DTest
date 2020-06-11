@@ -26,7 +26,7 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
 
     QString currMtlName;
 
-    QMap<QString, QImage*> textureMap;
+    QMap<QString, Texture*> textureMap;
     QMap<QString, QRgb> textureColors;
 
 
@@ -65,12 +65,19 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
 
             if(currMtlName.length())
             {
-                QImage* image = new QImage();
+                Texture* t = new Texture();
 
-                image->load(":/models/VRML/" + lastBit);
+                t->texture = new QImage(":/models/VRML/" + lastBit);
 
-                if(!image->isNull())
-                    textureMap[currMtlName] = image;
+                if(!t->texture->isNull())
+                {
+                    textureMap[currMtlName] = t;
+                    t->width = t->texture->width();
+                    t->height = t->texture->height();
+
+                    t->pixels = (const QRgb*)t->texture->constBits();
+                }
+
 
                 currMtlName.clear();
             }

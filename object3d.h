@@ -18,21 +18,30 @@ public:
     Vertex3d verts[3];
 };
 
+class Texture
+{
+public:
+    QImage* texture;
+
+    const QRgb* pixels;
+    unsigned int width;
+    unsigned int height;
+};
+
 class Mesh3d
 {
 public:
     QRgb color;
-    QImage* texture;
+    Texture* texture;
 
-    QList<Triangle3d> tris;
+    QVector<Triangle3d> tris;
 };
-
 
 class Object3d
 {
 public:
     QVector3D pos;
-    QList<Mesh3d*> mesh;
+    QVector<Mesh3d*> mesh;
 
     bool LoadFromFile(QString objFile, QString mtlFile);
 };
