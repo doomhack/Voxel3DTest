@@ -4,6 +4,8 @@
 #include <QtCore>
 #include <QImage>
 
+#include "3dmaths/f3dmath.h"
+
 #include "object3d.h"
 
 typedef struct TriEdgeTrace
@@ -96,7 +98,7 @@ public:
 
     float zAngle = 0;
 
-    QPointF cameraPos;
+    F3D::V2F cameraPos;
     float cameraAngle;
     float cameraHeight;
 
@@ -104,13 +106,13 @@ public:
 
     QList<Object3d*> objects;
 
-    QMatrix4x4 viewMatrix;
-    QMatrix4x4 projectionMatrix;
-    QMatrix4x4 modelMatrix;
+    F3D::M4F viewMatrix;
+    F3D::M4F projectionMatrix;
+    F3D::M4F modelMatrix;
 
-    QMatrix4x4 viewProjectionMatrix; //P*V
+    F3D::M4F viewProjectionMatrix; //P*V
 
-    QMatrix4x4 transformMatrix; //P*V*M
+    F3D::M4F transformMatrix; //P*V*M
 
 private:
 

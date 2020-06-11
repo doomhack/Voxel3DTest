@@ -3,8 +3,8 @@
 
 bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
 {
-    this->pos.setX(1024);
-    this->pos.setZ(1024);
+    this->pos.x = 1024;
+    this->pos.z = 1024;
 
     QFile f(objFile);
 
@@ -91,8 +91,8 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
 
     QStringList lines = objFileText.split("\n");
 
-    QList<QVector3D> vertexes;
-    QList<QVector2D> uvs;
+    QList<F3D::V3F> vertexes;
+    QList<F3D::V2F> uvs;
 
 
     Mesh3d* currentMesh = new Mesh3d();
@@ -116,7 +116,7 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
             float y = elements[2].toFloat();
             float z = elements[3].toFloat();
 
-            vertexes.append(QVector3D(x, y, z));
+            vertexes.append(F3D::V3F(x, y, z));
         }
 
         if(elements[0] == "vt")
@@ -124,7 +124,7 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
             float u = elements[1].toFloat();
             float v = elements[2].toFloat();
 
-            uvs.append(QVector2D(u, v));
+            uvs.append(F3D::V2F(u, v));
         }
 
         //Face

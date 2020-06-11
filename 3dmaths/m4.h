@@ -1,7 +1,6 @@
 #ifndef M4_H
 #define M4_H
 
-#include <cmath>
 
 #include "v3.h"
 
@@ -71,6 +70,91 @@ public:
         m[3][1] -= other.m[3][1];
         m[3][2] -= other.m[3][2];
         m[3][3] -= other.m[3][3];
+        return *this;
+    }
+
+    M4& operator*=(const M4& other)
+    {
+        T m0, m1, m2;
+        m0 = m[0][0] * other.m[0][0]
+                + m[1][0] * other.m[0][1]
+                + m[2][0] * other.m[0][2]
+                + m[3][0] * other.m[0][3];
+        m1 = m[0][0] * other.m[1][0]
+                + m[1][0] * other.m[1][1]
+                + m[2][0] * other.m[1][2]
+                + m[3][0] * other.m[1][3];
+        m2 = m[0][0] * other.m[2][0]
+                + m[1][0] * other.m[2][1]
+                + m[2][0] * other.m[2][2]
+                + m[3][0] * other.m[2][3];
+        m[3][0] = m[0][0] * other.m[3][0]
+                + m[1][0] * other.m[3][1]
+                + m[2][0] * other.m[3][2]
+                + m[3][0] * other.m[3][3];
+        m[0][0] = m0;
+        m[1][0] = m1;
+        m[2][0] = m2;
+
+        m0 = m[0][1] * other.m[0][0]
+                + m[1][1] * other.m[0][1]
+                + m[2][1] * other.m[0][2]
+                + m[3][1] * other.m[0][3];
+        m1 = m[0][1] * other.m[1][0]
+                + m[1][1] * other.m[1][1]
+                + m[2][1] * other.m[1][2]
+                + m[3][1] * other.m[1][3];
+        m2 = m[0][1] * other.m[2][0]
+                + m[1][1] * other.m[2][1]
+                + m[2][1] * other.m[2][2]
+                + m[3][1] * other.m[2][3];
+        m[3][1] = m[0][1] * other.m[3][0]
+                + m[1][1] * other.m[3][1]
+                + m[2][1] * other.m[3][2]
+                + m[3][1] * other.m[3][3];
+        m[0][1] = m0;
+        m[1][1] = m1;
+        m[2][1] = m2;
+
+        m0 = m[0][2] * other.m[0][0]
+                + m[1][2] * other.m[0][1]
+                + m[2][2] * other.m[0][2]
+                + m[3][2] * other.m[0][3];
+        m1 = m[0][2] * other.m[1][0]
+                + m[1][2] * other.m[1][1]
+                + m[2][2] * other.m[1][2]
+                + m[3][2] * other.m[1][3];
+        m2 = m[0][2] * other.m[2][0]
+                + m[1][2] * other.m[2][1]
+                + m[2][2] * other.m[2][2]
+                + m[3][2] * other.m[2][3];
+        m[3][2] = m[0][2] * other.m[3][0]
+                + m[1][2] * other.m[3][1]
+                + m[2][2] * other.m[3][2]
+                + m[3][2] * other.m[3][3];
+        m[0][2] = m0;
+        m[1][2] = m1;
+        m[2][2] = m2;
+
+        m0 = m[0][3] * other.m[0][0]
+                + m[1][3] * other.m[0][1]
+                + m[2][3] * other.m[0][2]
+                + m[3][3] * other.m[0][3];
+        m1 = m[0][3] * other.m[1][0]
+                + m[1][3] * other.m[1][1]
+                + m[2][3] * other.m[1][2]
+                + m[3][3] * other.m[1][3];
+        m2 = m[0][3] * other.m[2][0]
+                + m[1][3] * other.m[2][1]
+                + m[2][3] * other.m[2][2]
+                + m[3][3] * other.m[2][3];
+        m[3][3] = m[0][3] * other.m[3][0]
+                + m[1][3] * other.m[3][1]
+                + m[2][3] * other.m[3][2]
+                + m[3][3] * other.m[3][3];
+        m[0][3] = m0;
+        m[1][3] = m1;
+        m[2][3] = m2;
         return *this;
     }
 
@@ -210,7 +294,7 @@ public:
         }
         else
         {
-            T a = D2R(angle);
+            T a = d2r(angle);
             c = std::cos(a);
             s = std::sin(a);
 
@@ -279,7 +363,7 @@ public:
         z = (z / len);
 
         T ic = 1 - c;
-        M4 rot(1); // The "1" says to not load the identity.
+        M4 rot; // The "1" says to not load the identity.
         rot.m[0][0] = x * x * ic + c;
         rot.m[1][0] = x * y * ic - z * s;
         rot.m[2][0] = x * z * ic + y * s;

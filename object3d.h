@@ -5,11 +5,13 @@
 #include <QtMath>
 #include <QtGui>
 
+#include "3dmaths/f3dmath.h"
+
 class Vertex3d
 {
 public:
-    QVector3D pos;
-    QVector2D uv;
+    F3D::V3F pos;
+    F3D::V2F uv;
 };
 
 class Triangle3d
@@ -40,7 +42,7 @@ public:
 class Object3d
 {
 public:
-    QVector3D pos;
+    F3D::V3F pos;
     QVector<Mesh3d*> mesh;
 
     bool LoadFromFile(QString objFile, QString mtlFile);
