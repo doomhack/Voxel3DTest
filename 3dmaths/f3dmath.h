@@ -7,7 +7,7 @@ namespace F3D
 {
     #include "fp.h"
     #include "v3.h"
-    #include "V2.h"
+    #include "v2.h"
     #include "m4.h"
 }
 

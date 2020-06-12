@@ -1,6 +1,11 @@
 #ifndef FP_H
 #define FP_H
 
+#include <stdio.h>
+#include <limits>
+
+//#define OVERFLOW_CHECK
+
 class FP
 {
 public:
@@ -19,20 +24,84 @@ public:
     static FP fromFPInt(const int r)    {FP v; v.n = r; return v;}
     int toFPInt()                       {return n;}
 
-    FP& operator=(const int r)          {n = (r << fracbits);   return *this;}
-    FP& operator=(const float r)        {n = (int)(r * one);    return *this;}
+    int intMul(int r)                   {return ((long long int)n * r) >> fracbits;}
+
+    static int max()
+    {
+        return std::numeric_limits<short>::max();
+    }
+
+    static int min()
+    {
+        return std::numeric_limits<short>::min();
+    }
+
+    FP& operator=(const int r)
+    {
+#ifdef OVERFLOW_CHECK
+
+        if(r < min() || r > max())
+        {
+            printf("int assign oveflow: %d\n", r);
+        }
+#endif
+        n = (r << fracbits);   return *this;
+    }
+
+    FP& operator=(const float r)
+    {
+#ifdef OVERFLOW_CHECK
+
+        if(r < min() || r > max())
+        {
+            printf("float assign oveflow: %f\n", r);
+        }
+#endif
+
+        n = (int)(r * one);    return *this;
+    }
 
     //Addition
     FP operator+(const FP& r)           {FP v(r);   return v+=*this;}
     FP operator+(const int r)           {FP v(r);   return v+=*this;}
     FP operator+(const float r)         {FP v(r);   return v+=*this;}
 
-    FP& operator+=(const FP& r)         {n += r.n;  return *this;}
+    FP& operator+=(const FP& r)
+    {
+#ifdef OVERFLOW_CHECK
+
+        long long int tmp = r.n + n;
+
+        if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
+        {
+            printf("Addition oveflow: %d + %d = %d\n", r.i(), this->i(), r.i() + this->i());
+        }
+#endif
+
+        n += r.n;  return *this;
+    }
+
     FP& operator+=(const int r)         {return *this+=FP(r);}
     FP& operator+=(const float r)       {return *this+=FP(r);}
 
     //Subtraction
-    FP operator-(const FP& r)           {FP v(r); v.n = n - v.n;  return v;}
+    FP operator-(const FP& r)
+    {
+
+#ifdef OVERFLOW_CHECK
+
+        long long int tmp = n - r.n;
+
+        if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
+        {
+            printf("Subtraction oveflow: %d - %d = %d\n", this->i(), r.i(), r.i() + this->i());
+        }
+#endif
+
+        FP v(r); v.n = n - v.n;  return v;
+    }
+
+
     FP operator-(const int r)           {FP v(r); return *this-v;}
     FP operator-(const float r)         {FP v(r); return *this-v;}
 
@@ -41,12 +110,29 @@ public:
     FP& operator-=(const int& r)        {return *this-=FP(r);}
     FP& operator-=(const float& r)      {return *this-=FP(r);}
 
+    FP operator-()                     {FP r; r.n = -n; return r;}
+
     //Multiply
     FP operator*(const FP& r)           {FP v(r);   return v*=*this;}
     FP operator*(const int r)           {FP v(r);   return v*=*this;}
     FP operator*(const float r)         {FP v(r);   return v*=*this;}
 
-    FP& operator*=(const FP& r)         {n = (int)(((long long int)n * r.n) >> fracbits);   return *this;}
+    FP& operator*=(const FP& r)
+    {
+        long long int tmp = (((long long int)n * r.n) >> fracbits);
+
+#ifdef OVERFLOW_CHECK
+
+        if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
+        {
+            printf("Multiply oveflow: %d * %d = %d\n", r.i(), this->i(), r.i() * this->i());
+        }
+#endif
+
+        n = (int)tmp;
+        return *this;
+    }
+
     FP& operator*=(const int& r)        {return *this*=FP(r);}
     FP& operator*=(const float& r)      {return *this*=FP(r);}
 

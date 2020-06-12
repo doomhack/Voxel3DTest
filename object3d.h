@@ -10,7 +10,7 @@
 class Vertex3d
 {
 public:
-    F3D::V3F pos;
+    F3D::V3FP pos;
     F3D::V2FP uv;
 };
 
@@ -42,7 +42,7 @@ public:
 class Object3d
 {
 public:
-    F3D::V3F pos;
+    F3D::V3FP pos;
     QVector<Mesh3d*> mesh;
 
     bool LoadFromFile(QString objFile, QString mtlFile);

@@ -91,7 +91,7 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
 
     QStringList lines = objFileText.split("\n");
 
-    QList<F3D::V3F> vertexes;
+    QList<F3D::V3FP> vertexes;
     QList<F3D::V2FP> uvs;
 
 
@@ -112,11 +112,11 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
         //Vertex
         if(elements[0] == "v")
         {
-            float x = elements[1].toFloat();
-            float y = elements[2].toFloat();
-            float z = elements[3].toFloat();
+            F3D::FP x = elements[1].toFloat();
+            F3D::FP y = elements[2].toFloat();
+            F3D::FP z = elements[3].toFloat();
 
-            vertexes.append(F3D::V3F(x, y, z));
+            vertexes.append(F3D::V3FP(x, y, z));
         }
 
         if(elements[0] == "vt")

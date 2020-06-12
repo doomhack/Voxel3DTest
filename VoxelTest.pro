@@ -24,10 +24,10 @@ SOURCES += \
 
 HEADERS += \
     3dmaths.h \
-    3dmaths/V2.h \
     3dmaths/f3dmath.h \
     3dmaths/fp.h \
     3dmaths/m4.h \
+    3dmaths/v2.h \
     3dmaths/v3.h \
     mainwindow.h \
     object3d.h \

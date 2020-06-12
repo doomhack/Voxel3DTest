@@ -10,24 +10,18 @@
 
 typedef struct TriEdgeTrace
 {
-    float x_left, x_right;
-    float z_left, z_right;
-    float u_left, u_right;
-    float v_left, v_right;
+    F3D::FP x_left, x_right;
+    F3D::FP z_left, z_right;
+    F3D::FP u_left, u_right;
+    F3D::FP v_left, v_right;
 } TriDrawState;
 
 typedef struct TriDrawPos
 {
-    float z;
-    float u;
-    float v;
+    F3D::FP z;
+    F3D::FP u;
+    F3D::FP v;
 } TriDrawPos;
-
-typedef struct ZYMap
-{
-    float z;
-    int y;
-} ZYMap;
 
 class VoxelTerrain : public QObject
 {
@@ -63,8 +57,8 @@ public:
     bool IsTriangleOnScreen(Vertex3d screenSpacePoints[3]);
     void DrawTriangleScanline(int y, TriEdgeTrace& pos, Texture* texture, QRgb color);
 
-    int fracToY(float frac);
-    int fracToX(float frac);
+    int fracToY(F3D::FP frac);
+    int fracToX(F3D::FP frac);
 
     QRgb* frameBuffer;
 
@@ -76,43 +70,41 @@ public:
     const QRgb* colorMap;
     const quint8* heightMap;
 
-    static const int screenWidth = 1360;
-    static const int screenHeight = 720;
+    static const int screenWidth = 160;
+    static const int screenHeight = 128;
 
     const int mapSize = 2048;
 
-    const float zNear = 1.0;
-    const float zFar = 2048.0;
-    const float zStep = 1.0;
-    const float zStepD = 0.01;
+    const F3D::FP zNear = 1;
+    const F3D::FP zFar = 2048;
+    const F3D::FP zStep = 1;
+    const F3D::FP zStepD = 0.01f;
 
-    float* zBuffer;
+    F3D::FP* zBuffer;
     int yBuffer[screenWidth];
 
 
 
-    const float heightScale = (0.82*((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
-    const float yScale = ((float)screenWidth * ((float)screenHeight/(float)screenWidth));
+    const F3D::FP heightScale = (float)(0.82*((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
+    const F3D::FP yScale = (float)((float)screenWidth * ((float)screenHeight/(float)screenWidth));
 
 
 
-    float zAngle = 0;
+    F3D::FP zAngle = 0;
 
-    F3D::V2FP cameraPos;
-    float cameraAngle;
-    float cameraHeight;
-
-    float viewHeight;
+    F3D::V3FP cameraPos;
+    F3D::FP cameraAngle;
+    int cameraHeight;
 
     QList<Object3d*> objects;
 
-    F3D::M4F viewMatrix;
-    F3D::M4F projectionMatrix;
-    F3D::M4F modelMatrix;
+    F3D::M4FP viewMatrix;
+    F3D::M4FP projectionMatrix;
+    F3D::M4FP modelMatrix;
 
-    F3D::M4F viewProjectionMatrix; //P*V
+    F3D::M4FP viewProjectionMatrix; //P*V
 
-    F3D::M4F transformMatrix; //P*V*M
+    F3D::M4FP transformMatrix; //P*V*M
 
 private:
 
