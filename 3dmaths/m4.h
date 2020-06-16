@@ -3,6 +3,7 @@
 
 
 #include "v3.h"
+#include "v4.h"
 
 #define M_PI (3.14159265358979323846)
 
@@ -231,7 +232,7 @@ public:
         return m3;
     }
 
-    V3<T> operator*(const V3<T>& vector)
+    V4<T> operator*(const V3<T>& vector)
     {
         T x, y, z, w;
 
@@ -251,10 +252,8 @@ public:
                 T(vector.y) * m[1][3] +
                 T(vector.z) * m[2][3] +
                 m[3][3];
-            if (w == 1)
-                return V3<T>(x, y, z);
-            else
-                return V3<T>(x / w, y / w, z / w);
+
+            return V4<T>(x, y, z, w);
     }
 
     void translate(const V3<T>& vector)

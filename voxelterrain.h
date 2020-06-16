@@ -38,6 +38,12 @@ public:
     void DrawMesh(const Mesh3d* mesh);
     void DrawTriangle(const Triangle3d* tri, Texture *texture, QRgb color);
 
+    void ClipAndDrawTriangle(Vertex2d clipSpacePoints[], Texture *texture, QRgb color);
+    void DrawClippedTriangle(Vertex2d clipSpacePoints[], Texture *texture, QRgb color);
+
+    F3D::FP GetLineIntersection(F3D::FP v1, F3D::FP v2, const F3D::FP pos);
+
+
     void DrawTransformedTriangle(Vertex3d points[], Texture* texture);
     void DrawTriangleTop(Vertex3d points[3], Texture* texture);
     void DrawTriangleBottom(Vertex3d points[3], Texture* texture);
@@ -52,7 +58,7 @@ public:
 
     void SortPointsByY(Vertex3d points[3]);
 
-    Vertex3d TransformVertex(const Vertex3d* vertex);
+    Vertex2d TransformVertex(const Vertex3d* vertex);
     bool IsTriangleFrontface(Vertex3d screenSpacePoints[3]);
     bool IsTriangleOnScreen(Vertex3d screenSpacePoints[3]);
     void DrawTriangleScanline(int y, TriEdgeTrace& pos, Texture* texture, QRgb color);
@@ -67,16 +73,19 @@ public:
     QImage heightMapImage;
     QImage colorMapImage;
 
+    QImage waterImage;
+    const QRgb* water;
+
     const QRgb* colorMap;
     const quint8* heightMap;
 
-    static const int screenWidth = 160;
-    static const int screenHeight = 128;
+    static const int screenWidth = 720;
+    static const int screenHeight = 360;
 
     const int mapSize = 2048;
 
     const F3D::FP zNear = 1;
-    const F3D::FP zFar = 2048;
+    const F3D::FP zFar = 1024;
     const F3D::FP zStep = 1;
     const F3D::FP zStepD = 0.01f;
 

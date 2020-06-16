@@ -14,10 +14,23 @@ public:
     F3D::V2FP uv;
 };
 
+class Vertex2d
+{
+public:
+    F3D::V4FP pos;
+    F3D::V2FP uv;
+};
+
 class Triangle3d
 {
 public:
     Vertex3d verts[3];
+};
+
+class Triangle2d
+{
+public:
+    Vertex2d verts[3];
 };
 
 class Texture

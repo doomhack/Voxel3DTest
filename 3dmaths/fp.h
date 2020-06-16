@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <limits>
 
+#include <QtCore>
+
 //#define OVERFLOW_CHECK
 
 class FP
@@ -42,7 +44,7 @@ public:
 
         if(r < min() || r > max())
         {
-            printf("int assign oveflow: %d\n", r);
+            qDebug() << "int assign oveflow: " <<  r;
         }
 #endif
         n = (r << fracbits);   return *this;
@@ -54,7 +56,7 @@ public:
 
         if(r < min() || r > max())
         {
-            printf("float assign oveflow: %f\n", r);
+            qDebug() << "float assign oveflow: " <<  r;
         }
 #endif
 
@@ -74,7 +76,7 @@ public:
 
         if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
         {
-            printf("Addition oveflow: %d + %d = %d\n", r.i(), this->i(), r.i() + this->i());
+            qDebug() << "addition oveflow: " <<  r.i() << this->i() << r.i() << this->i();
         }
 #endif
 
@@ -94,7 +96,7 @@ public:
 
         if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
         {
-            printf("Subtraction oveflow: %d - %d = %d\n", this->i(), r.i(), r.i() + this->i());
+            qDebug() << "subtraction oveflow: " <<  r.i() << this->i() << r.i() << this->i();
         }
 #endif
 
@@ -125,7 +127,7 @@ public:
 
         if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
         {
-            printf("Multiply oveflow: %d * %d = %d\n", r.i(), this->i(), r.i() * this->i());
+            qDebug() << "multiply oveflow: " <<  r.i() << this->i() << r.i() << this->i();
         }
 #endif
 

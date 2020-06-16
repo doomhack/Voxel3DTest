@@ -38,6 +38,16 @@ public:
         return v*=r;
     }
 
+    V2 operator*(const T& r)
+    {
+        V2 v(x,y);
+
+        v.x *= r;
+        v.y *= r;
+
+        return v;
+    }
+
     V2& operator+=(const V2& r)
     {
         x += r.x;

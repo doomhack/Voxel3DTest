@@ -2,6 +2,7 @@
     <qresource prefix="/images">
         <file>C1W.png</file>
         <file>D1.png</file>
+        <file>water.bmp</file>
     </qresource>
     <qresource prefix="/models">
         <file>VRML/airport.obj</file>
@@ -193,5 +194,7 @@
         <file>VRML/funfair.obj</file>
         <file>VRML/rock.mtl</file>
         <file>VRML/rock.obj</file>
+        <file>VRML/world.mtl</file>
+        <file>VRML/world.obj</file>
     </qresource>
 </RCC>
