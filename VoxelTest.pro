@@ -23,12 +23,13 @@ SOURCES += \
     voxelterrain.cpp
 
 HEADERS += \
-    3dmaths.h \
-    3dmaths/V2.h \
     3dmaths/f3dmath.h \
     3dmaths/fp.h \
     3dmaths/m4.h \
+    3dmaths/v2.h \
     3dmaths/v3.h \
+    3dmaths/v4.h \
+    common.h \
     mainwindow.h \
     object3d.h \
     voxelterrain.h
@@ -41,6 +42,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     Resources.qrc
 
-LIBS += $$PWD/codeprophet.lib
-QMAKE_CXXFLAGS += /GH /Gh
-QMAKE_CFLAGS += /GH /Gh
+#LIBS += $$PWD/codeprophet.lib
+#QMAKE_CXXFLAGS += /GH /Gh
+#QMAKE_CFLAGS += /GH /Gh

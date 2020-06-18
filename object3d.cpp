@@ -1,3 +1,6 @@
+#include <QtCore>
+
+#include "common.h"
 #include "object3d.h"
 
 
@@ -91,8 +94,8 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
 
     QStringList lines = objFileText.split("\n");
 
-    QList<F3D::V3F> vertexes;
-    QList<F3D::V2F> uvs;
+    QList<F3D::V3<fp>> vertexes;
+    QList<F3D::V2<fp>> uvs;
 
 
     Mesh3d* currentMesh = new Mesh3d();
@@ -112,11 +115,11 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
         //Vertex
         if(elements[0] == "v")
         {
-            float x = elements[1].toFloat();
-            float y = elements[2].toFloat();
-            float z = elements[3].toFloat();
+            fp x = elements[1].toFloat();
+            fp y = elements[2].toFloat();
+            fp z = elements[3].toFloat();
 
-            vertexes.append(F3D::V3F(x, y, z));
+            vertexes.append(F3D::V3<fp>(x, y, z));
         }
 
         if(elements[0] == "vt")
@@ -124,7 +127,7 @@ bool Object3d::LoadFromFile(QString objFile, QString mtlFile)
             float u = elements[1].toFloat();
             float v = elements[2].toFloat();
 
-            uvs.append(F3D::V2F(u, v));
+            uvs.append(F3D::V2<fp>(u, v));
         }
 
         //Face
