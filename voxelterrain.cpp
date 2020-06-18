@@ -6,30 +6,45 @@
 
 #include "3dmaths/f3dmath.h"
 
-int VoxelTerrain::fracToY(F3D::FP frac)
+fp VoxelTerrain::lerp(fp a, fp b, fp frac)
 {
-    F3D::FP y = F3D::FP(1)-((frac + 1) / 2);
+    fp ifrac = fp(1) - frac;
 
+    return (a * ifrac) + (b * frac);
+}
+
+int VoxelTerrain::fracToY(fp frac)
+{
+    fp y = fp(1)-((frac + fp(1)) / fp(2));
+
+#ifdef USE_FLOAT
+    int sy = y * screenHeight;
+#else
     int sy = y.intMul(screenHeight);
 
     if(sy < F3D::FP::min())
         return F3D::FP::min();
     else if(sy > F3D::FP::max())
         return F3D::FP::max();
+#endif
 
     return sy;
 }
 
-int VoxelTerrain::fracToX(F3D::FP frac)
+int VoxelTerrain::fracToX(fp frac)
 {
-    F3D::FP x = (frac + 1) / 2;
+    fp x = (frac + fp(1)) / fp(2);
 
+#ifdef USE_FLOAT
+    int sx = x * screenWidth;
+#else
     int sx = x.intMul(screenWidth);
 
     if(sx < F3D::FP::min())
         return F3D::FP::min();
     else if(sx > F3D::FP::max())
         return F3D::FP::max();
+#endif
 
     return sx;
 }
@@ -38,7 +53,7 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
 {
     cameraHeight = 50;
 
-    cameraPos = F3D::V3FP(mapSize/2, cameraHeight, mapSize/2);
+    cameraPos = F3D::V3<fp>(mapSize/2, cameraHeight, mapSize/2);
     cameraAngle = 0;
 
     frameBufferImage = QImage(screenWidth, screenHeight, QImage::Format::Format_RGB32);
@@ -59,7 +74,7 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
     water = (const QRgb*)waterImage.bits();
 
 
-    zBuffer = new F3D::FP[screenWidth * screenHeight];
+    zBuffer = new fp[screenWidth * screenHeight];
 
     //55.7954
     projectionMatrix.setToIdentity();
@@ -95,6 +110,11 @@ VoxelTerrain::VoxelTerrain(QObject *parent) : QObject(parent)
     world->LoadFromFile(":/models/VRML/world.obj", ":/models/VRML/world.mtl");
     objects.append(world);
 
+/*
+    Object3d* plane = new Object3d();
+    plane->LoadFromFile(":/models/VRML/plane.obj", ":/models/VRML/plane.mtl");
+    objects.append(plane);
+    */
 }
 
 void VoxelTerrain::BeginFrame()
@@ -118,7 +138,7 @@ void VoxelTerrain::BeginFrame()
     viewMatrix.setToIdentity();
     viewMatrix.rotateX(-zAngle);
     viewMatrix.rotateY(qRadiansToDegrees(-cameraAngle));
-    viewMatrix.translate(F3D::V3FP(-cameraPos.x.f(), -cameraPos.y.f(), -cameraPos.z.f()));
+    viewMatrix.translate(F3D::V3<fp>(-cameraPos.x, -cameraPos.y, -cameraPos.z));
 
     viewProjectionMatrix = projectionMatrix * viewMatrix;
 }
@@ -131,27 +151,30 @@ void VoxelTerrain::Render()
     return;
 
 
-    F3D::FP sinphi = (float)qSin(cameraAngle);
-    F3D::FP cosphi = (float)qCos(cameraAngle);
+    fp sinphi = (float)qSin(cameraAngle);
+    fp cosphi = (float)qCos(cameraAngle);
 
-    F3D::FP cZstep = zStep;
+    fp cZstep = zStep;
 
-    for(F3D::FP z = zNear; z < zFar; z += cZstep, cZstep += zStepD)
+    for(fp z = zNear; z < zFar; z += cZstep, cZstep += zStepD)
     {
-        F3D::V2FP pleft = F3D::V2FP((-cosphi*z - sinphi*z) + cameraPos.x, ( sinphi*z - cosphi*z) + cameraPos.z);
-        F3D::V2FP pright = F3D::V2FP(( cosphi*z - sinphi*z) + cameraPos.x, (-sinphi*z - cosphi*z) + cameraPos.z);
+        F3D::V2<fp> pleft = F3D::V2<fp>((-cosphi*z - sinphi*z) + cameraPos.x, ( sinphi*z - cosphi*z) + cameraPos.z);
+        F3D::V2<fp> pright = F3D::V2<fp>(( cosphi*z - sinphi*z) + cameraPos.x, (-sinphi*z - cosphi*z) + cameraPos.z);
 
-        F3D::V2FP delta((pright.x - pleft.x) / screenWidth, (pright.y - pleft.y) / screenWidth);
+        F3D::V2<fp> delta((pright.x - pleft.x) / screenWidth, (pright.y - pleft.y) / screenWidth);
 
-        F3D::FP invz = (F3D::FP(1) / z);
+        fp invz = (fp(1) / z);
 
-        F3D::FP zDepth = F3D::FP(1)-invz;
+        fp zDepth = fp(1)-invz;
 
-        F3D::FP invh = invz * heightScale;
-        F3D::FP invy = invz * yScale;
+        fp invh = invz * heightScale;
+        fp invy = invz * yScale;
 
+#ifdef USE_FLOAT
+        int yPos = (invy * cameraPos.y) + (screenHeight / 2);
+#else
         int yPos = (invy.intMul(cameraPos.y)) + (screenHeight / 2);
-
+#endif
 
         for(int i = 0; i < screenWidth; i++)
         {
@@ -172,15 +195,20 @@ void VoxelTerrain::Render()
                 }
                 else
                 {
-                    lineColor = water[(pleft.y.i() & 63) * 64 + (pleft.x.i() & 63)];
+                    lineColor = water[((int)pleft.y & 63) * 64 + ((int)pleft.x & 63)];
                 }
             }
             else
             {
-                lineColor = water[(pleft.y.i() & 63) * 64 + (pleft.x.i() & 63)];
+                lineColor = water[((int)pleft.y & 63) * 64 + ((int)pleft.x & 63)];
             }
 
+#ifdef USE_FLOAT
+            int hDiff = invh * pointHeight;
+#else
             int hDiff = invh.intMul(pointHeight);
+#endif
+
 
             int lineTop = yPos - hDiff;
 
@@ -240,11 +268,11 @@ void VoxelTerrain::DrawMesh(const Mesh3d* mesh)
 
 Vertex2d VoxelTerrain::TransformVertex(const Vertex3d* vertex)
 {
-    F3D::V4FP p = transformMatrix * vertex->pos;
+    F3D::V4<fp> p = transformMatrix * vertex->pos;
 
     Vertex2d screenspace;
 
-    screenspace.pos = F3D::V4FP
+    screenspace.pos = F3D::V4<fp>
     (
         p.x,
         p.y,
@@ -274,30 +302,61 @@ void VoxelTerrain::DrawTriangle(const Triangle3d* tri, Texture* texture, QRgb co
 
 void VoxelTerrain::ClipAndDrawTriangle(Vertex2d clipSpacePoints[], Texture *texture, QRgb color)
 {
-    F3D::FP w0 = clipSpacePoints[0].pos.w;
-    F3D::FP w1 = clipSpacePoints[1].pos.w;
-    F3D::FP w2 = clipSpacePoints[2].pos.w;
+    const fp wClip = zNear;
+
+    fp w0 = clipSpacePoints[0].pos.w;
+    fp w1 = clipSpacePoints[1].pos.w;
+    fp w2 = clipSpacePoints[2].pos.w;
+
+    fp x0 = clipSpacePoints[0].pos.x;
+    fp x1 = clipSpacePoints[1].pos.x;
+    fp x2 = clipSpacePoints[2].pos.x;
+
+    fp y0 = clipSpacePoints[0].pos.y;
+    fp y1 = clipSpacePoints[1].pos.y;
+    fp y2 = clipSpacePoints[2].pos.y;
+
+    fp z0 = clipSpacePoints[0].pos.z;
+    fp z1 = clipSpacePoints[1].pos.z;
+    fp z2 = clipSpacePoints[2].pos.z;
+
+    if(x0 > w0 && x1 > w1 && x2 > w2)
+        return;
+
+    if(-x0 > w0 && -x1 > w1 && -x2 > w2)
+        return;
+
+    if(y0 > w0 && y1 > w1 && y2 > w2)
+        return;
+
+    if(-y0 > w0 && -y1 > w1 && -y2 > w2)
+        return;
+
+    if(z0 > w0 && z1 > w1 && z2 > w2)
+        return;
+
+    if(-z0 > w0 && -z1 > w1 && -z2 > w2)
+        return;
 
     //All points behind clipping plane.
-    if(w0 < zNear && w1 < zNear && w2 < zNear)
+    if(w0 < wClip && w1 < wClip && w2 < wClip)
         return;
 
     //All points in valid space.
-    if(w0 >= 1 && w1 >= 1 && w2 >= 1)
+    if(w0 >= wClip && w1 >= wClip && w2 >= wClip)
     {
         DrawClippedTriangle(clipSpacePoints, texture, color);
         return;
     }
 
-
     Vertex2d outputVx[4];
     int vp = 0;
 
-    qDebug() << w0.f() << w1.f() << w2.f();
+    //qDebug() << w0 << w1 << w2;
 
     for(int i = 0; i < 3; i++)
     {
-        if(clipSpacePoints[i].pos.w >= 1)
+        if(clipSpacePoints[i].pos.w >= wClip)
         {
             outputVx[vp] = clipSpacePoints[i];
             vp++;
@@ -305,23 +364,21 @@ void VoxelTerrain::ClipAndDrawTriangle(Vertex2d clipSpacePoints[], Texture *text
 
         int i2 = i < 2 ? i+1 : 0;
 
-        F3D::FP frac = GetLineIntersection(clipSpacePoints[i].pos.w, clipSpacePoints[i2].pos.w, zNear);
+        fp frac = GetLineIntersection(clipSpacePoints[i].pos.w, clipSpacePoints[i2].pos.w, wClip);
 
         if(frac > 0)
         {
-            qDebug() << "Clipfrac = " << frac.f();
-
-            F3D::FP invFrac = F3D::FP(1) / frac;
+            //qDebug() << "Clipfrac = " << frac;
 
             Vertex2d newVx;
 
-            newVx.pos.x = clipSpacePoints[i].pos.x + ((clipSpacePoints[i].pos.x - clipSpacePoints[i2].pos.x) * invFrac);
-            newVx.pos.y = clipSpacePoints[i].pos.y + ((clipSpacePoints[i].pos.y - clipSpacePoints[i2].pos.y) * invFrac);
-            newVx.pos.z = clipSpacePoints[i].pos.z + ((clipSpacePoints[i].pos.z - clipSpacePoints[i2].pos.z) * invFrac);
-            newVx.pos.w = zNear;
+            newVx.pos.x = lerp(clipSpacePoints[i].pos.x, clipSpacePoints[i2].pos.x, frac);
+            newVx.pos.y = lerp(clipSpacePoints[i].pos.y, clipSpacePoints[i2].pos.y, frac);
+            newVx.pos.z = lerp(clipSpacePoints[i].pos.z, clipSpacePoints[i2].pos.z, frac);
+            newVx.pos.w = wClip;
 
-            newVx.uv.x = clipSpacePoints[i].uv.x + ((clipSpacePoints[i].uv.x - clipSpacePoints[i2].uv.x) * invFrac);
-            newVx.uv.y = clipSpacePoints[i].uv.y + ((clipSpacePoints[i].uv.y - clipSpacePoints[i2].uv.y) * invFrac);
+            newVx.uv.x = lerp(clipSpacePoints[i].uv.x, clipSpacePoints[i2].uv.x, frac);
+            newVx.uv.y = lerp(clipSpacePoints[i].uv.y, clipSpacePoints[i2].uv.y, frac);
 
             outputVx[vp] = newVx;
             vp++;
@@ -330,24 +387,28 @@ void VoxelTerrain::ClipAndDrawTriangle(Vertex2d clipSpacePoints[], Texture *text
 
     if(vp == 3)
     {
-        DrawClippedTriangle(outputVx, texture, qRgb(255,0,0));
+        DrawClippedTriangle(outputVx, texture, color);
+        //DrawClippedTriangle(outputVx, nullptr, qrand());
     }
     else if(vp == 4)
     {
-        DrawClippedTriangle(outputVx, texture, qRgb(0,255,0));
+        DrawClippedTriangle(outputVx, texture, color);
+        //DrawClippedTriangle(outputVx, nullptr, qrand());
         outputVx[1] = outputVx[0];
-        DrawClippedTriangle(&outputVx[1], texture, qRgb(0,0,255));
+        DrawClippedTriangle(&outputVx[1], texture, color);
+        //DrawClippedTriangle(&outputVx[1], nullptr, qrand());
+
     }
     else
     {
-        qDebug() << "only have" << vp << "vertexes. Sum ting wong.";
+        qDebug() << "Got" << vp << "vertexes. Thats not right!";
     }
 }
 
 
 //Return -1 == both <= pos.
 //Return -2 == both >= pos.
-F3D::FP VoxelTerrain::GetLineIntersection(F3D::FP v1, F3D::FP v2, const F3D::FP pos)
+fp VoxelTerrain::GetLineIntersection(fp v1, fp v2, const fp pos)
 {
     if(v1 >= pos && v2 >= pos)
         return -2;
@@ -362,25 +423,24 @@ F3D::FP VoxelTerrain::GetLineIntersection(F3D::FP v1, F3D::FP v2, const F3D::FP 
     }
     else if(v1 > v2)
     {
-        F3D::FP len = (v1 - v2);
+        fp len = (v1 - v2);
 
-        F3D::FP splitFrac = (v1 - pos) / len;
+        fp splitFrac = (v1 - pos) / len;
 
         return splitFrac;
     }
 
+    fp len = (v2 - v1);
 
-    F3D::FP len = (v2 - v1);
+    fp splitFrac = (v2 - pos) / len;
 
-    F3D::FP splitFrac = (v2 - pos) / len;
-
-    return F3D::FP(1) - splitFrac;
+    return fp(1) - splitFrac;
 }
 
 
 void VoxelTerrain::DrawClippedTriangle(Vertex2d clipSpacePoints[], Texture *texture, QRgb color)
 {
-    Vertex3d screenSpacePoints[3];
+    Vertex2d screenSpacePoints[3];
 
     for(int i = 0; i < 3; i++)
     {
@@ -408,18 +468,18 @@ void VoxelTerrain::DrawClippedTriangle(Vertex2d clipSpacePoints[], Texture *text
         DrawTransformedTriangle(screenSpacePoints, color);
 }
 
-bool VoxelTerrain::IsTriangleFrontface(Vertex3d screenSpacePoints[3])
+bool VoxelTerrain::IsTriangleFrontface(Vertex2d screenSpacePoints[])
 {
-    int x1 = (screenSpacePoints[0].pos.x - screenSpacePoints[1].pos.x).i();
-    int y1 = (screenSpacePoints[0].pos.y - screenSpacePoints[1].pos.y).i();
+    int x1 = (screenSpacePoints[0].pos.x - screenSpacePoints[1].pos.x);
+    int y1 = (screenSpacePoints[0].pos.y - screenSpacePoints[1].pos.y);
 
-    int x2 = (screenSpacePoints[1].pos.x - screenSpacePoints[2].pos.x).i();
-    int y2 = (screenSpacePoints[1].pos.y - screenSpacePoints[2].pos.y).i();
+    int x2 = (screenSpacePoints[1].pos.x - screenSpacePoints[2].pos.x);
+    int y2 = (screenSpacePoints[1].pos.y - screenSpacePoints[2].pos.y);
 
     return ((x1 * y2) - (y1 * x2)) > 0;
 }
 
-bool VoxelTerrain::IsTriangleOnScreen(Vertex3d screenSpacePoints[])
+bool VoxelTerrain::IsTriangleOnScreen(Vertex2d screenSpacePoints[])
 {
     int lowx = screenWidth, highx = -1, lowy = screenHeight, highy = -1;
 
@@ -450,8 +510,15 @@ bool VoxelTerrain::IsTriangleOnScreen(Vertex3d screenSpacePoints[])
     return true;
 }
 
-void VoxelTerrain::DrawTransformedTriangle(Vertex3d points[], Texture* texture)
+void VoxelTerrain::DrawTransformedTriangle(Vertex2d points[], Texture* texture)
 {
+
+#ifdef PERSPECTIVE_CORRECT
+    points[0].toPerspectiveCorrect();
+    points[1].toPerspectiveCorrect();
+    points[2].toPerspectiveCorrect();
+#endif
+
     if(points[1].pos.y == points[2].pos.y)
     {
         DrawTriangleTop(points, texture);
@@ -466,29 +533,24 @@ void VoxelTerrain::DrawTransformedTriangle(Vertex3d points[], Texture* texture)
         //A flat top and flat bottom triangle.
 
         //How far down between vx0 -> vx2 are we spliting?
-        F3D::FP splitFrac = (points[1].pos.y - points[0].pos.y) / (points[2].pos.y - points[0].pos.y);
+        fp splitFrac = (points[1].pos.y - points[0].pos.y) / (points[2].pos.y - points[0].pos.y);
 
         //Interpolate new values for new vertex.
-
-        //x pos
-        int v4x = points[0].pos.x + splitFrac.intMul((points[2].pos.x - points[0].pos.x).i());
-
-        //z-depth
-        F3D::FP v4z = points[0].pos.z + (splitFrac * (points[2].pos.z - points[0].pos.z));
-
-        //uv coords.
-        F3D::FP v4u = points[0].uv.x + (splitFrac * (points[2].uv.x.f() - points[0].uv.x.f()));
-        F3D::FP v4v = points[0].uv.y + (splitFrac * (points[2].uv.y.f() - points[0].uv.y.f()));
-
-        Vertex3d triangle[4];
-
-        Vertex3d p4;
-        p4.pos = F3D::V3FP(v4x, points[1].pos.y, v4z);
-        p4.uv = F3D::V2FP(v4u, v4v);
+        Vertex2d triangle[4];
 
         triangle[0] = points[0];
         triangle[1] = points[1];
-        triangle[2] = p4;
+
+        //x pos
+        triangle[2].pos.x = lerp(points[0].pos.x, points[2].pos.x, splitFrac);
+        triangle[2].pos.y = points[1].pos.y;
+        triangle[2].pos.z = lerp(points[0].pos.z, points[2].pos.z, splitFrac);
+        triangle[2].pos.w = lerp(points[0].pos.w, points[2].pos.w, splitFrac);
+
+        //uv coords.
+        triangle[2].uv.x = lerp(points[0].uv.x, points[2].uv.x, splitFrac);
+        triangle[2].uv.y = lerp(points[0].uv.y, points[2].uv.y, splitFrac);
+
         triangle[3] = points[2];
 
         DrawTriangleTop(triangle, texture);
@@ -497,7 +559,7 @@ void VoxelTerrain::DrawTransformedTriangle(Vertex3d points[], Texture* texture)
     }
 }
 
-void VoxelTerrain::DrawTransformedTriangle(Vertex3d points[], QRgb color)
+void VoxelTerrain::DrawTransformedTriangle(Vertex2d points[], QRgb color)
 {
     if(points[1].pos.y == points[2].pos.y)
     {
@@ -513,24 +575,19 @@ void VoxelTerrain::DrawTransformedTriangle(Vertex3d points[], QRgb color)
         //A flat top and flat bottom triangle.
 
         //How far down between vx0 -> vx2 are we spliting?
-        F3D::FP splitFrac = (points[1].pos.y - points[0].pos.y) / (points[2].pos.y - points[0].pos.y);
+        fp splitFrac = (points[1].pos.y - points[0].pos.y) / (points[2].pos.y - points[0].pos.y);
 
         //Interpolate new values for new vertex.
-
-        //x pos
-        int v4x = points[0].pos.x + splitFrac.intMul((points[2].pos.x - points[0].pos.x).i());
-
-        //z-depth
-        F3D::FP v4z = points[0].pos.z + (splitFrac * (points[2].pos.z - points[0].pos.z));
-
-        Vertex3d triangle[4];
-
-        Vertex3d p4;
-        p4.pos = F3D::V3FP(v4x, points[1].pos.y, v4z);
+        Vertex2d triangle[4];
 
         triangle[0] = points[0];
         triangle[1] = points[1];
-        triangle[2] = p4;
+
+        //x pos
+        triangle[2].pos.x = lerp(points[0].pos.x, points[2].pos.x, splitFrac);
+        triangle[2].pos.y = points[1].pos.y;
+        triangle[2].pos.z = lerp(points[0].pos.z, points[2].pos.z, splitFrac);
+
         triangle[3] = points[2];
 
         DrawTriangleTop(triangle, color);
@@ -539,7 +596,7 @@ void VoxelTerrain::DrawTransformedTriangle(Vertex3d points[], QRgb color)
     }
 }
 
-void VoxelTerrain::SortPointsByY(Vertex3d points[])
+void VoxelTerrain::SortPointsByY(Vertex2d points[])
 {
     if(points[0].pos.y > points[1].pos.y)
         qSwap(points[0], points[1]);
@@ -553,40 +610,47 @@ void VoxelTerrain::SortPointsByY(Vertex3d points[])
 
 
 
-void VoxelTerrain::DrawTriangleTop(Vertex3d points[], Texture* texture)
+void VoxelTerrain::DrawTriangleTop(Vertex2d points[], Texture* texture)
 {
     TriEdgeTrace step;
     TriEdgeTrace pos;
 
-    F3D::FP inv_height = (F3D::FP(1)/(points[1].pos.y - points[0].pos.y));
+    fp inv_height = (fp(1)/(points[1].pos.y - points[0].pos.y));
 
-    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height.f();
-    step.x_right    = (points[1].pos.x - points[0].pos.x) * inv_height.f();
+    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height;
+    step.x_right    = (points[1].pos.x - points[0].pos.x) * inv_height;
 
-    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height.f();
-    step.z_right    = (points[1].pos.z - points[0].pos.z) * inv_height.f();
+    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height;
+    step.z_right    = (points[1].pos.z - points[0].pos.z) * inv_height;
 
-    step.u_left     = (points[2].uv.x - points[0].uv.x) * inv_height.f();
-    step.u_right    = (points[1].uv.x - points[0].uv.x) * inv_height.f();
+    step.w_left     = (points[2].pos.w - points[0].pos.w) * inv_height;
+    step.w_right    = (points[1].pos.w - points[0].pos.w) * inv_height;
 
-    step.v_left     = (points[2].uv.y - points[0].uv.y) * inv_height.f();
-    step.v_right    = (points[1].uv.y - points[0].uv.y) * inv_height.f();
+    step.u_left     = (points[2].uv.x - points[0].uv.x) * inv_height;
+    step.u_right    = (points[1].uv.x - points[0].uv.x) * inv_height;
+
+    step.v_left     = (points[2].uv.y - points[0].uv.y) * inv_height;
+    step.v_right    = (points[1].uv.y - points[0].uv.y) * inv_height;
 
     if(step.x_left > step.x_right)
     {
         qSwap(step.x_left, step.x_right);
         qSwap(step.z_left, step.z_right);
+        qSwap(step.w_left, step.w_right);
+
         qSwap(step.u_left, step.u_right);
         qSwap(step.v_left, step.v_right);
     }
 
     pos.x_left = pos.x_right = points[0].pos.x;
     pos.z_left = pos.z_right = points[0].pos.z;
+    pos.w_left = pos.w_right = points[0].pos.w;
+
     pos.u_left = pos.u_right = points[0].uv.x;
     pos.v_left = pos.v_right = points[0].uv.y;
 
-    int yStart = qRound(points[0].pos.y);
-    int yEnd = qRound(points[1].pos.y);
+    int yStart = points[0].pos.y;
+    int yEnd = points[1].pos.y;
 
     for (int y = yStart; y <= yEnd; y++)
     {
@@ -604,6 +668,9 @@ void VoxelTerrain::DrawTriangleTop(Vertex3d points[], Texture* texture)
         pos.z_left  += step.z_left;
         pos.z_right += step.z_right;
 
+        pos.w_left  += step.w_left;
+        pos.w_right += step.w_right;
+
         pos.u_left  += step.u_left;
         pos.u_right += step.u_right;
 
@@ -612,18 +679,18 @@ void VoxelTerrain::DrawTriangleTop(Vertex3d points[], Texture* texture)
     }
 }
 
-void VoxelTerrain::DrawTriangleTop(Vertex3d points[], QRgb color)
+void VoxelTerrain::DrawTriangleTop(Vertex2d points[], QRgb color)
 {
     TriEdgeTrace step;
     TriEdgeTrace pos;
 
-    F3D::FP inv_height = (F3D::FP(1)/(points[1].pos.y - points[0].pos.y));
+    fp inv_height = (fp(1)/(points[1].pos.y - points[0].pos.y));
 
-    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height.f();
-    step.x_right    = (points[1].pos.x - points[0].pos.x) * inv_height.f();
+    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height;
+    step.x_right    = (points[1].pos.x - points[0].pos.x) * inv_height;
 
-    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height.f();
-    step.z_right    = (points[1].pos.z - points[0].pos.z) * inv_height.f();
+    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height;
+    step.z_right    = (points[1].pos.z - points[0].pos.z) * inv_height;
 
     if(step.x_left > step.x_right)
     {
@@ -634,8 +701,8 @@ void VoxelTerrain::DrawTriangleTop(Vertex3d points[], QRgb color)
     pos.x_left = pos.x_right = points[0].pos.x;
     pos.z_left = pos.z_right = points[0].pos.z;
 
-    int yStart = qRound(points[0].pos.y);
-    int yEnd = qRound(points[1].pos.y);
+    int yStart = points[0].pos.y;
+    int yEnd = points[1].pos.y;
 
     for (int y = yStart; y <= yEnd; y++)
     {
@@ -655,40 +722,46 @@ void VoxelTerrain::DrawTriangleTop(Vertex3d points[], QRgb color)
     }
 }
 
-void VoxelTerrain::DrawTriangleBottom(Vertex3d points[], Texture* texture)
+void VoxelTerrain::DrawTriangleBottom(Vertex2d points[], Texture* texture)
 {
     TriEdgeTrace step;
     TriEdgeTrace pos;
 
-    F3D::FP inv_height = (F3D::FP(1)/(points[2].pos.y - points[0].pos.y));
+    fp inv_height = (fp(1)/(points[2].pos.y - points[0].pos.y));
 
-    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height.f();
-    step.x_right    = (points[2].pos.x - points[1].pos.x) * inv_height.f();
+    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height;
+    step.x_right    = (points[2].pos.x - points[1].pos.x) * inv_height;
 
-    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height.f();
-    step.z_right    = (points[2].pos.z - points[1].pos.z) * inv_height.f();
+    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height;
+    step.z_right    = (points[2].pos.z - points[1].pos.z) * inv_height;
 
-    step.u_left     = (points[2].uv.x - points[0].uv.x) * inv_height.f();
-    step.u_right    = (points[2].uv.x - points[1].uv.x) * inv_height.f();
+    step.w_left     = (points[2].pos.w - points[0].pos.w) * inv_height;
+    step.w_right    = (points[2].pos.w - points[1].pos.w) * inv_height;
 
-    step.v_left     = (points[2].uv.y - points[0].uv.y) * inv_height.f();
-    step.v_right    = (points[2].uv.y - points[1].uv.y) * inv_height.f();
+    step.u_left     = (points[2].uv.x - points[0].uv.x) * inv_height;
+    step.u_right    = (points[2].uv.x - points[1].uv.x) * inv_height;
+
+    step.v_left     = (points[2].uv.y - points[0].uv.y) * inv_height;
+    step.v_right    = (points[2].uv.y - points[1].uv.y) * inv_height;
 
     if(step.x_left < step.x_right)
     {
         qSwap(step.x_left, step.x_right);
         qSwap(step.z_left, step.z_right);
+        qSwap(step.w_left, step.w_right);
         qSwap(step.u_left, step.u_right);
         qSwap(step.v_left, step.v_right);
     }
 
     pos.x_left = pos.x_right = points[2].pos.x;
     pos.z_left = pos.z_right = points[2].pos.z;
+    pos.w_left = pos.w_right = points[2].pos.w;
+
     pos.u_left = pos.u_right = points[2].uv.x;
     pos.v_left = pos.v_right = points[2].uv.y;
 
-    int yStart = qRound(points[2].pos.y);
-    int yEnd = qRound(points[0].pos.y);
+    int yStart = points[2].pos.y;
+    int yEnd = points[0].pos.y;
 
 
     for (int y = yStart; y > yEnd; y--)
@@ -707,6 +780,9 @@ void VoxelTerrain::DrawTriangleBottom(Vertex3d points[], Texture* texture)
         pos.z_left  -= step.z_left;
         pos.z_right -= step.z_right;
 
+        pos.w_left  -= step.w_left;
+        pos.w_right -= step.w_right;
+
         pos.u_left  -= step.u_left;
         pos.u_right -= step.u_right;
 
@@ -716,18 +792,18 @@ void VoxelTerrain::DrawTriangleBottom(Vertex3d points[], Texture* texture)
     }
 }
 
-void VoxelTerrain::DrawTriangleBottom(Vertex3d points[], QRgb color)
+void VoxelTerrain::DrawTriangleBottom(Vertex2d points[], QRgb color)
 {
     TriEdgeTrace step;
     TriEdgeTrace pos;
 
-    F3D::FP inv_height = (F3D::FP(1)/(points[2].pos.y- points[0].pos.y));
+    fp inv_height = (fp(1)/(points[2].pos.y- points[0].pos.y));
 
-    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height.f();
-    step.x_right    = (points[2].pos.x - points[1].pos.x) * inv_height.f();
+    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height;
+    step.x_right    = (points[2].pos.x - points[1].pos.x) * inv_height;
 
-    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height.f();
-    step.z_right    = (points[2].pos.z - points[1].pos.z) * inv_height.f();
+    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height;
+    step.z_right    = (points[2].pos.z - points[1].pos.z) * inv_height;
 
     if(step.x_left < step.x_right)
     {
@@ -738,8 +814,8 @@ void VoxelTerrain::DrawTriangleBottom(Vertex3d points[], QRgb color)
     pos.x_left = pos.x_right = points[2].pos.x;
     pos.z_left = pos.z_right = points[2].pos.z;
 
-    int yStart = qRound(points[2].pos.y);
-    int yEnd = qRound(points[0].pos.y);
+    int yStart = points[2].pos.y;
+    int yEnd = points[0].pos.y;
 
 
     for (int y = yStart; y > yEnd; y--)
@@ -768,31 +844,42 @@ void VoxelTerrain::DrawTriangleScanline(int y, TriEdgeTrace& pos, Texture* textu
 
     if(pos.x_left < pos.x_right)
     {
-        F3D::FP inv_width = F3D::FP(1)/(pos.x_right - pos.x_left);
+        fp inv_width = fp(1)/(pos.x_right - pos.x_left);
 
+        sl_step.w = (pos.w_right - pos.w_left) * inv_width;
         sl_step.z = (pos.z_right - pos.z_left) * inv_width;
         sl_step.u = (pos.u_right - pos.u_left) * inv_width;
         sl_step.v = (pos.v_right - pos.v_left) * inv_width;
     }
 
+    sl_pos.w = pos.w_left;
     sl_pos.z = pos.z_left;
     sl_pos.u = pos.u_left;
     sl_pos.v = pos.v_left;
 
-    for(int x = pos.x_left.i(); x <= pos.x_right.i(); x++)
+    int x_start = pos.x_left;
+    int x_end = pos.x_right;
+
+    for(int x = x_start; x <= x_end; x++)
     {
         if(x >= screenWidth)
             return;
 
         if(x >= 0)
         {
-            F3D::FP prevz = zBuffer[ (y*screenWidth) + x];
+            fp prevz = zBuffer[ (y*screenWidth) + x];
 
             if(sl_pos.z < prevz)
             {
-                int tx = sl_pos.u.intMul(texture->width);
-                int ty = (F3D::FP(1)-sl_pos.v).intMul(texture->height);
+#ifdef PERSPECTIVE_CORRECT
+                fp invw = fp(1) / sl_pos.w;
 
+                int tx = ((sl_pos.u * fp((int)texture->width)) * invw);
+                int ty = fp((int)texture->height) - ((sl_pos.v * fp((int)texture->height)) * invw);
+#else
+                int tx = sl_pos.u * (int)texture->width;
+                int ty = (fp(1)-sl_pos.v) * (int)texture->height;
+#endif
                 tx = tx & (texture->width - 1);
                 ty = ty & (texture->height - 1);
 
@@ -801,6 +888,7 @@ void VoxelTerrain::DrawTriangleScanline(int y, TriEdgeTrace& pos, Texture* textu
             }
         }
 
+        sl_pos.w += sl_step.w;
         sl_pos.z += sl_step.z;
         sl_pos.u += sl_step.u;
         sl_pos.v += sl_step.v;
@@ -814,21 +902,24 @@ void VoxelTerrain::DrawTriangleScanline(int y, TriEdgeTrace& pos, QRgb color)
 
     if(pos.x_left < pos.x_right)
     {
-        F3D::FP inv_width = F3D::FP(1)/(pos.x_right - pos.x_left);
+        fp inv_width = fp(1)/(pos.x_right - pos.x_left);
 
         sl_step.z = (pos.z_right - pos.z_left) * inv_width;
     }
 
     sl_pos.z = pos.z_left;
 
-    for(int x = pos.x_left.i(); x <= pos.x_right.i(); x++)
+    int x_start = pos.x_left;
+    int x_end = pos.x_right;
+
+    for(int x = x_start; x <= x_end; x++)
     {
         if(x >= screenWidth)
             return;
 
         if(x >= 0)
         {   
-            F3D::FP prevz = zBuffer[ (y*screenWidth) + x];
+            fp prevz = zBuffer[ (y*screenWidth) + x];
 
             if(sl_pos.z < prevz)
             {

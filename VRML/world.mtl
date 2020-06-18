@@ -1,7 +1,7 @@
 # Blender MTL File: 'untitled.blend'
 # Material Count: 211
 
-newmtl Material.004_7476100D_c.bmp.001
+newmtl Material.004_7476100D_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -12,7 +12,7 @@ d 1.000000
 illum 1
 map_Kd 7476100D_c.bmp
 
-newmtl Material.005_1B6E6570_c.bmp.003
+newmtl Material.005_1B6E6570_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -23,7 +23,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\1B6E6570_c.bmp
 
-newmtl Material.005_7A84DFFD_c.bmp.001
+newmtl Material.005_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -34,7 +34,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.006_1B6E6570_c.bmp.001
+newmtl Material.006_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -45,7 +45,7 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.007_73D0C37_c.bmp.001
+newmtl Material.007_73D0C37_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -56,7 +56,7 @@ d 1.000000
 illum 1
 map_Kd 73D0C37_c.bmp
 
-newmtl Material.008_1B6E6570_c.bmp.001
+newmtl Material.008_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -67,7 +67,7 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.009_40F40732_c.bmp.001
+newmtl Material.009_40F40732_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -78,7 +78,7 @@ d 1.000000
 illum 1
 map_Kd 40F40732_c.bmp
 
-newmtl Material.010_1410E612_c.bmp.001
+newmtl Material.010_1410E612_c.bmp
 Ns 900.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.196875 0.437500 0.690625
@@ -89,7 +89,7 @@ d 1.000000
 illum 1
 map_Kd 1410E612_c.bmp
 
-newmtl Material.010_4B998E96_c.bmp.003
+newmtl Material.010_4B998E96_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.553125 0.559375 0.403125
@@ -100,7 +100,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\4B998E96_c.bmp
 
-newmtl Material.011_1B6E6570_c.bmp.001
+newmtl Material.011_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.712500 0.712500 0.712500
@@ -111,7 +111,17 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.013_1149A70E_c.bmp.001
+newmtl Material.012
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.781250 0.781250 0.781250
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.013_1149A70E_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.796875 0.796875 0.796875
@@ -122,7 +132,7 @@ d 1.000000
 illum 1
 map_Kd 1149A70E_c.bmp
 
-newmtl Material.015_7A84DFFD_c.bmp.003
+newmtl Material.015_7A84DFFD_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.640625 0.584375 0.462500
@@ -133,7 +143,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\7A84DFFD_c.bmp
 
-newmtl Material.016_7A84DFFD_c.bmp.002
+newmtl Material.016_7A84DFFD_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.681250 0.681250 0.681250
@@ -144,7 +154,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\7A84DFFD_c.bmp
 
-newmtl Material.016_7AFE5A34_c.bmp.001
+newmtl Material.016_7AFE5A34_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -155,7 +165,7 @@ d 1.000000
 illum 1
 map_Kd 7AFE5A34_c.bmp
 
-newmtl Material.017_223E35B7_c.bmp.001
+newmtl Material.017_223E35B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -166,7 +176,7 @@ d 1.000000
 illum 1
 map_Kd 223E35B7_c.bmp
 
-newmtl Material.018_6A27C8A4_c.bmp.003
+newmtl Material.018_6A27C8A4_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -177,7 +187,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\6A27C8A4_c.bmp
 
-newmtl Material.018_7F511CBE_c.bmp.001
+newmtl Material.018_7F511CBE_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -188,7 +198,7 @@ d 1.000000
 illum 1
 map_Kd 7F511CBE_c.bmp
 
-newmtl Material.019_7A84DFFD_c.bmp.001
+newmtl Material.019_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.415625 0.378125 0.300000
@@ -199,7 +209,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.020_3FE5B073_c.bmp.001
+newmtl Material.020_3FE5B073_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.493750 0.493750 0.493750
@@ -210,7 +220,7 @@ d 1.000000
 illum 1
 map_Kd 3FE5B073_c.bmp
 
-newmtl Material.021_4B998E96_c.bmp.001
+newmtl Material.021_4B998E96_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.743750 0.750000 0.540625
@@ -221,7 +231,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.022_70E73BBE_c.bmp.003
+newmtl Material.022_70E73BBE_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.371875 0.371875 0.371875
@@ -232,7 +242,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\70E73BBE_c.bmp
 
-newmtl Material.022_7AFE5A34_c.bmp.001
+newmtl Material.022_7AFE5A34_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.775000 0.775000 0.775000
@@ -243,17 +253,7 @@ d 1.000000
 illum 1
 map_Kd 7AFE5A34_c.bmp
 
-newmtl Material.023
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.000000 0.000000 0.000000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.023_4B998E96_c.bmp.001
+newmtl Material.023_4B998E96_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -264,7 +264,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.024_1B6E6570_c.bmp.001
+newmtl Material.024_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.618750 0.618750 0.618750
@@ -275,7 +275,7 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.024_754E85D7_c.bmp.003
+newmtl Material.024_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.637500 0.637500 0.637500
@@ -286,17 +286,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.025
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.000000 0.796875 0.796875
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.025_6CB3C02_c.bmp.003
+newmtl Material.025_6CB3C02_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -307,7 +297,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\6CB3C02_c.bmp
 
-newmtl Material.025_70E73BBE_c.bmp.003
+newmtl Material.025_70E73BBE_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.543750 0.543750 0.543750
@@ -318,7 +308,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\70E73BBE_c.bmp
 
-newmtl Material.025_73D0C37_c.bmp.001
+newmtl Material.025_73D0C37_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -329,7 +319,7 @@ d 1.000000
 illum 1
 map_Kd 73D0C37_c.bmp
 
-newmtl Material.026_5DAB63FF_c.bmp.003
+newmtl Material.026_5DAB63FF_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -340,7 +330,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\5DAB63FF_c.bmp
 
-newmtl Material.026_6A27C8A4_c.bmp.001
+newmtl Material.026_6A27C8A4_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -351,7 +341,7 @@ d 1.000000
 illum 1
 map_Kd 6A27C8A4_c.bmp
 
-newmtl Material.026_701E3A5E_c.bmp.003
+newmtl Material.026_701E3A5E_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -362,7 +352,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\701E3A5E_c.bmp
 
-newmtl Material.027_4F37A43F_c.bmp.003
+newmtl Material.027_4F37A43F_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -373,7 +363,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\4F37A43F_c.bmp
 
-newmtl Material.028_2B68BF8F_c.bmp.003
+newmtl Material.028_2B68BF8F_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.178125 0.178125 0.178125
@@ -384,7 +374,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\2B68BF8F_c.bmp
 
-newmtl Material.028_3A2F9995_c.bmp.002
+newmtl Material.028_3A2F9995_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.534375 0.640625 0.715625
@@ -395,7 +385,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\3A2F9995_c.bmp
 
-newmtl Material.029_5DAB63FF_c.bmp.001
+newmtl Material.029_5DAB63FF_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -406,7 +396,7 @@ d 1.000000
 illum 1
 map_Kd 5DAB63FF_c.bmp
 
-newmtl Material.029_754E85D7_c.bmp.003
+newmtl Material.029_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.450000 0.450000 0.450000
@@ -417,7 +407,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.029_7EAC18DF_c.bmp.002
+newmtl Material.029_7EAC18DF_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.537500 0.537500 0.537500
@@ -428,7 +418,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\7EAC18DF_c.bmp
 
-newmtl Material.030_2532C6B6_c.bmp.001
+newmtl Material.030_2532C6B6_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -439,7 +429,7 @@ d 1.000000
 illum 1
 map_Kd 2532C6B6_c.bmp
 
-newmtl Material.030_31495C83_c.bmp.002
+newmtl Material.030_31495C83_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -450,7 +440,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\31495C83_c.bmp
 
-newmtl Material.030_701E3A5E_c.bmp.003
+newmtl Material.030_701E3A5E_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.706250 0.706250 0.706250
@@ -461,7 +451,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\701E3A5E_c.bmp
 
-newmtl Material.031_223E35B7_c.bmp.001
+newmtl Material.031_223E35B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -472,7 +462,7 @@ d 1.000000
 illum 1
 map_Kd 223E35B7_c.bmp
 
-newmtl Material.031_70E73BBE_c.bmp.003
+newmtl Material.031_70E73BBE_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.587500 0.587500 0.587500
@@ -483,7 +473,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\70E73BBE_c.bmp
 
-newmtl Material.031_7A84DFFD_c.bmp.002
+newmtl Material.031_7A84DFFD_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.584375 0.559375 0.531250
@@ -494,7 +484,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\7A84DFFD_c.bmp
 
-newmtl Material.032_25D16425_c.bmp.002
+newmtl Material.032_25D16425_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.584375 0.559375 0.531250
@@ -505,7 +495,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\25D16425_c.bmp
 
-newmtl Material.032_6A27C8A4_c.bmp.001
+newmtl Material.032_6A27C8A4_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -516,7 +506,7 @@ d 1.000000
 illum 1
 map_Kd 6A27C8A4_c.bmp
 
-newmtl Material.033_754E85D7_c.bmp.003
+newmtl Material.033_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.568750 0.568750 0.568750
@@ -527,7 +517,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.033_754E85D7_c.bmp.006
+newmtl Material.033_754E85D7_c.bmp.004
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.450000 0.450000 0.450000
@@ -538,7 +528,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.034_20E28088_c.bmp.003
+newmtl Material.034_20E28088_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -549,7 +539,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\20E28088_c.bmp
 
-newmtl Material.034_701E3A5E_c.bmp.003
+newmtl Material.034_701E3A5E_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.706250 0.706250 0.706250
@@ -560,7 +550,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\701E3A5E_c.bmp
 
-newmtl Material.034_7A84DFFD_c.bmp.001
+newmtl Material.034_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.525000 0.525000 0.525000
@@ -571,7 +561,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.035_2446D380_c.bmp.003
+newmtl Material.035_2446D380_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.568750 0.568750 0.568750
@@ -582,7 +572,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\2446D380_c.bmp
 
-newmtl Material.035_70E73BBE_c.bmp.003
+newmtl Material.035_70E73BBE_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.587500 0.587500 0.587500
@@ -593,7 +583,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\70E73BBE_c.bmp
 
-newmtl Material.036_754E85D7_c.bmp.003
+newmtl Material.036_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.568750 0.568750 0.568750
@@ -604,7 +594,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.037_20E28088_c.bmp.003
+newmtl Material.037_20E28088_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -615,7 +605,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\20E28088_c.bmp
 
-newmtl Material.037_5268B327_c.bmp.001
+newmtl Material.037_5268B327_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -626,7 +616,7 @@ d 1.000000
 illum 1
 map_Kd 5268B327_c.bmp
 
-newmtl Material.037_754E85D7_c.bmp.003
+newmtl Material.037_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.450000 0.450000 0.450000
@@ -637,7 +627,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.038_4B998E96_c.bmp.001
+newmtl Material.038_4B998E96_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.553125 0.559375 0.403125
@@ -648,7 +638,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.038_701E3A5E_c.bmp.003
+newmtl Material.038_701E3A5E_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.706250 0.706250 0.706250
@@ -659,7 +649,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\701E3A5E_c.bmp
 
-newmtl Material.038_754E85D7_c.bmp.003
+newmtl Material.038_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.265625 0.243750 0.190625
@@ -670,7 +660,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.039_70E73BBE_c.bmp.003
+newmtl Material.039_70E73BBE_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.587500 0.587500 0.587500
@@ -681,7 +671,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\70E73BBE_c.bmp
 
-newmtl Material.039_71760102_c.bmp.001
+newmtl Material.039_71760102_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.356250 0.325000 0.256250
@@ -692,7 +682,7 @@ d 1.000000
 illum 1
 map_Kd 71760102_c.bmp
 
-newmtl Material.039_7A84DFFD_c.bmp.003
+newmtl Material.039_7A84DFFD_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.456250 0.415625 0.328125
@@ -703,7 +693,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\7A84DFFD_c.bmp
 
-newmtl Material.040_754E85D7_c.bmp.003
+newmtl Material.040_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.334375 0.328125 0.331250
@@ -714,7 +704,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.041_5F68DB0C_c.bmp.003
+newmtl Material.041_5F68DB0C_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.678125 0.625000 0.371875
@@ -725,7 +715,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\5F68DB0C_c.bmp
 
-newmtl Material.041_61B6B3B7_c.bmp.001
+newmtl Material.041_61B6B3B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -736,7 +726,7 @@ d 1.000000
 illum 1
 map_Kd 61B6B3B7_c.bmp
 
-newmtl Material.041_754E85D7_c.bmp.003
+newmtl Material.041_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.450000 0.450000 0.450000
@@ -747,7 +737,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.042_4800542B_c.bmp.001
+newmtl Material.042_4800542B_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.593750 0.593750 0.593750
@@ -758,7 +748,7 @@ d 1.000000
 illum 1
 map_Kd 4800542B_c.bmp
 
-newmtl Material.042_701E3A5E_c.bmp.003
+newmtl Material.042_701E3A5E_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.706250 0.706250 0.706250
@@ -769,7 +759,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\701E3A5E_c.bmp
 
-newmtl Material.042_754E85D7_c.bmp.003
+newmtl Material.042_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.334375 0.328125 0.331250
@@ -780,7 +770,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.043_5F68DB0C_c.bmp.003
+newmtl Material.043_5F68DB0C_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.678125 0.625000 0.371875
@@ -791,7 +781,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\5F68DB0C_c.bmp
 
-newmtl Material.043_70E73BBE_c.bmp.003
+newmtl Material.043_70E73BBE_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.587500 0.587500 0.587500
@@ -802,7 +792,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\70E73BBE_c.bmp
 
-newmtl Material.044_5F68DB0C_c.bmp.003
+newmtl Material.044_5F68DB0C_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.431250 0.396875 0.234375
@@ -813,7 +803,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\5F68DB0C_c.bmp
 
-newmtl Material.045_5DAB63FF_c.bmp.003
+newmtl Material.045_5DAB63FF_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.681250 0.681250 0.681250
@@ -824,7 +814,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\5DAB63FF_c.bmp
 
-newmtl Material.045_61B6B3B7_c.bmp.001
+newmtl Material.045_61B6B3B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.512500 0.631250 0.453125
@@ -835,7 +825,7 @@ d 1.000000
 illum 1
 map_Kd 61B6B3B7_c.bmp
 
-newmtl Material.045_754E85D7_c.bmp.003
+newmtl Material.045_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.584375 0.575000 0.584375
@@ -846,7 +836,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.046_3FE5B073_c.bmp.003
+newmtl Material.046_3FE5B073_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.640625 0.340625 0.187500
@@ -857,7 +847,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\3FE5B073_c.bmp
 
-newmtl Material.046_4800542B_c.bmp.001
+newmtl Material.046_4800542B_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.681250 0.681250 0.681250
@@ -868,7 +858,7 @@ d 1.000000
 illum 1
 map_Kd 4800542B_c.bmp
 
-newmtl Material.046_62EC018F_c.bmp.003
+newmtl Material.046_62EC018F_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.656250 0.656250 0.656250
@@ -879,7 +869,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\62EC018F_c.bmp
 
-newmtl Material.047_2A75C791_c.bmp.003
+newmtl Material.047_2A75C791_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -890,7 +880,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\2A75C791_c.bmp
 
-newmtl Material.047_6FBC6EA9_c.bmp.003
+newmtl Material.047_6FBC6EA9_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.284375 0.284375 0.284375
@@ -901,7 +891,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\6FBC6EA9_c.bmp
 
-newmtl Material.048_2A75C791_c.bmp.003
+newmtl Material.048_2A75C791_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.543750 0.543750 0.543750
@@ -912,7 +902,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\2A75C791_c.bmp
 
-newmtl Material.048_4B998E96_c.bmp.001
+newmtl Material.048_4B998E96_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.796875 0.796875 0.796875
@@ -923,7 +913,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.050_76750209_c.bmp.003
+newmtl Material.050_76750209_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -934,7 +924,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\76750209_c.bmp
 
-newmtl Material.051_2B68BF8F_c.bmp.003
+newmtl Material.051_2B68BF8F_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.462500 0.462500 0.462500
@@ -945,7 +935,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\2B68BF8F_c.bmp
 
-newmtl Material.053_3A2F9995_c.bmp.003
+newmtl Material.053_3A2F9995_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.731250 0.575000 0.518750
@@ -956,7 +946,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\3A2F9995_c.bmp
 
-newmtl Material.055_3A2F9995_c.bmp.003
+newmtl Material.055_3A2F9995_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.481250 0.668750 0.503125
@@ -967,7 +957,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\3A2F9995_c.bmp
 
-newmtl Material.056_76750209_c.bmp.003
+newmtl Material.056_76750209_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.556250 0.556250 0.556250
@@ -978,7 +968,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\76750209_c.bmp
 
-newmtl Material.057_754E85D7_c.bmp.003
+newmtl Material.057_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.568750 0.568750 0.568750
@@ -989,7 +979,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.058_20E28088_c.bmp.003
+newmtl Material.058_20E28088_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1000,7 +990,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\20E28088_c.bmp
 
-newmtl Material.058_4800542B_c.bmp.001
+newmtl Material.058_4800542B_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1011,7 +1001,7 @@ d 1.000000
 illum 1
 map_Kd 4800542B_c.bmp
 
-newmtl Material.059_2446D380_c.bmp.003
+newmtl Material.059_2446D380_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.568750 0.568750 0.568750
@@ -1022,7 +1012,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\2446D380_c.bmp
 
-newmtl Material.059_6A27C8A4_c.bmp.001
+newmtl Material.059_6A27C8A4_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1033,7 +1023,7 @@ d 1.000000
 illum 1
 map_Kd 6A27C8A4_c.bmp
 
-newmtl Material.060_754E85D7_c.bmp.003
+newmtl Material.060_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.568750 0.568750 0.568750
@@ -1044,7 +1034,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.061_20E28088_c.bmp.003
+newmtl Material.061_20E28088_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1055,7 +1045,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\20E28088_c.bmp
 
-newmtl Material.062_2532C6B6_c.bmp.001
+newmtl Material.062_2532C6B6_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1066,7 +1056,7 @@ d 1.000000
 illum 1
 map_Kd 2532C6B6_c.bmp
 
-newmtl Material.062_754E85D7_c.bmp.003
+newmtl Material.062_754E85D7_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.265625 0.243750 0.190625
@@ -1077,7 +1067,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\754E85D7_c.bmp
 
-newmtl Material.064_1B6E6570_c.bmp.001
+newmtl Material.064_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1088,7 +1078,7 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.065_1010DAC2_c.bmp.001
+newmtl Material.065_1010DAC2_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.796875 0.796875 0.796875
@@ -1099,7 +1089,7 @@ d 1.000000
 illum 1
 map_Kd 1010DAC2_c.bmp
 
-newmtl Material.067_1B6E6570_c.bmp.001
+newmtl Material.067_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1110,7 +1100,7 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.068_61B6B3B7_c.bmp.001
+newmtl Material.068_61B6B3B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.493750 0.446875 0.356250
@@ -1121,7 +1111,7 @@ d 1.000000
 illum 1
 map_Kd 61B6B3B7_c.bmp
 
-newmtl Material.069_4B998E96_c.bmp.001
+newmtl Material.069_4B998E96_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.200000 0.728125 0.262500
@@ -1132,7 +1122,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.070_7476100D_c.bmp.001
+newmtl Material.070_7476100D_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1143,7 +1133,7 @@ d 1.000000
 illum 1
 map_Kd 7476100D_c.bmp
 
-newmtl Material.071_4A550850_c.bmp.003
+newmtl Material.071_4A550850_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.462500 0.462500 0.462500
@@ -1154,7 +1144,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\4A550850_c.bmp
 
-newmtl Material.071_4B998E96_c.bmp.001
+newmtl Material.071_4B998E96_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.553125 0.559375 0.403125
@@ -1165,7 +1155,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.072_25D16425_c.bmp.003
+newmtl Material.072_25D16425_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1176,7 +1166,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\25D16425_c.bmp
 
-newmtl Material.072_4800542B_c.bmp.001
+newmtl Material.072_4800542B_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.650000 0.650000 0.650000
@@ -1187,17 +1177,7 @@ d 1.000000
 illum 1
 map_Kd 4800542B_c.bmp
 
-newmtl Material.073
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.781250 0.781250 0.781250
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.073_1B6E6570_c.bmp.001
+newmtl Material.073_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1208,7 +1188,7 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.074_4A550850_c.bmp.003
+newmtl Material.074_4A550850_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.543750 0.543750 0.543750
@@ -1219,7 +1199,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\4A550850_c.bmp
 
-newmtl Material.074_7A84DFFD_c.bmp.001
+newmtl Material.074_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.681250 0.681250 0.681250
@@ -1230,7 +1210,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.075_223E35B7_c.bmp.001
+newmtl Material.075_223E35B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1241,7 +1221,7 @@ d 1.000000
 illum 1
 map_Kd 223E35B7_c.bmp
 
-newmtl Material.075_4A550850_c.bmp.003
+newmtl Material.075_4A550850_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.462500 0.462500 0.462500
@@ -1252,7 +1232,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\4A550850_c.bmp
 
-newmtl Material.076_24763FBC_c.bmp.003
+newmtl Material.076_24763FBC_c.bmp.001
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.784375 0.000000 0.000000
@@ -1263,7 +1243,7 @@ d 1.000000
 illum 1
 map_Kd C:\\VRML\\24763FBC_c.bmp
 
-newmtl Material.076_73D0C37_c.bmp.001
+newmtl Material.076_73D0C37_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1274,7 +1254,7 @@ d 1.000000
 illum 1
 map_Kd 73D0C37_c.bmp
 
-newmtl Material.077_223E35B7_c.bmp.001
+newmtl Material.077_223E35B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1285,7 +1265,7 @@ d 1.000000
 illum 1
 map_Kd 223E35B7_c.bmp
 
-newmtl Material.078_5DAB63FF_c.bmp.001
+newmtl Material.078_5DAB63FF_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1296,7 +1276,7 @@ d 1.000000
 illum 1
 map_Kd 5DAB63FF_c.bmp
 
-newmtl Material.079_3FE5B073_c.bmp.001
+newmtl Material.079_3FE5B073_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.640625 0.584375 0.462500
@@ -1307,7 +1287,7 @@ d 1.000000
 illum 1
 map_Kd 3FE5B073_c.bmp
 
-newmtl Material.080_7A84DFFD_c.bmp.001
+newmtl Material.080_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.640625 0.584375 0.462500
@@ -1318,7 +1298,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.081_25D16425_c.bmp.001
+newmtl Material.081_25D16425_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1329,7 +1309,7 @@ d 1.000000
 illum 1
 map_Kd 25D16425_c.bmp
 
-newmtl Material.082_7A84DFFD_c.bmp.001
+newmtl Material.082_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.543750 0.543750 0.543750
@@ -1340,7 +1320,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.083_25D16425_c.bmp.001
+newmtl Material.083_25D16425_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.543750 0.543750 0.543750
@@ -1351,7 +1331,7 @@ d 1.000000
 illum 1
 map_Kd 25D16425_c.bmp
 
-newmtl Material.084_5268B327_c.bmp.001
+newmtl Material.084_5268B327_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1362,7 +1342,7 @@ d 1.000000
 illum 1
 map_Kd 5268B327_c.bmp
 
-newmtl Material.085_4800542B_c.bmp.001
+newmtl Material.085_4800542B_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.493750 0.493750 0.493750
@@ -1373,7 +1353,7 @@ d 1.000000
 illum 1
 map_Kd 4800542B_c.bmp
 
-newmtl Material.086_61B6B3B7_c.bmp.001
+newmtl Material.086_61B6B3B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.553125 0.559375 0.403125
@@ -1384,7 +1364,7 @@ d 1.000000
 illum 1
 map_Kd 61B6B3B7_c.bmp
 
-newmtl Material.087_7AFE5A34_c.bmp.001
+newmtl Material.087_7AFE5A34_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1395,7 +1375,7 @@ d 1.000000
 illum 1
 map_Kd 7AFE5A34_c.bmp
 
-newmtl Material.089_1410E612_c.bmp.001
+newmtl Material.089_1410E612_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.090625 0.200000 0.315625
@@ -1406,7 +1386,7 @@ d 1.000000
 illum 1
 map_Kd 1410E612_c.bmp
 
-newmtl Material.090_4800542B_c.bmp.001
+newmtl Material.090_4800542B_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.371875 0.371875 0.371875
@@ -1417,7 +1397,7 @@ d 1.000000
 illum 1
 map_Kd 4800542B_c.bmp
 
-newmtl Material.091_7016B18F_c.bmp.001
+newmtl Material.091_7016B18F_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.215625 0.215625 0.215625
@@ -1428,7 +1408,7 @@ d 1.000000
 illum 1
 map_Kd 7016B18F_c.bmp
 
-newmtl Material.101_61B6B3B7_c.bmp.001
+newmtl Material.101_61B6B3B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1439,7 +1419,7 @@ d 1.000000
 illum 1
 map_Kd 61B6B3B7_c.bmp
 
-newmtl Material.102_7A84DFFD_c.bmp.001
+newmtl Material.102_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.506250 0.459375 0.362500
@@ -1450,7 +1430,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.103_4B998E96_c.bmp.001
+newmtl Material.103_4B998E96_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.200000 0.728125 0.262500
@@ -1461,7 +1441,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.104_7A84DFFD_c.bmp.001
+newmtl Material.104_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.550000 0.550000 0.550000
@@ -1472,7 +1452,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.105_223E35B7_c.bmp.001
+newmtl Material.105_223E35B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1483,7 +1463,17 @@ d 1.000000
 illum 1
 map_Kd 223E35B7_c.bmp
 
-newmtl Material.106_7A84DFFD_c.bmp.001
+newmtl Material.106
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.171875 0.171875 0.171875
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.106_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.475000 0.475000 0.475000
@@ -1494,7 +1484,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.107_61B6B3B7_c.bmp.001
+newmtl Material.107_61B6B3B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1505,7 +1495,7 @@ d 1.000000
 illum 1
 map_Kd 61B6B3B7_c.bmp
 
-newmtl Material.110_44DE8D24_c.bmp.001
+newmtl Material.110_44DE8D24_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1516,7 +1506,7 @@ d 1.000000
 illum 1
 map_Kd 44DE8D24_c.bmp
 
-newmtl Material.111_7AFE5A34_c.bmp.001
+newmtl Material.111_7AFE5A34_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1527,7 +1517,7 @@ d 1.000000
 illum 1
 map_Kd 7AFE5A34_c.bmp
 
-newmtl Material.112_7AFE5A34_c.bmp.001
+newmtl Material.112_7AFE5A34_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1538,7 +1528,7 @@ d 1.000000
 illum 1
 map_Kd 7AFE5A34_c.bmp
 
-newmtl Material.113_4B998E96_c.bmp.001
+newmtl Material.113_4B998E96_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.200000 0.728125 0.262500
@@ -1549,7 +1539,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.114_3FE5B073_c.bmp.001
+newmtl Material.114_3FE5B073_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.775000 0.590625 0.462500
@@ -1560,7 +1550,7 @@ d 1.000000
 illum 1
 map_Kd 3FE5B073_c.bmp
 
-newmtl Material.115_4B998E96_c.bmp.001
+newmtl Material.115_4B998E96_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1571,7 +1561,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.117_6A27C8A4_c.bmp.001
+newmtl Material.117_6A27C8A4_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1582,7 +1572,7 @@ d 1.000000
 illum 1
 map_Kd 6A27C8A4_c.bmp
 
-newmtl Material.119_1B6E6570_c.bmp.001
+newmtl Material.119_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1593,7 +1583,7 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.121_1B6E6570_c.bmp.001
+newmtl Material.121_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1604,7 +1594,7 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.122_1B6E6570_c.bmp.001
+newmtl Material.122_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1615,7 +1605,7 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.123_223E35B7_c.bmp.001
+newmtl Material.123_223E35B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1626,7 +1616,7 @@ d 1.000000
 illum 1
 map_Kd 223E35B7_c.bmp
 
-newmtl Material.124_73D0C37_c.bmp.001
+newmtl Material.124_73D0C37_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1637,7 +1627,7 @@ d 1.000000
 illum 1
 map_Kd 73D0C37_c.bmp
 
-newmtl Material.125_3A8F4EE6_c.bmp.001
+newmtl Material.125_3A8F4EE6_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.609375 0.753125 0.540625
@@ -1648,7 +1638,7 @@ d 1.000000
 illum 1
 map_Kd 3A8F4EE6_c.bmp
 
-newmtl Material.126_31C517C1_c.bmp.001
+newmtl Material.126_31C517C1_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1659,7 +1649,7 @@ d 1.000000
 illum 1
 map_Kd 31C517C1_c.bmp
 
-newmtl Material.127_6BBC98EE_c.bmp.001
+newmtl Material.127_6BBC98EE_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1670,7 +1660,7 @@ d 1.000000
 illum 1
 map_Kd 6BBC98EE_c.bmp
 
-newmtl Material.128_5DAB63FF_c.bmp.001
+newmtl Material.128_5DAB63FF_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1681,7 +1671,7 @@ d 1.000000
 illum 1
 map_Kd 5DAB63FF_c.bmp
 
-newmtl Material.129_140EF4A8_c.bmp.001
+newmtl Material.129_140EF4A8_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.571875 0.703125 0.506250
@@ -1692,7 +1682,7 @@ d 1.000000
 illum 1
 map_Kd 140EF4A8_c.bmp
 
-newmtl Material.130_5DAB63FF_c.bmp.001
+newmtl Material.130_5DAB63FF_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.550000 0.550000 0.550000
@@ -1703,7 +1693,7 @@ d 1.000000
 illum 1
 map_Kd 5DAB63FF_c.bmp
 
-newmtl Material.131_61B6B3B7_c.bmp.001
+newmtl Material.131_61B6B3B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1714,7 +1704,7 @@ d 1.000000
 illum 1
 map_Kd 61B6B3B7_c.bmp
 
-newmtl Material.132_7A84DFFD_c.bmp.001
+newmtl Material.132_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.353125 0.353125 0.353125
@@ -1725,7 +1715,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.133_25D16425_c.bmp.001
+newmtl Material.133_25D16425_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1736,7 +1726,7 @@ d 1.000000
 illum 1
 map_Kd 25D16425_c.bmp
 
-newmtl Material.134_7A84DFFD_c.bmp.001
+newmtl Material.134_7A84DFFD_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.475000 0.475000 0.475000
@@ -1747,7 +1737,7 @@ d 1.000000
 illum 1
 map_Kd 7A84DFFD_c.bmp
 
-newmtl Material.135_5DAB63FF_c.bmp.001
+newmtl Material.135_5DAB63FF_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1758,7 +1748,7 @@ d 1.000000
 illum 1
 map_Kd 5DAB63FF_c.bmp
 
-newmtl Material.136_6CB3C02_c.bmp.001
+newmtl Material.136_6CB3C02_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1769,7 +1759,7 @@ d 1.000000
 illum 1
 map_Kd 6CB3C02_c.bmp
 
-newmtl Material.137_6CB3C02_c.bmp.001
+newmtl Material.137_6CB3C02_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1780,7 +1770,7 @@ d 1.000000
 illum 1
 map_Kd 6CB3C02_c.bmp
 
-newmtl Material.138_5DAB63FF_c.bmp.001
+newmtl Material.138_5DAB63FF_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1791,7 +1781,7 @@ d 1.000000
 illum 1
 map_Kd 5DAB63FF_c.bmp
 
-newmtl Material.139_6CB3C02_c.bmp.001
+newmtl Material.139_6CB3C02_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1802,7 +1792,7 @@ d 1.000000
 illum 1
 map_Kd 6CB3C02_c.bmp
 
-newmtl Material.141_1410E612_c.bmp.001
+newmtl Material.141_1410E612_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.196875 0.434375 0.684375
@@ -1813,7 +1803,7 @@ d 1.000000
 illum 1
 map_Kd 1410E612_c.bmp
 
-newmtl Material.142_481EB30_c.bmp.003
+newmtl Material.142_481EB30_c.bmp.005
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.593750 0.593750 0.593750
@@ -1824,7 +1814,7 @@ d 1.000000
 illum 1
 map_Kd 481EB30_c.bmp
 
-newmtl Material.143_2B68BF8F_c.bmp.003
+newmtl Material.143_2B68BF8F_c.bmp.005
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.587500 0.587500 0.587500
@@ -1835,7 +1825,7 @@ d 1.000000
 illum 1
 map_Kd 2B68BF8F_c.bmp
 
-newmtl Material.148_4B998E96_c.bmp.001
+newmtl Material.148_4B998E96_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1846,7 +1836,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.148_4B998E96_c.bmp.004
+newmtl Material.148_4B998E96_c.bmp.007
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1857,7 +1847,7 @@ d 1.000000
 illum 1
 map_Kd 4B998E96_c.bmp
 
-newmtl Material.149_4800542B_c.bmp.001
+newmtl Material.149_4800542B_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.387500 0.478125 0.343750
@@ -1868,7 +1858,7 @@ d 1.000000
 illum 1
 map_Kd 4800542B_c.bmp
 
-newmtl Material.149_4800542B_c.bmp.004
+newmtl Material.149_4800542B_c.bmp.007
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.387500 0.478125 0.343750
@@ -1879,7 +1869,7 @@ d 1.000000
 illum 1
 map_Kd 4800542B_c.bmp
 
-newmtl Material.150_31C517C1_c.bmp.001
+newmtl Material.150_31C517C1_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1890,7 +1880,7 @@ d 1.000000
 illum 1
 map_Kd 31C517C1_c.bmp
 
-newmtl Material.151_140EF4A8_c.bmp.001
+newmtl Material.151_140EF4A8_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1901,7 +1891,7 @@ d 1.000000
 illum 1
 map_Kd 140EF4A8_c.bmp
 
-newmtl Material.152_6BBC98EE_c.bmp.001
+newmtl Material.152_6BBC98EE_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1912,7 +1902,7 @@ d 1.000000
 illum 1
 map_Kd 6BBC98EE_c.bmp
 
-newmtl Material.153_3A8F4EE6_c.bmp.001
+newmtl Material.153_3A8F4EE6_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1923,7 +1913,7 @@ d 1.000000
 illum 1
 map_Kd 3A8F4EE6_c.bmp
 
-newmtl Material.154_5DAB63FF_c.bmp.001
+newmtl Material.154_5DAB63FF_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.550000 0.550000 0.550000
@@ -1934,7 +1924,7 @@ d 1.000000
 illum 1
 map_Kd 5DAB63FF_c.bmp
 
-newmtl Material.155_5268B327_c.bmp.001
+newmtl Material.155_5268B327_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1945,7 +1935,7 @@ d 1.000000
 illum 1
 map_Kd 5268B327_c.bmp
 
-newmtl Material.156_7476100D_c.bmp.001
+newmtl Material.156_7476100D_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1956,7 +1946,7 @@ d 1.000000
 illum 1
 map_Kd 7476100D_c.bmp
 
-newmtl Material.157_61B6B3B7_c.bmp.001
+newmtl Material.157_61B6B3B7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1967,7 +1957,7 @@ d 1.000000
 illum 1
 map_Kd 61B6B3B7_c.bmp
 
-newmtl Material.158_6A27C8A4_c.bmp.001
+newmtl Material.158_6A27C8A4_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1978,7 +1968,7 @@ d 1.000000
 illum 1
 map_Kd 6A27C8A4_c.bmp
 
-newmtl Material.161_1B6E6570_c.bmp.001
+newmtl Material.161_1B6E6570_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -1989,7 +1979,7 @@ d 1.000000
 illum 1
 map_Kd 1B6E6570_c.bmp
 
-newmtl Material.162_73D0C37_c.bmp.001
+newmtl Material.162_73D0C37_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -2000,7 +1990,7 @@ d 1.000000
 illum 1
 map_Kd 73D0C37_c.bmp
 
-newmtl Material.163_71760102_c.bmp.001
+newmtl Material.163_71760102_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.271875 0.246875 0.196875
@@ -2011,7 +2001,7 @@ d 1.000000
 illum 1
 map_Kd 71760102_c.bmp
 
-newmtl Material.168_754E85D7_c.bmp.001
+newmtl Material.168_754E85D7_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -2022,7 +2012,7 @@ d 1.000000
 illum 1
 map_Kd 754E85D7_c.bmp
 
-newmtl Material.169_20E28088_c.bmp.001
+newmtl Material.169_20E28088_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.390625 0.390625 0.390625
@@ -2033,7 +2023,27 @@ d 1.000000
 illum 1
 map_Kd 20E28088_c.bmp
 
-newmtl Material.202_5AA14DD8_c.bmp.001
+newmtl Material.178
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.796875 0.796875
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.180
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.202_5AA14DD8_c.bmp
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.787500 0.787500 0.787500
@@ -2044,17 +2054,27 @@ d 1.000000
 illum 1
 map_Kd 5AA14DD8_c.bmp
 
-newmtl Material.313
+newmtl Material.381
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
-Kd 0.171875 0.171875 0.171875
+Kd 0.165625 0.165625 0.165625
 Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 1
 
-newmtl Material.460
+newmtl Material.382
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.165625 0.165625 0.165625
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.383
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.000000 0.796875 0.796875
@@ -2064,117 +2084,7 @@ Ni 1.000000
 d 1.000000
 illum 1
 
-newmtl Material.461
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.165625 0.165625 0.165625
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.462
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.165625 0.165625 0.165625
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.490
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.784375 0.000000 0.000000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.491
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.209375 0.131250 0.700000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.492
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.209375 0.131250 0.700000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.493
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.209375 0.131250 0.700000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.494
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.784375 0.000000 0.000000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.495
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.784375 0.000000 0.000000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.496
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.209375 0.131250 0.700000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.497
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.784375 0.000000 0.000000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.498
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.359375 0.359375 0.359375
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.503
+newmtl Material.558
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.175000 0.109375 0.587500
@@ -2184,97 +2094,7 @@ Ni 1.000000
 d 1.000000
 illum 1
 
-newmtl Material.506
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.171875 0.171875 0.171875
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.507
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.640625 0.340625 0.187500
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.508
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.246875 0.246875 0.246875
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.509
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.246875 0.246875 0.246875
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.510
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.246875 0.246875 0.246875
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.511
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.246875 0.246875 0.246875
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.512
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.209375 0.131250 0.700000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.513
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.246875 0.246875 0.246875
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.514
-Ns 0.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.221875 0.221875 0.221875
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.000000
-d 1.000000
-illum 1
-
-newmtl Material.515
+newmtl Material.559
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.143750 0.090625 0.484375
@@ -2284,10 +2104,190 @@ Ni 1.000000
 d 1.000000
 illum 1
 
-newmtl Material.516
+newmtl Material.560
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.221875 0.221875 0.221875
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.561
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.246875 0.246875 0.246875
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.562
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.209375 0.131250 0.700000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.563
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.246875 0.246875 0.246875
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.564
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.246875 0.246875 0.246875
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.565
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.246875 0.246875 0.246875
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.566
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.246875 0.246875 0.246875
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.567
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.640625 0.340625 0.187500
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.568
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.171875 0.171875 0.171875
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.569
 Ns 0.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.175000 0.109375 0.587500
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.574
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.359375 0.359375 0.359375
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.575
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.784375 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.576
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.209375 0.131250 0.700000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.577
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.784375 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.578
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.784375 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.579
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.209375 0.131250 0.700000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.580
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.209375 0.131250 0.700000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.581
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.209375 0.131250 0.700000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 1
+
+newmtl Material.582
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.784375 0.000000 0.000000
 Ks 0.000000 0.000000 0.000000
 Ke 0.000000 0.000000 0.000000
 Ni 1.000000

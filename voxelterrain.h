@@ -4,23 +4,27 @@
 #include <QtCore>
 #include <QImage>
 
-#include "3dmaths/f3dmath.h"
+#include "common.h"
 
 #include "object3d.h"
 
+
+
 typedef struct TriEdgeTrace
 {
-    F3D::FP x_left, x_right;
-    F3D::FP z_left, z_right;
-    F3D::FP u_left, u_right;
-    F3D::FP v_left, v_right;
+    fp x_left, x_right;
+    fp z_left, z_right;
+    fp w_left, w_right;
+    fp u_left, u_right;
+    fp v_left, v_right;
 } TriDrawState;
 
 typedef struct TriDrawPos
 {
-    F3D::FP z;
-    F3D::FP u;
-    F3D::FP v;
+    fp z;
+    fp w;
+    fp u;
+    fp v;
 } TriDrawPos;
 
 class VoxelTerrain : public QObject
@@ -41,30 +45,32 @@ public:
     void ClipAndDrawTriangle(Vertex2d clipSpacePoints[], Texture *texture, QRgb color);
     void DrawClippedTriangle(Vertex2d clipSpacePoints[], Texture *texture, QRgb color);
 
-    F3D::FP GetLineIntersection(F3D::FP v1, F3D::FP v2, const F3D::FP pos);
+    fp GetLineIntersection(fp v1, fp v2, const fp pos);
 
 
-    void DrawTransformedTriangle(Vertex3d points[], Texture* texture);
-    void DrawTriangleTop(Vertex3d points[3], Texture* texture);
-    void DrawTriangleBottom(Vertex3d points[3], Texture* texture);
+    void DrawTransformedTriangle(Vertex2d points[], Texture* texture);
+    void DrawTriangleTop(Vertex2d points[3], Texture* texture);
+    void DrawTriangleBottom(Vertex2d points[3], Texture* texture);
 
-    void DrawTransformedTriangle(Vertex3d points[], QRgb color);
-    void DrawTriangleTop(Vertex3d points[3], QRgb color);
-    void DrawTriangleBottom(Vertex3d points[3], QRgb color);
+    void DrawTransformedTriangle(Vertex2d points[], QRgb color);
+    void DrawTriangleTop(Vertex2d points[3], QRgb color);
+    void DrawTriangleBottom(Vertex2d points[3], QRgb color);
 
     void DrawTriangleScanline(int y, TriEdgeTrace& pos, Texture* texture);
     void DrawTriangleScanline(int y, TriEdgeTrace& pos, QRgb color);
 
 
-    void SortPointsByY(Vertex3d points[3]);
+    void SortPointsByY(Vertex2d points[3]);
 
     Vertex2d TransformVertex(const Vertex3d* vertex);
-    bool IsTriangleFrontface(Vertex3d screenSpacePoints[3]);
-    bool IsTriangleOnScreen(Vertex3d screenSpacePoints[3]);
+    bool IsTriangleFrontface(Vertex2d screenSpacePoints[3]);
+    bool IsTriangleOnScreen(Vertex2d screenSpacePoints[3]);
     void DrawTriangleScanline(int y, TriEdgeTrace& pos, Texture* texture, QRgb color);
 
-    int fracToY(F3D::FP frac);
-    int fracToX(F3D::FP frac);
+    int fracToY(fp frac);
+    int fracToX(fp frac);
+
+    fp lerp(fp a, fp b, fp frac);
 
     QRgb* frameBuffer;
 
@@ -84,36 +90,36 @@ public:
 
     const int mapSize = 2048;
 
-    const F3D::FP zNear = 1;
-    const F3D::FP zFar = 1024;
-    const F3D::FP zStep = 1;
-    const F3D::FP zStepD = 0.01f;
+    const fp zNear = 5;
+    const fp zFar = 1024;
+    const fp zStep = 1;
+    const fp zStepD = 0.01f;
 
-    F3D::FP* zBuffer;
+    fp* zBuffer;
     int yBuffer[screenWidth];
 
 
 
-    const F3D::FP heightScale = (float)(0.82*((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
-    const F3D::FP yScale = (float)((float)screenWidth * ((float)screenHeight/(float)screenWidth));
+    const fp heightScale = (float)(0.82*((float)screenWidth * ((float)screenHeight/(float)screenWidth)));
+    const fp yScale = (float)((float)screenWidth * ((float)screenHeight/(float)screenWidth));
 
 
 
-    F3D::FP zAngle = 0;
+    fp zAngle = 0;
 
-    F3D::V3FP cameraPos;
-    F3D::FP cameraAngle;
+    F3D::V3<fp> cameraPos;
+    fp cameraAngle;
     int cameraHeight;
 
     QList<Object3d*> objects;
 
-    F3D::M4FP viewMatrix;
-    F3D::M4FP projectionMatrix;
-    F3D::M4FP modelMatrix;
+    F3D::M4<fp> viewMatrix;
+    F3D::M4<fp> projectionMatrix;
+    F3D::M4<fp> modelMatrix;
 
-    F3D::M4FP viewProjectionMatrix; //P*V
+    F3D::M4<fp> viewProjectionMatrix; //P*V
 
-    F3D::M4FP transformMatrix; //P*V*M
+    F3D::M4<fp> transformMatrix; //P*V*M
 
 private:
 

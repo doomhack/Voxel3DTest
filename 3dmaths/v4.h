@@ -100,12 +100,12 @@ public:
         return ((x * r.y) - (y * r.x));
     }
 
-    V3<T> ToScreenSpace()
+    V4<T> ToScreenSpace()
     {
         if (w == T(1))
-            return V3<T>(x, y, z);
+            return V4<T>(x, y, z, w);
         else
-            return V3<T>(x / w, y / w, z / w);
+            return V4<T>(x / w, y / w, z / w, w);
     }
 };
 

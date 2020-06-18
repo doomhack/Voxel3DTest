@@ -6,7 +6,7 @@
 
 #include <QtCore>
 
-//#define OVERFLOW_CHECK
+#define OVERFLOW_CHECK
 
 class FP
 {
@@ -127,7 +127,7 @@ public:
 
         if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
         {
-            qDebug() << "multiply oveflow: " <<  r.i() << this->i() << r.i() << this->i();
+            qDebug() << "multiply oveflow: " <<  r.i() << this->i() << r.i() * this->i();
         }
 #endif
 
@@ -139,11 +139,40 @@ public:
     FP& operator*=(const float& r)      {return *this*=FP(r);}
 
     //Divide
-    FP operator/(const FP& r)           {FP v(r); v.n = (int)(((long long int)n << fracbits) / r.n);   return v;}
+    FP operator/(const FP& r)
+    {
+        long long int tmp = (((long long int)n << fracbits) / r.n);
+
+#ifdef OVERFLOW_CHECK
+
+        if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
+        {
+            qDebug() << "divide oveflow: " <<  r.i() << this->i() << r.i() << this->i();
+        }
+#endif
+
+        FP v(r); v.n = (int)tmp;
+        return v;
+    }
+
     FP operator/(const int r)           {FP v(r);   return *this/v;}
     FP operator/(const float r)         {FP v(r);   return *this/v;}
 
-    FP& operator/=(const FP& r)         {n = (int)(((long long int)n << fracbits) / r.n);   return *this;}
+    FP& operator/=(const FP& r)
+    {
+        long long int tmp = (((long long int)n << fracbits) / r.n);
+
+#ifdef OVERFLOW_CHECK
+
+        if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
+        {
+            qDebug() << "divide oveflow: " <<  r.i() << this->i() << r.i() << this->i();
+        }
+#endif
+        n = (int)tmp;
+        return *this;
+    }
+
     FP& operator/=(const int& r)        {return *this/=FP(r);}
     FP& operator/=(const float& r)      {return *this/=FP(r);}
 

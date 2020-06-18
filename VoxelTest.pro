@@ -29,6 +29,7 @@ HEADERS += \
     3dmaths/v2.h \
     3dmaths/v3.h \
     3dmaths/v4.h \
+    common.h \
     mainwindow.h \
     object3d.h \
     voxelterrain.h
