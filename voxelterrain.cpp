@@ -612,47 +612,38 @@ void VoxelTerrain::SortPointsByY(Vertex2d points[])
 
 void VoxelTerrain::DrawTriangleTop(Vertex2d points[], Texture* texture)
 {
-    TriEdgeTrace step;
     TriEdgeTrace pos;
 
-    fp inv_height = (fp(1)/(points[1].pos.y - points[0].pos.y));
+    Vertex2d *top, *left, *right;
+    top = &points[0];
 
-    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height;
-    step.x_right    = (points[1].pos.x - points[0].pos.x) * inv_height;
-
-    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height;
-    step.z_right    = (points[1].pos.z - points[0].pos.z) * inv_height;
-
-    step.w_left     = (points[2].pos.w - points[0].pos.w) * inv_height;
-    step.w_right    = (points[1].pos.w - points[0].pos.w) * inv_height;
-
-    step.u_left     = (points[2].uv.x - points[0].uv.x) * inv_height;
-    step.u_right    = (points[1].uv.x - points[0].uv.x) * inv_height;
-
-    step.v_left     = (points[2].uv.y - points[0].uv.y) * inv_height;
-    step.v_right    = (points[1].uv.y - points[0].uv.y) * inv_height;
-
-    if(step.x_left > step.x_right)
+    if(points[1].pos.x < points[2].pos.x)
     {
-        qSwap(step.x_left, step.x_right);
-        qSwap(step.z_left, step.z_right);
-        qSwap(step.w_left, step.w_right);
-
-        qSwap(step.u_left, step.u_right);
-        qSwap(step.v_left, step.v_right);
+        left = &points[1];
+        right = &points[2];
+    }
+    else
+    {
+        left = &points[2];
+        right = &points[1];
     }
 
-    pos.x_left = pos.x_right = points[0].pos.x;
-    pos.z_left = pos.z_right = points[0].pos.z;
-    pos.w_left = pos.w_right = points[0].pos.w;
 
-    pos.u_left = pos.u_right = points[0].uv.x;
-    pos.v_left = pos.v_right = points[0].uv.y;
+    fp inv_height = (fp(1024)/(points[1].pos.y - points[0].pos.y));
 
-    int yStart = points[0].pos.y;
-    int yEnd = points[1].pos.y;
+    pos.x_left = pos.x_right = top->pos.x;
+    pos.z_left = pos.z_right = top->pos.z;
+    pos.w_left = pos.w_right = top->pos.w;
 
-    for (int y = yStart; y <= yEnd; y++)
+    pos.u_left = pos.u_right = top->uv.x;
+    pos.v_left = pos.v_right = top->uv.y;
+
+    int yStart = top->pos.y;
+    int yEnd = left->pos.y;
+
+    int ycount = 1;
+
+    for (int y = yStart; y <= yEnd; y++, ycount++)
     {
         if(y >= screenHeight)
             break;
@@ -662,20 +653,20 @@ void VoxelTerrain::DrawTriangleTop(Vertex2d points[], Texture* texture)
             DrawTriangleScanline(y, pos, texture);
         }
 
-        pos.x_left  += step.x_left;
-        pos.x_right += step.x_right;
+        pos.x_left = lerp(top->pos.x, left->pos.x, (inv_height * ycount) / 1024);
+        pos.x_right = lerp(top->pos.x, right->pos.x, (inv_height * ycount) / 1024);
 
-        pos.z_left  += step.z_left;
-        pos.z_right += step.z_right;
+        pos.z_left = lerp(top->pos.z, left->pos.z, (inv_height * ycount) / 1024);
+        pos.z_right = lerp(top->pos.z, right->pos.z, (inv_height * ycount) / 1024);
 
-        pos.w_left  += step.w_left;
-        pos.w_right += step.w_right;
+        pos.w_left = lerp(top->pos.w, left->pos.w, (inv_height * ycount) / 1024);
+        pos.w_right = lerp(top->pos.w, right->pos.w, (inv_height * ycount) / 1024);
 
-        pos.u_left  += step.u_left;
-        pos.u_right += step.u_right;
+        pos.u_left = lerp(top->uv.x, left->uv.x, (inv_height * ycount) / 1024);
+        pos.u_right = lerp(top->uv.x, right->uv.x, (inv_height * ycount) / 1024);
 
-        pos.v_left  += step.v_left;
-        pos.v_right += step.v_right;
+        pos.v_left = lerp(top->uv.y, left->uv.y, (inv_height * ycount) / 1024);
+        pos.v_right = lerp(top->uv.y, right->uv.y, (inv_height * ycount) / 1024);
     }
 }
 
@@ -724,47 +715,37 @@ void VoxelTerrain::DrawTriangleTop(Vertex2d points[], QRgb color)
 
 void VoxelTerrain::DrawTriangleBottom(Vertex2d points[], Texture* texture)
 {
-    TriEdgeTrace step;
     TriEdgeTrace pos;
 
-    fp inv_height = (fp(1)/(points[2].pos.y - points[0].pos.y));
+    Vertex2d *bottom, *left, *right;
+    bottom = &points[2];
 
-    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height;
-    step.x_right    = (points[2].pos.x - points[1].pos.x) * inv_height;
-
-    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height;
-    step.z_right    = (points[2].pos.z - points[1].pos.z) * inv_height;
-
-    step.w_left     = (points[2].pos.w - points[0].pos.w) * inv_height;
-    step.w_right    = (points[2].pos.w - points[1].pos.w) * inv_height;
-
-    step.u_left     = (points[2].uv.x - points[0].uv.x) * inv_height;
-    step.u_right    = (points[2].uv.x - points[1].uv.x) * inv_height;
-
-    step.v_left     = (points[2].uv.y - points[0].uv.y) * inv_height;
-    step.v_right    = (points[2].uv.y - points[1].uv.y) * inv_height;
-
-    if(step.x_left < step.x_right)
+    if(points[0].pos.x < points[1].pos.x)
     {
-        qSwap(step.x_left, step.x_right);
-        qSwap(step.z_left, step.z_right);
-        qSwap(step.w_left, step.w_right);
-        qSwap(step.u_left, step.u_right);
-        qSwap(step.v_left, step.v_right);
+        left = &points[0];
+        right = &points[1];
+    }
+    else
+    {
+        left = &points[1];
+        right = &points[0];
     }
 
-    pos.x_left = pos.x_right = points[2].pos.x;
-    pos.z_left = pos.z_right = points[2].pos.z;
-    pos.w_left = pos.w_right = points[2].pos.w;
+    fp inv_height = (fp(1024)/(bottom->pos.y - left->pos.y));
 
-    pos.u_left = pos.u_right = points[2].uv.x;
-    pos.v_left = pos.v_right = points[2].uv.y;
+    pos.x_left = pos.x_right = bottom->pos.x;
+    pos.z_left = pos.z_right = bottom->pos.z;
+    pos.w_left = pos.w_right = bottom->pos.w;
 
-    int yStart = points[2].pos.y;
-    int yEnd = points[0].pos.y;
+    pos.u_left = pos.u_right = bottom->uv.x;
+    pos.v_left = pos.v_right = bottom->uv.y;
 
+    int yStart = bottom->pos.y;
+    int yEnd = left->pos.y;
 
-    for (int y = yStart; y > yEnd; y--)
+    int ycount = 1;
+
+    for (int y = yStart; y > yEnd; y--, ycount++)
     {
         if(y < 0)
             break;
@@ -774,21 +755,20 @@ void VoxelTerrain::DrawTriangleBottom(Vertex2d points[], Texture* texture)
             DrawTriangleScanline(y, pos, texture);
         }
 
-        pos.x_left  -= step.x_left;
-        pos.x_right -= step.x_right;
+        pos.x_left = lerp(bottom->pos.x, left->pos.x, (inv_height * ycount) / 1024);
+        pos.x_right = lerp(bottom->pos.x, right->pos.x, (inv_height * ycount) / 1024);
 
-        pos.z_left  -= step.z_left;
-        pos.z_right -= step.z_right;
+        pos.z_left = lerp(bottom->pos.z, left->pos.z, (inv_height * ycount) / 1024);
+        pos.z_right = lerp(bottom->pos.z, right->pos.z, (inv_height * ycount) / 1024);
 
-        pos.w_left  -= step.w_left;
-        pos.w_right -= step.w_right;
+        pos.w_left = lerp(bottom->pos.w, left->pos.w, (inv_height * ycount) / 1024);
+        pos.w_right = lerp(bottom->pos.w, right->pos.w, (inv_height * ycount) / 1024);
 
-        pos.u_left  -= step.u_left;
-        pos.u_right -= step.u_right;
+        pos.u_left = lerp(bottom->uv.x, left->uv.x, (inv_height * ycount) / 1024);
+        pos.u_right = lerp(bottom->uv.x, right->uv.x, (inv_height * ycount) / 1024);
 
-        pos.v_left  -= step.v_left;
-        pos.v_right -= step.v_right;
-
+        pos.v_left = lerp(bottom->uv.y, left->uv.y, (inv_height * ycount) / 1024);
+        pos.v_right = lerp(bottom->uv.y, right->uv.y, (inv_height * ycount) / 1024);
     }
 }
 
