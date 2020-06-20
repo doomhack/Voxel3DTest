@@ -20,6 +20,8 @@ protected:
 private:
     VoxelTerrain vt;
 
+    QElapsedTimer fpsTimer;
+
 private slots:
     void OnRedraw();
 

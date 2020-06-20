@@ -1,62 +1,60 @@
 #ifndef FP_H
 #define FP_H
 
-#include <stdio.h>
 #include <limits>
 
-#include <QtCore>
 
-#define OVERFLOW_CHECK
+//#define OVERFLOW_CHECK
 
 class FP
 {
 public:
-    FP() {}
+    constexpr FP() : n(0)                               {}
 
-    FP(const FP& r) : n(r.n)            {}
-    FP(int v)                           {*this=v;}
-    FP(float v)                         {*this=v;}
+    constexpr FP(const FP& r)   : n(r.n)                {}
+    constexpr FP(int v)         : n(v << fracbits)      {}
+    constexpr FP(float v)       : n((int)(v * one))     {}
 
-    operator int() const                {return i();}
-    operator float() const              {return f();}
+    constexpr operator int() const      {return i();}
+    constexpr operator float() const    {return f();}
 
-    int i() const                       {return n >> fracbits;}
-    float f() const                     {return (float)n / one;}
+    constexpr int i() const             {return n >> fracbits;}
+    constexpr float f() const           {return (float)n / one;}
 
-    static FP fromFPInt(const int r)    {FP v; v.n = r; return v;}
-    int toFPInt()                       {return n;}
+    static constexpr FP fromFPInt(const int r)    {FP v; v.n = r; return v;}
+    constexpr int toFPInt()             {return n;}
 
-    int intMul(int r)                   {return ((long long int)n * r) >> fracbits;}
+    constexpr int intMul(int r)         {return ((long long int)n * r) >> fracbits;}
 
-    static int max()
+    constexpr static int max()
     {
         return std::numeric_limits<short>::max();
     }
 
-    static int min()
+    constexpr static int min()
     {
         return std::numeric_limits<short>::min();
     }
 
-    FP& operator=(const int r)
+    constexpr FP& operator=(const int r)
     {
 #ifdef OVERFLOW_CHECK
 
         if(r < min() || r > max())
         {
-            qDebug() << "int assign oveflow: " <<  r;
+            //std::cout << "int assign overflow: " <<  r;
         }
 #endif
         n = (r << fracbits);   return *this;
     }
 
-    FP& operator=(const float r)
+    constexpr FP& operator=(const float r)
     {
 #ifdef OVERFLOW_CHECK
 
         if(r < min() || r > max())
         {
-            qDebug() << "float assign oveflow: " <<  r;
+            //std::cout << "float assign overflow: " <<  r;
         }
 #endif
 
@@ -64,11 +62,11 @@ public:
     }
 
     //Addition
-    FP operator+(const FP& r)           {FP v(r);   return v+=*this;}
-    FP operator+(const int r)           {FP v(r);   return v+=*this;}
-    FP operator+(const float r)         {FP v(r);   return v+=*this;}
+    constexpr FP operator+(const FP& r)           {FP v(r);   return v+=*this;}
+    constexpr FP operator+(const int r)           {FP v(r);   return v+=*this;}
+    constexpr FP operator+(const float r)         {FP v(r);   return v+=*this;}
 
-    FP& operator+=(const FP& r)
+    constexpr FP& operator+=(const FP& r)
     {
 #ifdef OVERFLOW_CHECK
 
@@ -76,18 +74,18 @@ public:
 
         if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
         {
-            qDebug() << "addition oveflow: " <<  r.i() << this->i() << r.i() << this->i();
+            //std::cout << "addition overflow: " <<  r.i() << this->i();
         }
 #endif
 
         n += r.n;  return *this;
     }
 
-    FP& operator+=(const int r)         {return *this+=FP(r);}
-    FP& operator+=(const float r)       {return *this+=FP(r);}
+    constexpr FP& operator+=(const int r)         {return *this+=FP(r);}
+    constexpr FP& operator+=(const float r)       {return *this+=FP(r);}
 
     //Subtraction
-    FP operator-(const FP& r)
+    constexpr FP operator-(const FP& r)
     {
 
 #ifdef OVERFLOW_CHECK
@@ -96,7 +94,7 @@ public:
 
         if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
         {
-            qDebug() << "subtraction oveflow: " <<  r.i() << this->i() << r.i() << this->i();
+            //std::cout << "subtraction overflow: " <<  r.i() << this->i();
         }
 #endif
 
@@ -104,22 +102,22 @@ public:
     }
 
 
-    FP operator-(const int r)           {FP v(r); return *this-v;}
-    FP operator-(const float r)         {FP v(r); return *this-v;}
+    constexpr FP operator-(const int r)           {FP v(r); return *this-v;}
+    constexpr FP operator-(const float r)         {FP v(r); return *this-v;}
 
 
-    FP& operator-=(const FP& r)         {n -= r.n;  return *this;}
-    FP& operator-=(const int& r)        {return *this-=FP(r);}
-    FP& operator-=(const float& r)      {return *this-=FP(r);}
+    constexpr FP& operator-=(const FP& r)         {n -= r.n;  return *this;}
+    constexpr FP& operator-=(const int& r)        {return *this-=FP(r);}
+    constexpr FP& operator-=(const float& r)      {return *this-=FP(r);}
 
-    FP operator-()                     {FP r; r.n = -n; return r;}
+    constexpr FP operator-()                      {FP r; r.n = -n; return r;}
 
     //Multiply
-    FP operator*(const FP& r)           {FP v(r);   return v*=*this;}
-    FP operator*(const int r)           {FP v(r);   return v*=*this;}
-    FP operator*(const float r)         {FP v(r);   return v*=*this;}
+    constexpr FP operator*(const FP& r)           {FP v(r);   return v*=*this;}
+    constexpr FP operator*(const int r)           {FP v(r);   return v*=*this;}
+    constexpr FP operator*(const float r)         {FP v(r);   return v*=*this;}
 
-    FP& operator*=(const FP& r)
+    constexpr FP& operator*=(const FP& r)
     {
         long long int tmp = (((long long int)n * r.n) >> fracbits);
 
@@ -127,7 +125,7 @@ public:
 
         if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
         {
-            qDebug() << "multiply oveflow: " <<  r.i() << this->i() << r.i() * this->i();
+            //std::cout << "multiply overflow: " <<  r.i() << this->i() << r.i() * this->i();
         }
 #endif
 
@@ -135,11 +133,11 @@ public:
         return *this;
     }
 
-    FP& operator*=(const int& r)        {return *this*=FP(r);}
-    FP& operator*=(const float& r)      {return *this*=FP(r);}
+    constexpr FP& operator*=(const int& r)        {return *this*=FP(r);}
+    constexpr FP& operator*=(const float& r)      {return *this*=FP(r);}
 
     //Divide
-    FP operator/(const FP& r)
+    constexpr FP operator/(const FP& r)
     {
         long long int tmp = (((long long int)n << fracbits) / r.n);
 
@@ -147,7 +145,7 @@ public:
 
         if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
         {
-            qDebug() << "divide oveflow: " <<  r.i() << this->i() << r.i() << this->i();
+            //std::cout << "divide overflow: " <<  r.i() << this->i();
         }
 #endif
 
@@ -155,10 +153,10 @@ public:
         return v;
     }
 
-    FP operator/(const int r)           {FP v(r);   return *this/v;}
-    FP operator/(const float r)         {FP v(r);   return *this/v;}
+    constexpr FP operator/(const int r)           {FP v(r);   return *this/v;}
+    constexpr FP operator/(const float r)         {FP v(r);   return *this/v;}
 
-    FP& operator/=(const FP& r)
+    constexpr FP& operator/=(const FP& r)
     {
         long long int tmp = (((long long int)n << fracbits) / r.n);
 
@@ -166,72 +164,72 @@ public:
 
         if(tmp < std::numeric_limits<int>::min() || tmp > std::numeric_limits<int>::max())
         {
-            qDebug() << "divide oveflow: " <<  r.i() << this->i() << r.i() << this->i();
+            //std::cout << "divide overflow: " <<  r.i() << this->i();
         }
 #endif
         n = (int)tmp;
         return *this;
     }
 
-    FP& operator/=(const int& r)        {return *this/=FP(r);}
-    FP& operator/=(const float& r)      {return *this/=FP(r);}
+    constexpr FP& operator/=(const int& r)        {return *this/=FP(r);}
+    constexpr FP& operator/=(const float& r)      {return *this/=FP(r);}
 
     //Equality
-    bool operator==(const FP& r)        {return n == r.n;}
-    bool operator==(const int& r)       {return *this==FP(r);}
-    bool operator==(const float& r)     {return *this==FP(r);}
+    constexpr bool operator==(const FP& r)        {return n == r.n;}
+    constexpr bool operator==(const int& r)       {return *this==FP(r);}
+    constexpr bool operator==(const float& r)     {return *this==FP(r);}
 
     //Inequality
-    bool operator!=(const FP& r)        {return n != r.n;}
-    bool operator!=(const int& r)       {return *this!=FP(r);}
-    bool operator!=(const float& r)     {return *this!=FP(r);}
+    constexpr bool operator!=(const FP& r)        {return n != r.n;}
+    constexpr bool operator!=(const int& r)       {return *this!=FP(r);}
+    constexpr bool operator!=(const float& r)     {return *this!=FP(r);}
 
     //Less than
-    bool operator<(const FP& r)         {return n < r.n;}
-    bool operator<(const int& r)        {return *this<FP(r);}
-    bool operator<(const float& r)      {return *this<FP(r);}
+    constexpr bool operator<(const FP& r)         {return n < r.n;}
+    constexpr bool operator<(const int& r)        {return *this<FP(r);}
+    constexpr bool operator<(const float& r)      {return *this<FP(r);}
 
     //Greater than
-    bool operator>(const FP& r)         {return n > r.n;}
-    bool operator>(const int& r)        {return *this>FP(r);}
-    bool operator>(const float& r)      {return *this>FP(r);}
+    constexpr bool operator>(const FP& r)         {return n > r.n;}
+    constexpr bool operator>(const int& r)        {return *this>FP(r);}
+    constexpr bool operator>(const float& r)      {return *this>FP(r);}
 
     //Greater than=
-    bool operator>=(const FP& r)        {return n >= r.n;}
-    bool operator>=(const int& r)       {return *this>=FP(r);}
-    bool operator>=(const float& r)     {return *this>=FP(r);}
+    constexpr bool operator>=(const FP& r)        {return n >= r.n;}
+    constexpr bool operator>=(const int& r)       {return *this>=FP(r);}
+    constexpr bool operator>=(const float& r)     {return *this>=FP(r);}
 
     //Less than=
-    bool operator<=(const FP& r)        {return n <= r.n;}
-    bool operator<=(const int& r)       {return *this<=FP(r);}
-    bool operator<=(const float& r)     {return *this<=FP(r);}
+    constexpr bool operator<=(const FP& r)        {return n <= r.n;}
+    constexpr bool operator<=(const int& r)       {return *this<=FP(r);}
+    constexpr bool operator<=(const float& r)     {return *this<=FP(r);}
 
     //&
-    FP operator&(const FP& r)           {FP v(r); v.n &= n;  return v;}
-    FP operator&(const int r)           {FP v(r); return v&=*this;}
+    constexpr FP operator&(const FP& r)           {FP v(r); v.n &= n;  return v;}
+    constexpr FP operator&(const int r)           {FP v(r); return v&=*this;}
 
-    FP& operator&=(const FP& r)         {n &= r.n;  return *this;}
-    FP& operator&=(const int& r)        {return *this&=FP(r);}
+    constexpr FP& operator&=(const FP& r)         {n &= r.n;  return *this;}
+    constexpr FP& operator&=(const int& r)        {return *this&=FP(r);}
 
     //|
-    FP operator|(const FP& r)           {FP v(r); v.n |= n;  return v;}
-    FP operator|(int r)                 {FP v(r);   return v|=*this;}
-    FP& operator|=(const FP& r)         {n |= r.n;  return *this;}
-    FP& operator|=(const int& r)        {return *this|=FP(r);}
+    constexpr FP operator|(const FP& r)           {FP v(r); v.n |= n;  return v;}
+    constexpr FP operator|(int r)                 {FP v(r);   return v|=*this;}
+    constexpr FP& operator|=(const FP& r)         {n |= r.n;  return *this;}
+    constexpr FP& operator|=(const int& r)        {return *this|=FP(r);}
 
     //^
-    FP operator^(const FP& r)           {FP v(r); v.n ^= n;  return v;}
-    FP operator^(const int r)           {FP v(r);   return v^=*this;}
-    FP& operator^=(const FP& r)         {n ^= r.n;  return *this;}
-    FP& operator^=(const int& r)        {return *this^=FP(r);}
+    constexpr FP operator^(const FP& r)           {FP v(r); v.n ^= n;  return v;}
+    constexpr FP operator^(const int r)           {FP v(r);   return v^=*this;}
+    constexpr FP& operator^=(const FP& r)         {n ^= r.n;  return *this;}
+    constexpr FP& operator^=(const int& r)        {return *this^=FP(r);}
 
     //<<
-    FP operator<<(const unsigned int r)     {FP v(n);   return v<<=r;}
-    FP& operator<<=(const unsigned int r)   {n <<= r;  return *this;}
+    constexpr FP operator<<(const unsigned int r)     {FP v(n);   return v<<=r;}
+    constexpr FP& operator<<=(const unsigned int r)   {n <<= r;  return *this;}
 
     //>>
-    FP operator>>(const unsigned int r)     {FP v(n);   return v>>=r;}
-    FP& operator>>=(const unsigned int r)   {n >>= r;  return *this;}
+    constexpr FP operator>>(const unsigned int r)     {FP v(n);   return v>>=r;}
+    constexpr FP& operator>>=(const unsigned int r)   {n >>= r;  return *this;}
 
 
 private:

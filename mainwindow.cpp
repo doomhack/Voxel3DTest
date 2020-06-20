@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->resize(1360, 720);
     this->update();
+
+    fpsTimer.start();
 }
 
 MainWindow::~MainWindow()
@@ -24,11 +26,27 @@ void MainWindow::OnRedraw()
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
+    static unsigned int frameCount = 0;
+    static unsigned int currentFps = 0;
+
     vt.Render();
 
     QPainter p(this);
 
     p.drawImage(this->rect(), vt.frameBufferImage);
+
+    frameCount++;
+
+    unsigned int elapsed = fpsTimer.elapsed();
+
+    if(elapsed > 1000)
+    {
+        currentFps = qRound((double)frameCount / ((double)elapsed / 1000.0));
+        frameCount = 0;
+        fpsTimer.restart();
+    }
+
+    p.drawText(32,32, QString("FPS: %1").arg(currentFps));
 
     this->update();
 }

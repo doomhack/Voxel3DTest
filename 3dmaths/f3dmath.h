@@ -5,6 +5,7 @@
 
 namespace F3D
 {
+    #include "utils.h"
     #include "fp.h"
     #include "v4.h"
     #include "v3.h"

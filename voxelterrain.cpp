@@ -6,13 +6,6 @@
 
 #include "3dmaths/f3dmath.h"
 
-fp VoxelTerrain::lerp(fp a, fp b, fp frac)
-{
-    fp ifrac = fp(1) - frac;
-
-    return (a * ifrac) + (b * frac);
-}
-
 int VoxelTerrain::fracToY(fp frac)
 {
     fp y = fp(1)-((frac + fp(1)) / fp(2));
@@ -372,13 +365,13 @@ void VoxelTerrain::ClipAndDrawTriangle(Vertex2d clipSpacePoints[], Texture *text
 
             Vertex2d newVx;
 
-            newVx.pos.x = lerp(clipSpacePoints[i].pos.x, clipSpacePoints[i2].pos.x, frac);
-            newVx.pos.y = lerp(clipSpacePoints[i].pos.y, clipSpacePoints[i2].pos.y, frac);
-            newVx.pos.z = lerp(clipSpacePoints[i].pos.z, clipSpacePoints[i2].pos.z, frac);
+            newVx.pos.x = F3D::lerp(clipSpacePoints[i].pos.x, clipSpacePoints[i2].pos.x, frac);
+            newVx.pos.y = F3D::lerp(clipSpacePoints[i].pos.y, clipSpacePoints[i2].pos.y, frac);
+            newVx.pos.z = F3D::lerp(clipSpacePoints[i].pos.z, clipSpacePoints[i2].pos.z, frac);
             newVx.pos.w = wClip;
 
-            newVx.uv.x = lerp(clipSpacePoints[i].uv.x, clipSpacePoints[i2].uv.x, frac);
-            newVx.uv.y = lerp(clipSpacePoints[i].uv.y, clipSpacePoints[i2].uv.y, frac);
+            newVx.uv.x = F3D::lerp(clipSpacePoints[i].uv.x, clipSpacePoints[i2].uv.x, frac);
+            newVx.uv.y = F3D::lerp(clipSpacePoints[i].uv.y, clipSpacePoints[i2].uv.y, frac);
 
             outputVx[vp] = newVx;
             vp++;
@@ -542,14 +535,14 @@ void VoxelTerrain::DrawTransformedTriangle(Vertex2d points[], Texture* texture)
         triangle[1] = points[1];
 
         //x pos
-        triangle[2].pos.x = lerp(points[0].pos.x, points[2].pos.x, splitFrac);
+        triangle[2].pos.x = F3D::lerp(points[0].pos.x, points[2].pos.x, splitFrac);
         triangle[2].pos.y = points[1].pos.y;
-        triangle[2].pos.z = lerp(points[0].pos.z, points[2].pos.z, splitFrac);
-        triangle[2].pos.w = lerp(points[0].pos.w, points[2].pos.w, splitFrac);
+        triangle[2].pos.z = F3D::lerp(points[0].pos.z, points[2].pos.z, splitFrac);
+        triangle[2].pos.w = F3D::lerp(points[0].pos.w, points[2].pos.w, splitFrac);
 
         //uv coords.
-        triangle[2].uv.x = lerp(points[0].uv.x, points[2].uv.x, splitFrac);
-        triangle[2].uv.y = lerp(points[0].uv.y, points[2].uv.y, splitFrac);
+        triangle[2].uv.x = F3D::lerp(points[0].uv.x, points[2].uv.x, splitFrac);
+        triangle[2].uv.y = F3D::lerp(points[0].uv.y, points[2].uv.y, splitFrac);
 
         triangle[3] = points[2];
 
@@ -584,9 +577,9 @@ void VoxelTerrain::DrawTransformedTriangle(Vertex2d points[], QRgb color)
         triangle[1] = points[1];
 
         //x pos
-        triangle[2].pos.x = lerp(points[0].pos.x, points[2].pos.x, splitFrac);
+        triangle[2].pos.x = F3D::lerp(points[0].pos.x, points[2].pos.x, splitFrac);
         triangle[2].pos.y = points[1].pos.y;
-        triangle[2].pos.z = lerp(points[0].pos.z, points[2].pos.z, splitFrac);
+        triangle[2].pos.z = F3D::lerp(points[0].pos.z, points[2].pos.z, splitFrac);
 
         triangle[3] = points[2];
 
@@ -628,88 +621,139 @@ void VoxelTerrain::DrawTriangleTop(Vertex2d points[], Texture* texture)
         right = &points[1];
     }
 
-
-    fp inv_height = (fp(1024)/(points[1].pos.y - points[0].pos.y));
-
-    pos.x_left = pos.x_right = top->pos.x;
-    pos.z_left = pos.z_right = top->pos.z;
-    pos.w_left = pos.w_right = top->pos.w;
-
-    pos.u_left = pos.u_right = top->uv.x;
-    pos.v_left = pos.v_right = top->uv.y;
+    const fp yFracScale = 1024;
+    fp inv_height = (fp(yFracScale)/(points[1].pos.y - points[0].pos.y));
+    fp yFracScaled = inv_height;
 
     int yStart = top->pos.y;
     int yEnd = left->pos.y;
 
-    int ycount = 1;
-
-    for (int y = yStart; y <= yEnd; y++, ycount++)
+    if(yStart < 0)
     {
-        if(y >= screenHeight)
-            break;
+        yFracScaled = (fp(-yStart) * inv_height);
+        yStart = 0;
 
-        if(y > 0)
-        {
-            DrawTriangleScanline(y, pos, texture);
-        }
+        fp yFrac = yFracScaled / yFracScale;
 
-        pos.x_left = lerp(top->pos.x, left->pos.x, (inv_height * ycount) / 1024);
-        pos.x_right = lerp(top->pos.x, right->pos.x, (inv_height * ycount) / 1024);
+        pos.x_left = F3D::lerp(top->pos.x, left->pos.x, yFrac);
+        pos.x_right = F3D::lerp(top->pos.x, right->pos.x, yFrac);
 
-        pos.z_left = lerp(top->pos.z, left->pos.z, (inv_height * ycount) / 1024);
-        pos.z_right = lerp(top->pos.z, right->pos.z, (inv_height * ycount) / 1024);
+        pos.z_left = F3D::lerp(top->pos.z, left->pos.z, yFrac);
+        pos.z_right = F3D::lerp(top->pos.z, right->pos.z, yFrac);
 
-        pos.w_left = lerp(top->pos.w, left->pos.w, (inv_height * ycount) / 1024);
-        pos.w_right = lerp(top->pos.w, right->pos.w, (inv_height * ycount) / 1024);
+        pos.w_left = F3D::lerp(top->pos.w, left->pos.w, yFrac);
+        pos.w_right = F3D::lerp(top->pos.w, right->pos.w, yFrac);
 
-        pos.u_left = lerp(top->uv.x, left->uv.x, (inv_height * ycount) / 1024);
-        pos.u_right = lerp(top->uv.x, right->uv.x, (inv_height * ycount) / 1024);
+        pos.u_left = F3D::lerp(top->uv.x, left->uv.x, yFrac);
+        pos.u_right = F3D::lerp(top->uv.x, right->uv.x, yFrac);
 
-        pos.v_left = lerp(top->uv.y, left->uv.y, (inv_height * ycount) / 1024);
-        pos.v_right = lerp(top->uv.y, right->uv.y, (inv_height * ycount) / 1024);
+        pos.v_left = F3D::lerp(top->uv.y, left->uv.y, yFrac);
+        pos.v_right = F3D::lerp(top->uv.y, right->uv.y, yFrac);
+    }
+    else
+    {
+        pos.x_left = pos.x_right = top->pos.x;
+        pos.z_left = pos.z_right = top->pos.z;
+        pos.w_left = pos.w_right = top->pos.w;
+
+        pos.u_left = pos.u_right = top->uv.x;
+        pos.v_left = pos.v_right = top->uv.y;
+
+        yFracScaled = 0;
+    }
+
+    if(yEnd >= screenHeight)
+        yEnd = screenHeight-1;
+
+    for (int y = yStart; y <= yEnd; y++)
+    {
+
+        DrawTriangleScanline(y, pos, texture);
+
+        yFracScaled += inv_height;
+
+        fp yFrac = yFracScaled / yFracScale;
+
+        pos.x_left = F3D::lerp(top->pos.x, left->pos.x, yFrac);
+        pos.x_right = F3D::lerp(top->pos.x, right->pos.x, yFrac);
+
+        pos.z_left = F3D::lerp(top->pos.z, left->pos.z, yFrac);
+        pos.z_right = F3D::lerp(top->pos.z, right->pos.z, yFrac);
+
+        pos.w_left = F3D::lerp(top->pos.w, left->pos.w, yFrac);
+        pos.w_right = F3D::lerp(top->pos.w, right->pos.w, yFrac);
+
+        pos.u_left = F3D::lerp(top->uv.x, left->uv.x, yFrac);
+        pos.u_right = F3D::lerp(top->uv.x, right->uv.x, yFrac);
+
+        pos.v_left = F3D::lerp(top->uv.y, left->uv.y, yFrac);
+        pos.v_right = F3D::lerp(top->uv.y, right->uv.y, yFrac);
     }
 }
 
 void VoxelTerrain::DrawTriangleTop(Vertex2d points[], QRgb color)
 {
-    TriEdgeTrace step;
     TriEdgeTrace pos;
 
-    fp inv_height = (fp(1)/(points[1].pos.y - points[0].pos.y));
+    Vertex2d *top, *left, *right;
+    top = &points[0];
 
-    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height;
-    step.x_right    = (points[1].pos.x - points[0].pos.x) * inv_height;
-
-    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height;
-    step.z_right    = (points[1].pos.z - points[0].pos.z) * inv_height;
-
-    if(step.x_left > step.x_right)
+    if(points[1].pos.x < points[2].pos.x)
     {
-        qSwap(step.x_left, step.x_right);
-        qSwap(step.z_left, step.z_right);
+        left = &points[1];
+        right = &points[2];
+    }
+    else
+    {
+        left = &points[2];
+        right = &points[1];
     }
 
-    pos.x_left = pos.x_right = points[0].pos.x;
-    pos.z_left = pos.z_right = points[0].pos.z;
+    const fp yFracScale = 1024;
+    fp inv_height = (fp(yFracScale)/(points[1].pos.y - points[0].pos.y));
+    fp yFracScaled = inv_height;
 
-    int yStart = points[0].pos.y;
-    int yEnd = points[1].pos.y;
+    int yStart = top->pos.y;
+    int yEnd = left->pos.y;
+
+    if(yStart < 0)
+    {
+        yFracScaled = (fp(-yStart) * inv_height);
+        yStart = 0;
+
+        fp yFrac = yFracScaled / yFracScale;
+
+        pos.x_left = F3D::lerp(top->pos.x, left->pos.x, yFrac);
+        pos.x_right = F3D::lerp(top->pos.x, right->pos.x, yFrac);
+
+        pos.z_left = F3D::lerp(top->pos.z, left->pos.z, yFrac);
+        pos.z_right = F3D::lerp(top->pos.z, right->pos.z, yFrac);
+    }
+    else
+    {
+        pos.x_left = pos.x_right = top->pos.x;
+        pos.z_left = pos.z_right = top->pos.z;
+
+        yFracScaled = 0;
+    }
+
+    if(yEnd >= screenHeight)
+        yEnd = screenHeight-1;
 
     for (int y = yStart; y <= yEnd; y++)
     {
-        if(y >= screenHeight)
-            break;
 
-        if(y > 0)
-        {
-            DrawTriangleScanline(y, pos, color);
-        }
+        DrawTriangleScanline(y, pos, color);
 
-        pos.x_left  += step.x_left;
-        pos.x_right += step.x_right;
+        yFracScaled += inv_height;
 
-        pos.z_left  += step.z_left;
-        pos.z_right += step.z_right;
+        fp yFrac = yFracScaled / yFracScale;
+
+        pos.x_left = F3D::lerp(top->pos.x, left->pos.x, yFrac);
+        pos.x_right = F3D::lerp(top->pos.x, right->pos.x, yFrac);
+
+        pos.z_left = F3D::lerp(top->pos.z, left->pos.z, yFrac);
+        pos.z_right = F3D::lerp(top->pos.z, right->pos.z, yFrac);
     }
 }
 
@@ -731,183 +775,278 @@ void VoxelTerrain::DrawTriangleBottom(Vertex2d points[], Texture* texture)
         right = &points[0];
     }
 
-    fp inv_height = (fp(1024)/(bottom->pos.y - left->pos.y));
+    const fp yFracScale = 1024;
+    fp inv_height = (fp(yFracScale)/(bottom->pos.y - left->pos.y));
 
-    pos.x_left = pos.x_right = bottom->pos.x;
-    pos.z_left = pos.z_right = bottom->pos.z;
-    pos.w_left = pos.w_right = bottom->pos.w;
-
-    pos.u_left = pos.u_right = bottom->uv.x;
-    pos.v_left = pos.v_right = bottom->uv.y;
+    fp yFracScaled;
 
     int yStart = bottom->pos.y;
     int yEnd = left->pos.y;
 
-    int ycount = 1;
-
-    for (int y = yStart; y > yEnd; y--, ycount++)
+    if(yStart >= screenHeight)
     {
-        if(y < 0)
-            break;
+        yFracScaled = (fp(yStart-(screenHeight-1)) * inv_height);
+        yStart = screenHeight-1;
 
-        if(y < screenHeight)
-        {
-            DrawTriangleScanline(y, pos, texture);
-        }
+        fp yFrac = yFracScaled / yFracScale;
 
-        pos.x_left = lerp(bottom->pos.x, left->pos.x, (inv_height * ycount) / 1024);
-        pos.x_right = lerp(bottom->pos.x, right->pos.x, (inv_height * ycount) / 1024);
+        pos.x_left = F3D::lerp(bottom->pos.x, left->pos.x, yFrac);
+        pos.x_right = F3D::lerp(bottom->pos.x, right->pos.x, yFrac);
 
-        pos.z_left = lerp(bottom->pos.z, left->pos.z, (inv_height * ycount) / 1024);
-        pos.z_right = lerp(bottom->pos.z, right->pos.z, (inv_height * ycount) / 1024);
+        pos.z_left = F3D::lerp(bottom->pos.z, left->pos.z, yFrac);
+        pos.z_right = F3D::lerp(bottom->pos.z, right->pos.z, yFrac);
 
-        pos.w_left = lerp(bottom->pos.w, left->pos.w, (inv_height * ycount) / 1024);
-        pos.w_right = lerp(bottom->pos.w, right->pos.w, (inv_height * ycount) / 1024);
+        pos.w_left = F3D::lerp(bottom->pos.w, left->pos.w, yFrac);
+        pos.w_right = F3D::lerp(bottom->pos.w, right->pos.w, yFrac);
 
-        pos.u_left = lerp(bottom->uv.x, left->uv.x, (inv_height * ycount) / 1024);
-        pos.u_right = lerp(bottom->uv.x, right->uv.x, (inv_height * ycount) / 1024);
+        pos.u_left = F3D::lerp(bottom->uv.x, left->uv.x, yFrac);
+        pos.u_right = F3D::lerp(bottom->uv.x, right->uv.x, yFrac);
 
-        pos.v_left = lerp(bottom->uv.y, left->uv.y, (inv_height * ycount) / 1024);
-        pos.v_right = lerp(bottom->uv.y, right->uv.y, (inv_height * ycount) / 1024);
+        pos.v_left = F3D::lerp(bottom->uv.y, left->uv.y, yFrac);
+        pos.v_right = F3D::lerp(bottom->uv.y, right->uv.y, yFrac);
+    }
+    else
+    {
+        pos.x_left = pos.x_right = bottom->pos.x;
+        pos.z_left = pos.z_right = bottom->pos.z;
+        pos.w_left = pos.w_right = bottom->pos.w;
+
+        pos.u_left = pos.u_right = bottom->uv.x;
+        pos.v_left = pos.v_right = bottom->uv.y;
+
+        yFracScaled = 0;
+    }
+
+    if(yEnd < 0)
+        yEnd = 0;
+
+
+    for (int y = yStart; y >= yEnd; y--)
+    {
+        DrawTriangleScanline(y, pos, texture);
+
+        yFracScaled += inv_height;
+
+        fp yFrac = yFracScaled / yFracScale;
+
+        pos.x_left = F3D::lerp(bottom->pos.x, left->pos.x, yFrac);
+        pos.x_right = F3D::lerp(bottom->pos.x, right->pos.x, yFrac);
+
+        pos.z_left = F3D::lerp(bottom->pos.z, left->pos.z, yFrac);
+        pos.z_right = F3D::lerp(bottom->pos.z, right->pos.z, yFrac);
+
+        pos.w_left = F3D::lerp(bottom->pos.w, left->pos.w, yFrac);
+        pos.w_right = F3D::lerp(bottom->pos.w, right->pos.w, yFrac);
+
+        pos.u_left = F3D::lerp(bottom->uv.x, left->uv.x, yFrac);
+        pos.u_right = F3D::lerp(bottom->uv.x, right->uv.x, yFrac);
+
+        pos.v_left = F3D::lerp(bottom->uv.y, left->uv.y, yFrac);
+        pos.v_right = F3D::lerp(bottom->uv.y, right->uv.y, yFrac);
     }
 }
 
 void VoxelTerrain::DrawTriangleBottom(Vertex2d points[], QRgb color)
 {
-    TriEdgeTrace step;
     TriEdgeTrace pos;
 
-    fp inv_height = (fp(1)/(points[2].pos.y- points[0].pos.y));
+    Vertex2d *bottom, *left, *right;
+    bottom = &points[2];
 
-    step.x_left     = (points[2].pos.x - points[0].pos.x) * inv_height;
-    step.x_right    = (points[2].pos.x - points[1].pos.x) * inv_height;
-
-    step.z_left     = (points[2].pos.z - points[0].pos.z) * inv_height;
-    step.z_right    = (points[2].pos.z - points[1].pos.z) * inv_height;
-
-    if(step.x_left < step.x_right)
+    if(points[0].pos.x < points[1].pos.x)
     {
-        qSwap(step.x_left, step.x_right);
-        qSwap(step.z_left, step.z_right);
+        left = &points[0];
+        right = &points[1];
+    }
+    else
+    {
+        left = &points[1];
+        right = &points[0];
     }
 
-    pos.x_left = pos.x_right = points[2].pos.x;
-    pos.z_left = pos.z_right = points[2].pos.z;
+    const fp yFracScale = 1024;
+    fp inv_height = (fp(yFracScale)/(bottom->pos.y - left->pos.y));
 
-    int yStart = points[2].pos.y;
-    int yEnd = points[0].pos.y;
+    fp yFracScaled;
 
+    int yStart = bottom->pos.y;
+    int yEnd = left->pos.y;
 
-    for (int y = yStart; y > yEnd; y--)
+    if(yStart >= screenHeight)
     {
-        if(y < 0)
-            break;
+        yFracScaled = (fp(yStart-(screenHeight-1)) * inv_height);
+        yStart = screenHeight-1;
 
-        if(y < screenHeight)
-        {
-            DrawTriangleScanline(y, pos, color);
-        }
+        fp yFrac = yFracScaled / yFracScale;
 
-        pos.x_left  -= step.x_left;
-        pos.x_right -= step.x_right;
+        pos.x_left = F3D::lerp(bottom->pos.x, left->pos.x, yFrac);
+        pos.x_right = F3D::lerp(bottom->pos.x, right->pos.x, yFrac);
 
-        pos.z_left  -= step.z_left;
-        pos.z_right -= step.z_right;
+        pos.z_left = F3D::lerp(bottom->pos.z, left->pos.z, yFrac);
+        pos.z_right = F3D::lerp(bottom->pos.z, right->pos.z, yFrac);
+    }
+    else
+    {
+        pos.x_left = pos.x_right = bottom->pos.x;
+        pos.z_left = pos.z_right = bottom->pos.z;
+
+        yFracScaled = 0;
+    }
+
+    if(yEnd < 0)
+        yEnd = 0;
+
+
+    for (int y = yStart; y >= yEnd; y--)
+    {
+        DrawTriangleScanline(y, pos, color);
+
+        yFracScaled += inv_height;
+
+        fp yFrac = yFracScaled / yFracScale;
+
+        pos.x_left = F3D::lerp(bottom->pos.x, left->pos.x, yFrac);
+        pos.x_right = F3D::lerp(bottom->pos.x, right->pos.x, yFrac);
+
+        pos.z_left = F3D::lerp(bottom->pos.z, left->pos.z, yFrac);
+        pos.z_right = F3D::lerp(bottom->pos.z, right->pos.z, yFrac);
     }
 }
 
 
 void VoxelTerrain::DrawTriangleScanline(int y, TriEdgeTrace& pos, Texture* texture)
 {
-    TriDrawPos sl_step;
     TriDrawPos sl_pos;
-
-    if(pos.x_left < pos.x_right)
-    {
-        fp inv_width = fp(1)/(pos.x_right - pos.x_left);
-
-        sl_step.w = (pos.w_right - pos.w_left) * inv_width;
-        sl_step.z = (pos.z_right - pos.z_left) * inv_width;
-        sl_step.u = (pos.u_right - pos.u_left) * inv_width;
-        sl_step.v = (pos.v_right - pos.v_left) * inv_width;
-    }
-
-    sl_pos.w = pos.w_left;
-    sl_pos.z = pos.z_left;
-    sl_pos.u = pos.u_left;
-    sl_pos.v = pos.v_left;
 
     int x_start = pos.x_left;
     int x_end = pos.x_right;
 
+    fp inv_width = 0;
+    const fp xFracScale = 1024;
+    fp xFracScaled;
+
+    if(x_start < x_end)
+    {
+        inv_width = fp(xFracScale)/(x_end - x_start);
+    }
+
+    if(x_start < 0)
+    {
+        xFracScaled = (fp(-x_start) * inv_width);
+        x_start = 0;
+
+        fp xFrac = xFracScaled / xFracScale;
+
+        sl_pos.z = F3D::lerp(pos.z_left, pos.z_right, xFrac);
+        sl_pos.w = F3D::lerp(pos.w_left, pos.w_right, xFrac);
+        sl_pos.u = F3D::lerp(pos.u_left, pos.u_right, xFrac);
+        sl_pos.v = F3D::lerp(pos.v_left, pos.v_right, xFrac);
+    }
+    else
+    {
+        sl_pos.w = pos.w_left;
+        sl_pos.z = pos.z_left;
+        sl_pos.u = pos.u_left;
+        sl_pos.v = pos.v_left;
+
+        xFracScaled = 0;
+    }
+
+    if(x_end >= screenWidth)
+        x_end = screenWidth-1;
+
+    int buffOffset = ((y * screenWidth) + x_start);
+    fp* zb = &zBuffer[buffOffset];
+    QRgb* fb = &frameBuffer[buffOffset];
+
     for(int x = x_start; x <= x_end; x++)
     {
-        if(x >= screenWidth)
-            return;
-
-        if(x >= 0)
+        if(sl_pos.z < *zb)
         {
-            fp prevz = zBuffer[ (y*screenWidth) + x];
-
-            if(sl_pos.z < prevz)
-            {
 #ifdef PERSPECTIVE_CORRECT
-                fp invw = fp(1) / sl_pos.w;
+            fp invw = fp(1) / sl_pos.w;
 
-                int tx = ((sl_pos.u * fp((int)texture->width)) * invw);
-                int ty = fp((int)texture->height) - ((sl_pos.v * fp((int)texture->height)) * invw);
+            int tx = ((sl_pos.u * fp((int)texture->width)) * invw);
+            int ty = fp((int)texture->height) - ((sl_pos.v * fp((int)texture->height)) * invw);
 #else
-                int tx = sl_pos.u * (int)texture->width;
-                int ty = (fp(1)-sl_pos.v) * (int)texture->height;
+            int tx = sl_pos.u * (int)texture->width;
+            int ty = (fp(1)-sl_pos.v) * (int)texture->height;
 #endif
-                tx = tx & (texture->width - 1);
-                ty = ty & (texture->height - 1);
+            tx = tx & (texture->width - 1);
+            ty = ty & (texture->height - 1);
 
-                frameBuffer[y*screenWidth + x] = texture->pixels[ty * texture->width + tx];
-                zBuffer[ (y*screenWidth) + x] = sl_pos.z;
-            }
+            *fb = texture->pixels[ty * texture->width + tx];
+            *zb = sl_pos.z;
         }
 
-        sl_pos.w += sl_step.w;
-        sl_pos.z += sl_step.z;
-        sl_pos.u += sl_step.u;
-        sl_pos.v += sl_step.v;
+        xFracScaled += inv_width;
+        zb++;
+        fb++;
+
+        fp xFrac = xFracScaled / xFracScale;
+
+        sl_pos.z = F3D::lerp(pos.z_left, pos.z_right, xFrac);
+        sl_pos.w = F3D::lerp(pos.w_left, pos.w_right, xFrac);
+        sl_pos.u = F3D::lerp(pos.u_left, pos.u_right, xFrac);
+        sl_pos.v = F3D::lerp(pos.v_left, pos.v_right, xFrac);
     }
 }
 
 void VoxelTerrain::DrawTriangleScanline(int y, TriEdgeTrace& pos, QRgb color)
 {
-    TriDrawPos sl_step;
-    TriDrawPos sl_pos;
-
-    if(pos.x_left < pos.x_right)
-    {
-        fp inv_width = fp(1)/(pos.x_right - pos.x_left);
-
-        sl_step.z = (pos.z_right - pos.z_left) * inv_width;
-    }
-
-    sl_pos.z = pos.z_left;
+    fp zPos;
 
     int x_start = pos.x_left;
     int x_end = pos.x_right;
 
-    for(int x = x_start; x <= x_end; x++)
+    fp inv_width = 0;
+    const fp xFracScale = 1024;
+    fp xFracScaled;
+
+    if(x_start < x_end)
     {
-        if(x >= screenWidth)
-            return;
+        inv_width = fp(xFracScale)/(x_end - x_start);
+    }
+    else if(x_start > x_end)
+        return;
 
-        if(x >= 0)
-        {   
-            fp prevz = zBuffer[ (y*screenWidth) + x];
+    if(x_start < 0)
+    {
+        xFracScaled = (fp(-x_start) * inv_width);
+        x_start = 0;
 
-            if(sl_pos.z < prevz)
-            {
-                frameBuffer[y*screenWidth + x] = color;
-                zBuffer[ (y*screenWidth) + x] = sl_pos.z;
-            }
+        fp xFrac = xFracScaled / xFracScale;
+
+        zPos = F3D::lerp(pos.z_left, pos.z_right, xFrac);
+    }
+    else
+    {
+        zPos = pos.z_left;
+        xFracScaled = 0;
+    }
+
+    if(x_end >= screenWidth)
+        x_end = screenWidth-1;
+
+    int buffOffset = ((y * screenWidth) + x_start);
+    fp* zb = &zBuffer[buffOffset];
+    QRgb* fb = &frameBuffer[buffOffset];
+
+
+    for(int i = x_start; i <= x_end; i++)
+    {
+        if(zPos < *zb)
+        {
+            *fb = color;
+            *zb = zPos;
         }
 
-        sl_pos.z += sl_step.z;
+        xFracScaled += inv_width;
+        zb++;
+        fb++;
+
+        fp xFrac = xFracScaled / xFracScale;
+        zPos = F3D::lerp(pos.z_left, pos.z_right, xFrac);
+
     }
 }

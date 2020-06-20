@@ -70,8 +70,6 @@ public:
     int fracToY(fp frac);
     int fracToX(fp frac);
 
-    fp lerp(fp a, fp b, fp frac);
-
     QRgb* frameBuffer;
 
     QImage frameBufferImage;
